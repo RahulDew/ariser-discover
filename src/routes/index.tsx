@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createRoute, useRouter } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
-import { useAppStore } from "../store/useAppStore";
+import { useAppStore, THEMES } from "../store/useAppStore";
 import { FaSearch, FaHistory, FaTrashAlt, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "../components/Brand";
@@ -19,7 +19,12 @@ function HomeComponent() {
   const searchHistory = useAppStore((state) => state.searchHistory);
   const clearHistory = useAppStore((state) => state.clearHistory);
   const removeFromHistory = useAppStore((state) => state.removeFromHistory);
+  const themeId = useAppStore((state) => state.themeId);
+  const mode = useAppStore((state) => state.mode);
   const [localSearch, setLocalSearch] = useState("");
+
+  const activeTheme = THEMES[themeId] || THEMES.apricot;
+  const currentAccentHover = mode === "dark" ? activeTheme.dark.accentHover : activeTheme.light.accentHover;
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +88,8 @@ function HomeComponent() {
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute top-[-10%] left-[-15%] w-[65vw] h-[65vw] rounded-full bg-theme-accent-hover/18 blur-[120px] pointer-events-none select-none transition-colors duration-300 z-0"
+        style={{ backgroundColor: currentAccentHover, opacity: 0.25 }}
+        className="absolute top-[-10%] left-[-15%] w-[65vw] h-[65vw] rounded-full blur-[120px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
       />
       <motion.div
         animate={{
@@ -97,7 +103,8 @@ function HomeComponent() {
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute bottom-[-15%] right-[-15%] w-[55vw] h-[55vw] rounded-full bg-theme-accent-hover/12 blur-[100px] pointer-events-none select-none transition-colors duration-300 z-0"
+        style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
+        className="absolute bottom-[-15%] right-[-15%] w-[55vw] h-[55vw] rounded-full blur-[100px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
       />
 
 
