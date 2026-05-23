@@ -80,7 +80,7 @@ function HomeComponent() {
         transition={{ duration: 0.5 }}
         className="flex justify-between items-center px-6 md:px-14 py-5 z-10"
       >
-        <span className="select-none pointer-events-none opacity-0">Lumen</span>
+        <span className="select-none pointer-events-none opacity-0">Ariser Discover</span>
         
         {/* Floating popover theme selector */}
         <ThemeSelector />
@@ -103,7 +103,7 @@ function HomeComponent() {
           variants={itemVariants}
           className="font-serif-lumen italic text-theme-text opacity-70 text-base md:text-lg mb-8 select-none"
         >
-          Search, softly.
+          Discover the web, softly.
         </motion.p>
 
         {/* Search Input Box */}
@@ -118,7 +118,7 @@ function HomeComponent() {
             
             <input
               type="text"
-              placeholder="Search the warm side of the web..."
+              placeholder="Discover the warm side of the web..."
               className="relative w-full py-4 pl-6 pr-32 rounded-full border border-theme-border bg-theme-input text-theme-text shadow-lg outline-none focus:border-theme-accent focus:shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition-all duration-300 text-lg font-medium"
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}

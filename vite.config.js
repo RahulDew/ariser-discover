@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "Lumen Search",
-        short_name: "Lumen",
+        name: "Ariser Discover",
+        short_name: "Ariser Discover",
         description: "Sleek, modern Google Search client designed to search softly.",
         theme_color: "#D66240",
         background_color: "#FDF6EC",

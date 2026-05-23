@@ -301,7 +301,7 @@ export const useAppStore = create<AppState>()(
       setMockMode: (val) => set({ mockMode: val }),
     }),
     {
-      name: "lumen-search-store-v2", // Updated storage key for Lumen brand
+      name: "ariser-discover-store", // Storage key for Ariser Discover brand
       onRehydrateStorage: () => (state) => {
         // Automatically inject theme custom colors as soon as local storage hydates!
         if (state) {
