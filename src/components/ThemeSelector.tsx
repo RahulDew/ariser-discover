@@ -39,12 +39,12 @@ export const ThemeSelector: React.FC = () => {
     <div className="relative pointer-events-auto" ref={popoverRef}>
       <AnimatePresence mode="wait">
         {!isOpen ? (
-          /* Floating Pill Theme Button */
+          /* Floating Pill Theme Button - completely integrated with active theme variables */
           <motion.button
             key="collapsed-button"
             layoutId="theme-selector-container"
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 px-5 py-3 bg-white/85 dark:bg-neutral-900/85 border border-sky-100/30 dark:border-neutral-800/40 backdrop-blur-md rounded-full shadow-lg text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
+            className="flex items-center gap-2.5 px-5 py-3 bg-theme-card/85 border border-theme-border/60 backdrop-blur-md rounded-full shadow-lg text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -53,11 +53,11 @@ export const ThemeSelector: React.FC = () => {
             <span>Customize</span>
           </motion.button>
         ) : (
-          /* Expanded Sleek Theme Selection Bar */
+          /* Expanded Sleek Theme Selection Bar - dynamically matches light/dark active theme */
           <motion.div
             key="expanded-bar"
             layoutId="theme-selector-container"
-            className="flex items-center gap-3.5 px-4 py-2 bg-white/95 dark:bg-neutral-950/95 border border-sky-100/30 dark:border-neutral-850 backdrop-blur-xl rounded-full shadow-2xl z-50 max-w-full overflow-x-auto scrollbar-none"
+            className="flex items-center gap-3.5 px-4 py-2 bg-theme-card/95 border border-theme-border backdrop-blur-xl rounded-full shadow-2xl z-50 max-w-full overflow-x-auto scrollbar-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -93,13 +93,13 @@ export const ThemeSelector: React.FC = () => {
                     } ${isExpanded ? "w-auto max-w-[135px] px-2.5 gap-1.5 justify-start" : "w-8 max-w-[32px] justify-center"}`}
                     title={t.name}
                   >
-                    {/* Circle Color Accent Indicator */}
+                    {/* Circle Color Indicator */}
                     <span 
                       style={{ backgroundColor: isActive ? "#FFFFFF" : previewColor }} 
                       className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner transition-colors duration-200"
                     />
                     
-                    {/* Color Name revealed on hover/active - simple opacity transition, no width stretch */}
+                    {/* Color Name revealed on hover/active */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.span
@@ -118,13 +118,13 @@ export const ThemeSelector: React.FC = () => {
               })}
             </div>
 
-            {/* Small divider */}
-            <span className="w-px h-5 bg-gray-200/60 dark:bg-neutral-800/60" />
+            {/* Dynamic theme-aware divider */}
+            <span className="w-px h-5 bg-theme-border" />
 
-            {/* Mode switch button */}
+            {/* Mode switch button - theme-aware bg and hover */}
             <button
               onClick={toggleMode}
-              className="p-2 bg-sky-50/50 dark:bg-neutral-900 hover:bg-sky-100/60 dark:hover:bg-neutral-800 border border-sky-100/30 dark:border-neutral-800 text-theme-text rounded-full transition flex-shrink-0"
+              className="p-2 bg-theme-bg/60 hover:bg-theme-accent/10 border border-theme-border text-theme-text rounded-full transition flex-shrink-0"
               title={mode === "dark" ? "Light Mode" : "Dark Mode"}
             >
               {mode === "dark" ? (
