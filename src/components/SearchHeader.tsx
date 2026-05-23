@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useAppStore } from "../store/useAppStore";
 import { FaSearch, FaTimes, FaFlask, FaArrowLeft } from "react-icons/fa";
 import { Brand } from "./Brand";
-import { ThemeSelector } from "./ThemeSelector";
+// ThemeSelector is rendered globally in __root.tsx
 
 interface SearchHeaderProps {
   type: string;
@@ -57,8 +57,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
             <FaFlask className="mr-1 animate-pulse" /> {mockMode ? "Mock" : "Live"}
           </button>
           
-          {/* Swatch-based theme selector popover */}
-          <ThemeSelector />
         </div>
       </div>
 
@@ -109,8 +107,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           {mockMode ? "Mock Sandbox" : "Live API Enabled"}
         </button>
 
-        {/* Swatch-based theme selector popover */}
-        <ThemeSelector />
       </div>
     </header>
   );

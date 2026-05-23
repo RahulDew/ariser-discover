@@ -5,7 +5,7 @@ import { useAppStore } from "../store/useAppStore";
 import { FaSearch, FaHistory, FaTrashAlt, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "../components/Brand";
-import { ThemeSelector } from "../components/ThemeSelector";
+// ThemeSelector is rendered globally in __root.tsx
 import Footer from "../components/Footer";
 
 export const indexRoute = createRoute({
@@ -74,18 +74,7 @@ function HomeComponent() {
       <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-theme-accent/5 blur-[120px] pointer-events-none select-none transition-colors duration-300" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-theme-text/3 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
 
-      {/* Sticky Header Nav */}
-      <motion.nav 
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="absolute top-0 left-0 right-0 flex justify-between items-center px-6 md:px-14 py-5 z-30 pointer-events-none"
-      >
-        <span className="select-none pointer-events-none opacity-0">Ariser Discover</span>
-        
-        {/* Floating popover theme selector */}
-        <ThemeSelector />
-      </motion.nav>
+
 
       {/* Main Brand Centered Panel */}
       <motion.div 

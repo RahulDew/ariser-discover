@@ -49,11 +49,11 @@ export const ThemeSelector: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            exit={{ opacity: 0, y: 15, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute right-0 mt-3 w-80 bg-white dark:bg-neutral-900 border border-sky-100 dark:border-neutral-800 rounded-3xl p-5 shadow-2xl z-50 backdrop-blur-md"
+            className="absolute right-0 bottom-full mb-3.5 w-80 bg-white dark:bg-neutral-900 border border-sky-100 dark:border-neutral-800 rounded-3xl p-5 shadow-2xl z-50 backdrop-blur-md"
           >
             {/* Popover Header */}
             <div className="flex items-center justify-between border-b border-gray-100 dark:border-neutral-850 pb-3 mb-4 select-none">
