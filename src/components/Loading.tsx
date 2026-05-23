@@ -2,14 +2,11 @@ import React from "react";
 import { searchRoute } from "../routes/search";
 
 /**
- * Senior Developer Component: Loading (Skeleton Loaders)
- * Dynamically intercepts the active route's search tab parameter and renders 
- * pixel-perfect pulsing theme-aware skeleton placeholders.
+ * Loading — type-aware skeleton loaders that mirror the real result layouts.
+ * Each skeleton matches the exact structure of its result component.
  */
 const Loading: React.FC = () => {
   const { type } = searchRoute.useSearch();
-
-  // Unified outer container matching the results max-width limits
   return (
     <div className="w-full animate-pulse select-none pointer-events-none">
       {renderSkeletons(type || "search")}
@@ -17,78 +14,173 @@ const Loading: React.FC = () => {
   );
 };
 
-/**
- * Renders dedicated pulsing skeleton blocks based on active search type
- */
+// Shimmer base class reused across all skeletons
+const shimmer = "bg-theme-text/8 rounded-full";
+const shimmerAccent = "bg-theme-accent/15 rounded-full";
+
 function renderSkeletons(type: string) {
   switch (type) {
+
+    /* ── IMAGES ─────────────────────────────────────────── */
     case "images":
       return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="border border-theme-border/30 rounded-2xl overflow-hidden bg-theme-card/30 p-1">
-              <div className="aspect-video w-full bg-theme-accent/10 rounded-xl" />
-              <div className="p-3">
-                <div className="h-2 w-1/3 bg-theme-accent/25 rounded-full mb-2" />
-                <div className="h-3 w-5/6 bg-theme-text/10 rounded-full" />
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="rounded-2xl overflow-hidden border border-theme-border/20 bg-theme-card/20">
+              <div className="aspect-video w-full bg-theme-accent/10" />
+              <div className="p-3 space-y-2">
+                <div className={`h-2 w-1/3 ${shimmerAccent}`} />
+                <div className={`h-3 w-5/6 ${shimmer}`} />
+                <div className={`h-2 w-1/2 ${shimmer}`} />
               </div>
             </div>
           ))}
         </div>
       );
 
+    /* ── VIDEOS ─────────────────────────────────────────── */
     case "videos":
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="border border-theme-border/30 rounded-2xl p-4 bg-theme-card/30 flex flex-col justify-between">
-              <div>
-                <div className="aspect-video w-full bg-theme-accent/10 rounded-xl mb-4" />
-                <div className="h-4 w-4/5 bg-theme-accent/20 rounded-full mb-3" />
-                <div className="h-3.5 w-full bg-theme-text/10 rounded-full mb-2" />
-                <div className="h-3.5 w-5/6 bg-theme-text/10 rounded-full" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="rounded-2xl border border-theme-border/20 bg-theme-card/20 p-4 flex flex-col gap-4">
+              {/* Video thumbnail */}
+              <div className="aspect-video w-full bg-theme-accent/10 rounded-xl" />
+              {/* Title */}
+              <div className={`h-5 w-4/5 ${shimmerAccent}`} />
+              {/* Snippet lines */}
+              <div className="space-y-2">
+                <div className={`h-3 w-full ${shimmer}`} />
+                <div className={`h-3 w-5/6 ${shimmer}`} />
+                <div className={`h-3 w-3/4 ${shimmer}`} />
               </div>
-              <div className="flex justify-between items-center border-t border-theme-border/20 pt-3 mt-4">
-                <div className="h-2 w-1/4 bg-theme-accent/20 rounded-full" />
-                <div className="h-2 w-1/6 bg-theme-text/10 rounded-full" />
+              {/* Footer */}
+              <div className="flex justify-between items-center border-t border-theme-border/15 pt-3">
+                <div className={`h-2 w-1/4 ${shimmerAccent}`} />
+                <div className={`h-2 w-1/6 ${shimmer}`} />
               </div>
             </div>
           ))}
         </div>
       );
 
+    /* ── NEWS ────────────────────────────────────────────── */
     case "news":
       return (
-        <div className="space-y-5">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="border border-theme-border/20 p-5 rounded-2xl bg-theme-card/30 flex justify-between items-start gap-5">
-              <div className="flex-grow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="h-2.5 w-20 bg-theme-accent/25 rounded-full" />
-                  <div className="h-2.5 w-12 bg-theme-text/10 rounded-full" />
+        <div className="space-y-0 divide-y divide-theme-border/25">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex gap-5 justify-between items-start py-5 first:pt-0">
+              {/* Text block */}
+              <div className="flex-grow space-y-3">
+                {/* Source + date row */}
+                <div className="flex items-center gap-3">
+                  <div className={`h-2.5 w-20 ${shimmerAccent}`} />
+                  <div className={`h-2.5 w-14 ${shimmer}`} />
                 </div>
-                <div className="h-4 w-3/4 bg-theme-text/15 rounded-full mb-3.5" />
-                <div className="h-3.5 w-full bg-theme-text/10 rounded-full mb-2" />
-                <div className="h-3.5 w-5/6 bg-theme-text/10 rounded-full" />
+                {/* Headline */}
+                <div className={`h-5 w-4/5 ${shimmer}`} style={{ borderRadius: "6px" }} />
+                <div className={`h-5 w-3/5 ${shimmer}`} style={{ borderRadius: "6px" }} />
+                {/* Snippet */}
+                <div className="space-y-1.5 pt-1">
+                  <div className={`h-3 w-full ${shimmer}`} />
+                  <div className={`h-3 w-5/6 ${shimmer}`} />
+                </div>
               </div>
-              <div className="w-24 h-24 bg-theme-accent/10 rounded-2xl shrink-0" />
+              {/* Thumbnail placeholder */}
+              <div className="w-24 h-24 rounded-2xl bg-theme-accent/8 shrink-0" />
             </div>
           ))}
         </div>
       );
 
+    /* ── WEB / ALL ───────────────────────────────────────── */
     case "search":
     default:
       return (
-        <div className="space-y-6">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="border border-theme-border/20 p-5 rounded-2xl bg-theme-card/30">
-              <div className="h-2.5 w-40 bg-emerald-500/15 dark:bg-emerald-400/10 rounded-full mb-2.5" />
-              <div className="h-5 w-3/5 bg-theme-accent/20 rounded-full mb-3" />
-              <div className="h-3.5 w-full bg-theme-text/10 rounded-full mb-2" />
-              <div className="h-3.5 w-5/6 bg-theme-text/10 rounded-full" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left column */}
+          <div className="lg:col-span-8 space-y-0">
+
+            {/* Lumen Summary skeleton */}
+            <div className="border border-theme-accent/10 bg-theme-accent/4 p-6 rounded-3xl mb-5 space-y-3">
+              <div className={`h-2 w-24 ${shimmerAccent}`} />
+              <div className="space-y-2 pt-1">
+                <div className={`h-4 w-full ${shimmer}`} style={{ borderRadius: "6px" }} />
+                <div className={`h-4 w-5/6 ${shimmer}`} style={{ borderRadius: "6px" }} />
+                <div className={`h-4 w-4/6 ${shimmer}`} style={{ borderRadius: "6px" }} />
+              </div>
+              <div className="flex gap-2 pt-2">
+                <div className={`h-6 w-20 rounded-full ${shimmer}`} />
+                <div className={`h-6 w-24 rounded-full ${shimmer}`} />
+                <div className={`h-6 w-16 rounded-full ${shimmer}`} />
+              </div>
             </div>
-          ))}
+
+            {/* Result rows — no cards, just dividers */}
+            <div className="divide-y divide-theme-border/25">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="py-5 first:pt-0 space-y-2">
+                  {/* Breadcrumb row */}
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-theme-text/8" />
+                    <div className={`h-2.5 w-36 ${shimmer}`} />
+                  </div>
+                  {/* Title */}
+                  <div className={`h-6 w-3/4 ${shimmerAccent}`} style={{ borderRadius: "6px" }} />
+                  {/* Snippet */}
+                  <div className="space-y-1.5 pt-0.5">
+                    <div className={`h-3 w-full ${shimmer}`} />
+                    <div className={`h-3 w-5/6 ${shimmer}`} />
+                    <div className={`h-3 w-2/3 ${shimmer}`} />
+                  </div>
+                  {/* Pills */}
+                  <div className="flex gap-2 pt-1">
+                    {i === 0 && <div className={`h-5 w-20 rounded-full ${shimmerAccent}`} />}
+                    <div className={`h-5 w-28 rounded-full ${shimmer}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* PAA skeleton */}
+            <div className="space-y-2">
+              <div className={`h-2 w-28 ${shimmer} mb-3`} />
+              <div className="border border-theme-border/20 rounded-3xl overflow-hidden divide-y divide-theme-border/15">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="px-4 py-4 flex items-center justify-between">
+                    <div className={`h-3 w-4/5 ${shimmer}`} />
+                    <div className="w-3 h-3 rounded-full bg-theme-text/8" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Facts skeleton */}
+            <div className="space-y-2">
+              <div className={`h-2 w-20 ${shimmer} mb-3`} />
+              <div className="border border-theme-border/20 rounded-3xl overflow-hidden">
+                <div className="aspect-video w-full bg-theme-accent/12" />
+                <div className="p-5 space-y-4">
+                  <div className={`h-5 w-2/3 ${shimmerAccent}`} style={{ borderRadius: "6px" }} />
+                  <div className="space-y-1.5">
+                    <div className={`h-3 w-full ${shimmer}`} />
+                    <div className={`h-3 w-4/5 ${shimmer}`} />
+                  </div>
+                  <div className="border-t border-theme-border/15 pt-4 space-y-3">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="flex justify-between">
+                        <div className={`h-3 w-1/3 ${shimmer}`} />
+                        <div className={`h-3 w-1/4 ${shimmer}`} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       );
   }

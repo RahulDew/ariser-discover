@@ -193,8 +193,8 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
           </div>
         </motion.div>
 
-        {/* Organic Results */}
-        <div className="space-y-3">
+        {/* Organic Results — no card boxes, just clean content rows */}
+        <div className="divide-y divide-theme-border/30">
           {organicList.map((item, i) => {
             const domain        = getDomainHost(item.link);
             const displayDomain = domain.replace("www.", "");
@@ -204,20 +204,19 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
             const isNatGeo      = displayDomain.includes("nationalgeographic");
 
             return (
-              <motion.div
+              <div
                 key={i}
-                variants={cardVariants}
-                className="group border border-theme-border/50 p-6 rounded-3xl bg-theme-card/35 hover:bg-theme-card/60 backdrop-blur-sm shadow-2xs hover:shadow-xs transition-all duration-300"
+                className="group py-5 first:pt-0"
               >
                 {/* Domain breadcrumb */}
-                <div className="flex items-center justify-between mb-3 select-none">
-                  <div className="flex items-center gap-2.5 min-w-0 truncate max-w-[80%]">
-                    <span className={`w-6 h-6 rounded-full font-extrabold text-xs flex items-center justify-center border transition duration-300 flex-shrink-0 ${
+                <div className="flex items-center justify-between mb-2 select-none">
+                  <div className="flex items-center gap-2 min-w-0 truncate max-w-[85%]">
+                    <span className={`w-5 h-5 rounded-full font-extrabold text-[10px] flex items-center justify-center border flex-shrink-0 transition duration-200 ${
                       isWikipedia
                         ? "bg-theme-accent/15 text-theme-accent border-theme-accent/25"
                         : isNatGeo
                         ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/25"
-                        : "bg-theme-text/5 text-theme-text/60 border-theme-border"
+                        : "bg-theme-text/5 text-theme-text/55 border-theme-border"
                     }`}>
                       {faviconLetter}
                     </span>
@@ -225,45 +224,45 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-semibold text-theme-text/75 hover:text-theme-accent hover:underline truncate"
+                      className="text-xs font-medium text-theme-text/65 hover:text-theme-accent hover:underline truncate"
                     >
                       {displayDomain}
                       {breadcrumb && (
-                        <span className="opacity-45 font-normal pl-1"> › {breadcrumb}</span>
+                        <span className="opacity-45 font-normal"> › {breadcrumb}</span>
                       )}
                     </a>
                   </div>
                   <button
                     onClick={(e) => handleCopyLink(e, item.link)}
-                    className="opacity-0 group-hover:opacity-100 p-1.5 text-theme-text/45 hover:text-theme-accent hover:bg-theme-accent/10 rounded-full transition-all duration-200 flex-shrink-0"
+                    className="opacity-0 group-hover:opacity-100 p-1.5 text-theme-text/40 hover:text-theme-accent hover:bg-theme-accent/8 rounded-full transition-all duration-150 flex-shrink-0"
                     title="Copy link"
                   >
-                    <FaCopy className="text-xs" />
+                    <FaCopy className="text-[10px]" />
                   </button>
                 </div>
 
                 {/* Title */}
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block mb-2.5">
-                  <h3 className="text-xl font-bold font-serif-lumen text-theme-accent hover:underline leading-tight transition-colors duration-200">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block mb-1.5">
+                  <h3 className="text-xl font-bold font-serif-lumen text-theme-accent hover:underline leading-tight transition-colors duration-150">
                     {item.title}
                   </h3>
                 </a>
 
                 {/* Snippet */}
-                <p className="text-sm text-theme-text/80 leading-relaxed mb-4">
+                <p className="text-sm text-theme-text/75 leading-relaxed mb-3">
                   {item.snippet}
                 </p>
 
-                {/* Sitelinks — only when API returns them */}
+                {/* Sitelinks */}
                 {item.sitelinks && item.sitelinks.length > 0 && (
-                  <div className="mb-4 flex flex-wrap gap-2">
+                  <div className="mb-3 flex flex-wrap gap-2">
                     {item.sitelinks.slice(0, 4).map((sl, si) => (
                       <a
                         key={si}
                         href={sl.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1 rounded-full border border-theme-border bg-theme-card/50 text-xs text-theme-accent font-semibold hover:bg-theme-accent/10 transition"
+                        className="px-3 py-1 rounded-full border border-theme-border bg-theme-card/40 text-xs text-theme-accent font-semibold hover:bg-theme-accent/10 transition"
                       >
                         {sl.title}
                       </a>
@@ -271,20 +270,19 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
                   </div>
                 )}
 
-                {/* Pills row */}
+                {/* Pills */}
                 <div className="flex flex-wrap items-center gap-2 select-none">
                   {i === 0 && (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-full text-3xs font-extrabold uppercase tracking-wide">
                       <FaRegStar className="text-[10px]" /> Top Result
                     </span>
                   )}
-                  {/* Real date if API has it, otherwise friendly relative label */}
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-theme-text/5 text-theme-text/50 rounded-full text-3xs font-bold">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-theme-text/5 text-theme-text/45 rounded-full text-3xs font-bold">
                     <FaRegClock className="text-[10px]" />
                     {item.date ?? (i % 2 === 0 ? "Updated recently" : "Published this year")}
                   </span>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
