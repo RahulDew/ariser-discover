@@ -5,7 +5,7 @@ import { useAppStore } from "../store/useAppStore";
 import { FaSearch, FaHistory, FaTrashAlt, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "../components/Brand";
-// ThemeSelector is rendered globally in __root.tsx
+import { ThemeSelector } from "../components/ThemeSelector";
 import Footer from "../components/Footer";
 
 export const indexRoute = createRoute({
@@ -199,6 +199,11 @@ function HomeComponent() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Floating Theme Selector pill placed sleekly at the bottom center of the homepage only */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:max-w-fit px-4">
+        <ThemeSelector />
+      </div>
 
       <Footer className="absolute bottom-0 left-0 right-0 z-30" />
     </div>

@@ -62,8 +62,8 @@ export const ThemeSelector: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
           >
-            {/* Color swatches row - layout enabled for smooth sibling shifting */}
-            <motion.div layout className="flex items-center gap-2">
+            {/* Color swatches row - standard flex container with CSS width transitions */}
+            <div className="flex items-center gap-2">
               {Object.values(THEMES).map((t) => {
                 const isActive = t.id === themeId;
                 const isHovered = hoveredThemeId === t.id;
@@ -73,23 +73,24 @@ export const ThemeSelector: React.FC = () => {
                 const swatchText = mode === "dark" ? t.dark.text : t.light.text;
                 const swatchBorder = mode === "dark" ? t.dark.borderColor : t.light.borderColor;
 
+                const isExpanded = isHovered || isActive;
+
                 return (
-                  <motion.button
+                  <button
                     key={t.id}
                     onMouseEnter={() => setHoveredThemeId(t.id)}
                     onMouseLeave={() => setHoveredThemeId(null)}
                     onClick={() => setTheme(t.id)}
-                    layout
                     style={{ 
                       backgroundColor: isActive ? previewColor : swatchBg, 
                       borderColor: isActive ? "transparent" : swatchBorder,
                       color: isActive ? "#FFFFFF" : swatchText,
                     }}
-                    className={`h-8 border flex items-center justify-center rounded-full transition-colors duration-205 relative ${
+                    className={`h-8 border flex items-center rounded-full transition-all duration-200 ease-in-out relative ${
                       isActive 
                         ? "shadow-sm" 
                         : "hover:scale-[1.03]"
-                    } ${isHovered || isActive ? "px-3 gap-2 w-auto" : "w-8"}`}
+                    } ${isExpanded ? "w-28 px-2.5 gap-1.5 justify-start" : "w-8 justify-center"}`}
                     title={t.name}
                   >
                     {/* Circle Color Accent Indicator */}
@@ -98,24 +99,24 @@ export const ThemeSelector: React.FC = () => {
                       className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner transition-colors duration-200"
                     />
                     
-                    {/* Color Name revealed on hover/active - uses GPU opacity fade to prevent layout jitter */}
+                    {/* Color Name revealed on hover/active - simple opacity transition, no width stretch */}
                     <AnimatePresence>
-                      {(isHovered || isActive) && (
+                      {isExpanded && (
                         <motion.span
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          className="text-[10px] font-extrabold uppercase tracking-widest select-none overflow-hidden whitespace-nowrap leading-none pr-0.5"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.1 }}
+                          className="text-[10px] font-extrabold uppercase tracking-widest select-none truncate leading-none pr-0.5"
                         >
                           {t.name}
                         </motion.span>
                       )}
                     </AnimatePresence>
-                  </motion.button>
+                  </button>
                 );
               })}
-            </motion.div>
+            </div>
 
             {/* Small divider */}
             <span className="w-px h-5 bg-gray-200/60 dark:bg-neutral-800/60" />
