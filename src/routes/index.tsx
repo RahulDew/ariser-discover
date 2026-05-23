@@ -68,7 +68,7 @@ function HomeComponent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between relative overflow-hidden bg-theme-bg transition-colors duration-300">
+    <div className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden bg-theme-bg transition-colors duration-300">
       
       {/* Premium Spotlights mapping active theme accent */}
       <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-theme-accent/5 blur-[120px] pointer-events-none select-none transition-colors duration-300" />
@@ -92,7 +92,7 @@ function HomeComponent() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-col items-center justify-center text-center w-full px-4 z-10 -mt-10 flex-grow"
+        className="flex flex-col items-center justify-center text-center w-full px-4 z-10"
       >
         {/* Centered Serif Brand Logo Lumen */}
         <motion.div variants={itemVariants} className="mb-3">
@@ -129,7 +129,7 @@ function HomeComponent() {
             {/* Rounded filled Search Button matching the accent colorway exactly */}
             <button 
               type="submit" 
-              className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-theme-accent hover:bg-theme-accent-hover text-theme-bg font-bold rounded-full hover:scale-103 active:scale-97 shadow-sm transition-all duration-200 text-sm"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-theme-accent hover:bg-theme-accent-hover text-white font-bold rounded-full hover:scale-103 active:scale-97 shadow-sm transition-all duration-200 text-sm"
             >
               Search
             </button>
@@ -211,7 +211,7 @@ function HomeComponent() {
         </AnimatePresence>
       </motion.div>
 
-      <Footer />
+      <Footer className="absolute bottom-0 left-0 right-0 z-30" />
     </div>
   );
 }

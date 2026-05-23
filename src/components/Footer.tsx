@@ -1,10 +1,14 @@
 import React from "react";
 
-const Footer = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const Footer: React.FC<FooterProps> = ({ className = "mt-auto" }) => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="w-full mt-auto border-t border-theme-border bg-theme-bg/40 backdrop-blur-sm transition duration-300 py-6 px-4 md:px-12">
+    <footer className={`w-full border-t border-theme-border bg-theme-bg/40 backdrop-blur-sm transition duration-300 py-6 px-4 md:px-12 ${className}`}>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-theme-text opacity-70">
         <div className="flex items-center gap-1 font-medium select-none">
           <span>&copy; {currentYear}</span>
