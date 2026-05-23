@@ -14,10 +14,10 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({ type, onTabChange }) => 
   const [activeTime, setActiveTime] = useState("anytime");
 
   const tabs = [
-    { id: "search", label: "All",    count: "12.4M", icon: <FaGlobe className="text-xs" /> },
-    { id: "images", label: "Images", count: "8.1M",  icon: <FaImage className="text-xs" /> },
-    { id: "news",   label: "News",   count: "2.3K",  icon: <FaRegNewspaper className="text-xs" /> },
-    { id: "videos", label: "Videos", count: "124K",  icon: <FaVideo className="text-xs" /> },
+    { id: "search", label: "All",    icon: <FaGlobe className="text-xs" /> },
+    { id: "images", label: "Images", icon: <FaImage className="text-xs" /> },
+    { id: "news",   label: "News",   icon: <FaRegNewspaper className="text-xs" /> },
+    { id: "videos", label: "Videos", icon: <FaVideo className="text-xs" /> },
   ];
 
   const timeFilters = [
@@ -48,15 +48,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({ type, onTabChange }) => 
               >
                 {tab.icon}
                 <span>{tab.label}</span>
-                <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold transition-all duration-200 ${
-                    isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-theme-text/5 text-theme-text/50"
-                  }`}
-                >
-                  {tab.count}
-                </span>
               </button>
             );
           })}
