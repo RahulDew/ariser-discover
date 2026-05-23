@@ -78,9 +78,9 @@ function HomeComponent() {
       {/* Dynamic Moving Blobs (Spotlights) moving independently with heavy blur */}
       <motion.div
         animate={{
-          x: [0, 30, -20, 0],
-          y: [0, -25, 20, 0],
-          scale: [1, 1.1, 0.95, 1],
+          x: [0, 15, -10, 0],
+          y: [0, -12, 10, 0],
+          scale: [1, 1.05, 0.98, 1],
         }}
         transition={{
           duration: 22,
@@ -89,13 +89,13 @@ function HomeComponent() {
           ease: "easeInOut",
         }}
         style={{ backgroundColor: currentAccentHover, opacity: 0.25 }}
-        className="absolute top-[-5%] left-[-5%] w-[35vw] h-[35vw] rounded-full blur-[80px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
+        className="absolute top-[-3%] left-[-3%] w-[22vw] h-[22vw] rounded-full blur-[50px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
       />
       <motion.div
         animate={{
-          x: [0, -25, 30, 0],
-          y: [0, 20, -25, 0],
-          scale: [1, 0.95, 1.05, 1],
+          x: [0, -10, 15, 0],
+          y: [0, 10, -12, 0],
+          scale: [1, 0.98, 1.02, 1],
         }}
         transition={{
           duration: 26,
@@ -104,7 +104,7 @@ function HomeComponent() {
           ease: "easeInOut",
         }}
         style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
-        className="absolute bottom-[-5%] right-[-5%] w-[30vw] h-[30vw] rounded-full blur-[70px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
+        className="absolute bottom-[-3%] right-[-3%] w-[18vw] h-[18vw] rounded-full blur-[45px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
       />
 
 
