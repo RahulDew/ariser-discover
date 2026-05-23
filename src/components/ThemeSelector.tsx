@@ -44,7 +44,7 @@ export const ThemeSelector: React.FC = () => {
             key="collapsed-button"
             layoutId="theme-selector-container"
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 px-5 py-3 bg-white/80 dark:bg-neutral-900/80 border border-sky-100/30 dark:border-neutral-800/40 backdrop-blur-md rounded-full shadow-lg text-theme-accent hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-sm tracking-wide select-none"
+            className="flex items-center gap-2.5 px-5 py-3 bg-white/85 dark:bg-neutral-900/85 border border-sky-100/30 dark:border-neutral-800/40 backdrop-blur-md rounded-full shadow-lg text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -81,20 +81,21 @@ export const ThemeSelector: React.FC = () => {
                     onClick={() => setTheme(t.id)}
                     layout
                     style={{ 
-                      backgroundColor: swatchBg, 
-                      borderColor: isActive ? previewColor : swatchBorder,
+                      backgroundColor: isActive ? previewColor : swatchBg, 
+                      borderColor: isActive ? "transparent" : swatchBorder,
+                      color: isActive ? "#FFFFFF" : swatchText,
                     }}
-                    className={`h-8 border flex items-center justify-center rounded-full transition-all duration-300 relative ${
+                    className={`h-8 border flex items-center justify-center rounded-full transition-colors duration-200 relative ${
                       isActive 
-                        ? "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ring-theme-accent" 
+                        ? "shadow-sm" 
                         : "hover:scale-[1.03]"
                     } ${isHovered || isActive ? "px-3.5 gap-2" : "w-8"}`}
                     title={t.name}
                   >
                     {/* Circle Color Accent Indicator */}
                     <span 
-                      style={{ backgroundColor: previewColor }} 
-                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner"
+                      style={{ backgroundColor: isActive ? "#FFFFFF" : previewColor }} 
+                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner transition-colors duration-200"
                     />
                     
                     {/* Color Name revealed on hover/active */}
@@ -105,7 +106,6 @@ export const ThemeSelector: React.FC = () => {
                           animate={{ opacity: 1, width: "auto" }}
                           exit={{ opacity: 0, width: 0 }}
                           transition={{ duration: 0.15 }}
-                          style={{ color: swatchText }}
                           className="text-[10px] font-extrabold uppercase tracking-widest select-none overflow-hidden whitespace-nowrap leading-none"
                         >
                           {t.name}
