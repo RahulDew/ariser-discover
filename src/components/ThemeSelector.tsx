@@ -43,13 +43,13 @@ export const ThemeSelector: React.FC = () => {
             key="collapsed-button"
             layoutId="theme-selector-container"
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent hover:bg-theme-accent-hover text-white border border-transparent backdrop-blur-md rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-sm tracking-wide select-none"
+            className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/10 hover:bg-theme-accent/20 border border-theme-accent/20 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
           >
-            <FaPalette className="text-base text-white" />
-            <span className="text-white">Customize</span>
+            <FaPalette className="text-base text-theme-accent" />
+            <span className="text-theme-accent">Customize</span>
           </motion.button>
         ) : (
           /* Expanded Sleek Theme Selection Bar - dynamically matches light/dark active theme */

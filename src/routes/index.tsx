@@ -70,9 +70,35 @@ function HomeComponent() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden bg-theme-bg transition-colors duration-300">
       
-      {/* Premium Spotlights mapping active theme accent */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-theme-accent/5 blur-[120px] pointer-events-none select-none transition-colors duration-300" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-theme-text/3 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
+      {/* Dynamic Moving Blobs (Spotlights) moving independently with heavy blur */}
+      <motion.div
+        animate={{
+          x: [0, 40, -20, 0],
+          y: [0, -30, 20, 0],
+          scale: [1, 1.12, 0.98, 1],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          repeatType: "mirror" as const,
+          ease: "easeInOut",
+        }}
+        className="absolute top-[-10%] left-[-15%] w-[60vw] h-[60vw] rounded-full bg-theme-accent/5 blur-[130px] pointer-events-none select-none transition-colors duration-300"
+      />
+      <motion.div
+        animate={{
+          x: [0, -30, 40, 0],
+          y: [0, 30, -20, 0],
+          scale: [1, 0.95, 1.05, 1],
+        }}
+        transition={{
+          duration: 24,
+          repeat: Infinity,
+          repeatType: "mirror" as const,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-[-15%] right-[-15%] w-[50vw] h-[50vw] rounded-full bg-theme-text/3 blur-[120px] pointer-events-none select-none transition-colors duration-300"
+      />
 
 
 
