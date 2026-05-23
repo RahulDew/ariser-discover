@@ -1,14 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAppStore, THEMES } from "../store/useAppStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaPalette, FaSun, FaMoon, FaCheck } from "react-icons/fa";
+import { FaPalette, FaSun, FaMoon, FaTimes } from "react-icons/fa";
 
 /**
  * Senior Developer Component: ThemeSelector
- * Displays an elegant floating popover showing the 8 primary colorways and a light/dark toggle switch.
+ * Displays an elegant floating pill theme button in the center-bottom of the page.
+ * When clicked, it morphs dynamically into a sleek color selection bar.
+ * When hovering over a color swatch, it expands horizontally to show the colorway name.
  */
 export const ThemeSelector: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredThemeId, setHoveredThemeId] = useState<string | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   
   const themeId = useAppStore((state) => state.themeId);
@@ -32,104 +35,112 @@ export const ThemeSelector: React.FC = () => {
     };
   }, [isOpen]);
 
-  const activeTheme = THEMES[themeId] || THEMES.apricot;
-
   return (
     <div className="relative pointer-events-auto" ref={popoverRef}>
-      {/* Floating Theme Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-3 text-xl md:text-2xl bg-white/70 dark:bg-neutral-900/70 border border-sky-100 dark:border-neutral-800 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-all duration-200"
-        title="Customize Theme & Colorway"
-      >
-        <FaPalette />
-      </button>
-
-      {/* Popover Dropdown */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 15, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute right-0 bottom-full mb-3.5 w-80 bg-white dark:bg-neutral-900 border border-sky-100 dark:border-neutral-800 rounded-3xl p-5 shadow-2xl z-50 backdrop-blur-md"
+      <AnimatePresence mode="wait">
+        {!isOpen ? (
+          /* Floating Pill Theme Button */
+          <motion.button
+            key="collapsed-button"
+            layoutId="theme-selector-container"
+            onClick={() => setIsOpen(true)}
+            className="flex items-center gap-2.5 px-5 py-3 bg-white/80 dark:bg-neutral-900/80 border border-sky-100/30 dark:border-neutral-800/40 backdrop-blur-md rounded-full shadow-lg text-theme-accent hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-sm tracking-wide select-none"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
           >
-            {/* Popover Header */}
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-neutral-850 pb-3 mb-4 select-none">
-              <span className="font-bold text-sm tracking-wider uppercase text-theme-text opacity-85">
-                Colorways
-              </span>
-              
-              {/* Light/Dark Toggle Switch */}
-              <button
-                onClick={toggleMode}
-                className="flex items-center gap-2 px-3.5 py-1.5 bg-sky-50 dark:bg-neutral-850 rounded-full border border-sky-100 dark:border-neutral-800 hover:scale-105 active:scale-95 transition text-xs font-bold text-theme-text"
-              >
-                {mode === "dark" ? (
-                  <>
-                    <FaSun className="text-amber-400 text-sm" /> Light Mode
-                  </>
-                ) : (
-                  <>
-                    <FaMoon className="text-indigo-500 text-sm" /> Dark Mode
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Grid of the 8 Colorways */}
-            <div className="grid grid-cols-2 gap-3.5">
+            <FaPalette className="text-base" />
+            <span>Customize</span>
+          </motion.button>
+        ) : (
+          /* Expanded Sleek Theme Selection Bar */
+          <motion.div
+            key="expanded-bar"
+            layoutId="theme-selector-container"
+            className="flex items-center gap-3.5 px-4 py-2 bg-white/95 dark:bg-neutral-950/95 border border-sky-100/30 dark:border-neutral-850 backdrop-blur-xl rounded-full shadow-2xl z-50 max-w-full overflow-x-auto scrollbar-none"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+          >
+            {/* Color swatches row */}
+            <div className="flex items-center gap-2">
               {Object.values(THEMES).map((t) => {
                 const isActive = t.id === themeId;
+                const isHovered = hoveredThemeId === t.id;
+                
                 const previewColor = mode === "dark" ? t.dark.accent : t.light.accent;
                 const swatchBg = mode === "dark" ? t.dark.bg : t.light.bg;
-                const swatchBorder = mode === "dark" ? t.dark.borderColor : t.light.borderColor;
                 const swatchText = mode === "dark" ? t.dark.text : t.light.text;
+                const swatchBorder = mode === "dark" ? t.dark.borderColor : t.light.borderColor;
 
                 return (
-                  <button
+                  <motion.button
                     key={t.id}
+                    onMouseEnter={() => setHoveredThemeId(t.id)}
+                    onMouseLeave={() => setHoveredThemeId(null)}
                     onClick={() => setTheme(t.id)}
-                    style={{ backgroundColor: swatchBg, borderColor: swatchBorder }}
-                    className={`p-3 rounded-2xl border text-left flex flex-col justify-between h-20 relative group transition-all duration-200 ${
+                    layout
+                    style={{ 
+                      backgroundColor: swatchBg, 
+                      borderColor: isActive ? previewColor : swatchBorder,
+                    }}
+                    className={`h-8 border flex items-center justify-center rounded-full transition-all duration-300 relative ${
                       isActive 
-                        ? "shadow-md ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ring-theme-accent scale-102" 
-                        : "hover:scale-[1.02] hover:shadow-sm"
-                    }`}
+                        ? "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ring-theme-accent" 
+                        : "hover:scale-[1.03]"
+                    } ${isHovered || isActive ? "px-3.5 gap-2" : "w-8"}`}
+                    title={t.name}
                   >
-                    {/* Color dot and active mark */}
-                    <div className="flex items-center justify-between w-full">
-                      <span 
-                        style={{ backgroundColor: previewColor }} 
-                        className="w-4 h-4 rounded-full shadow-inner border border-white/20" 
-                      />
-                      {isActive && (
-                        <span className="text-theme-accent animate-fade-in text-xs">
-                          <FaCheck />
-                        </span>
-                      )}
-                    </div>
+                    {/* Circle Color Accent Indicator */}
+                    <span 
+                      style={{ backgroundColor: previewColor }} 
+                      className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner"
+                    />
                     
-                    {/* Swatch labels */}
-                    <div>
-                      <p 
-                        style={{ color: swatchText }} 
-                        className="text-xs font-bold truncate leading-tight select-none"
-                      >
-                        {t.name}
-                      </p>
-                      <p 
-                        style={{ color: swatchText }} 
-                        className="text-3xs opacity-65 truncate select-none leading-none mt-0.5"
-                      >
-                        {t.description.split(" + ")[0]}
-                      </p>
-                    </div>
-                  </button>
+                    {/* Color Name revealed on hover/active */}
+                    <AnimatePresence>
+                      {(isHovered || isActive) && (
+                        <motion.span
+                          initial={{ opacity: 0, width: 0 }}
+                          animate={{ opacity: 1, width: "auto" }}
+                          exit={{ opacity: 0, width: 0 }}
+                          transition={{ duration: 0.15 }}
+                          style={{ color: swatchText }}
+                          className="text-[10px] font-extrabold uppercase tracking-widest select-none overflow-hidden whitespace-nowrap leading-none"
+                        >
+                          {t.name}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
                 );
               })}
             </div>
+
+            {/* Small divider */}
+            <span className="w-px h-5 bg-gray-200/60 dark:bg-neutral-800/60" />
+
+            {/* Mode switch button */}
+            <button
+              onClick={toggleMode}
+              className="p-2 bg-sky-50/50 dark:bg-neutral-900 hover:bg-sky-100/60 dark:hover:bg-neutral-800 border border-sky-100/30 dark:border-neutral-800 text-theme-text rounded-full transition flex-shrink-0"
+              title={mode === "dark" ? "Light Mode" : "Dark Mode"}
+            >
+              {mode === "dark" ? (
+                <FaSun className="text-amber-400 text-xs" />
+              ) : (
+                <FaMoon className="text-indigo-400 text-xs" />
+              )}
+            </button>
+
+            {/* Collapse / Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 hover:bg-red-500/10 dark:hover:bg-red-500/20 text-red-500 rounded-full transition flex-shrink-0"
+              title="Close Panel"
+            >
+              <FaTimes className="text-xs" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

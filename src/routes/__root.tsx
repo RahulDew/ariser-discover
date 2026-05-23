@@ -20,8 +20,8 @@ function RootComponent() {
     <div className="min-h-screen bg-theme-bg text-theme-text transition-colors duration-300 ease-in-out font-sans relative">
       <Outlet />
       
-      {/* Sleek global floating theme selector popover placed at the bottom right */}
-      <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40">
+      {/* Sleek global floating theme selector popover placed at the bottom center */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:max-w-fit px-4">
         <ThemeSelector />
       </div>
     </div>
