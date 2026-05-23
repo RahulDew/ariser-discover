@@ -268,7 +268,7 @@ export const useAppStore = create<AppState>()(
       themeId: "apricot", // Default theme from the PDF (Apricot Cream + Terracotta)
       mode: "light",
       searchHistory: [],
-      mockMode: true,
+      mockMode: false,
 
       setTheme: (themeId) => {
         const mode = get().mode;
@@ -309,8 +309,9 @@ export const useAppStore = create<AppState>()(
     {
       name: "ariser-discover-store", // Storage key for Ariser Discover brand
       onRehydrateStorage: () => (state) => {
-        // Automatically inject theme custom colors as soon as local storage hydates!
+        // Automatically inject theme custom colors as soon as local storage hydrates!
         if (state) {
+          state.mockMode = false;
           applyThemeColors(state.themeId, state.mode);
         }
       },
