@@ -35,7 +35,7 @@ export const ThemeSelector: React.FC = () => {
   const activeTheme = THEMES[themeId] || THEMES.apricot;
 
   return (
-    <div className="relative" ref={popoverRef}>
+    <div className="relative pointer-events-auto" ref={popoverRef}>
       {/* Floating Theme Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

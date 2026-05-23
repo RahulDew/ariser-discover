@@ -258,6 +258,7 @@ export interface AppState {
   toggleMode: () => void;
   addToHistory: (query: string) => void;
   clearHistory: () => void;
+  removeFromHistory: (query: string) => void;
   setMockMode: (val: boolean) => void;
 }
 
@@ -297,6 +298,11 @@ export const useAppStore = create<AppState>()(
       },
 
       clearHistory: () => set({ searchHistory: [] }),
+
+      removeFromHistory: (query) => {
+        const currentHistory = get().searchHistory;
+        set({ searchHistory: currentHistory.filter((item) => item !== query) });
+      },
 
       setMockMode: (val) => set({ mockMode: val }),
     }),

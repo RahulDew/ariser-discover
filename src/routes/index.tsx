@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createRoute, useRouter } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { useAppStore } from "../store/useAppStore";
-import { FaSearch, FaHistory, FaTrashAlt } from "react-icons/fa";
+import { FaSearch, FaHistory, FaTrashAlt, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "../components/Brand";
 import { ThemeSelector } from "../components/ThemeSelector";
@@ -18,6 +18,7 @@ function HomeComponent() {
   const router = useRouter();
   const searchHistory = useAppStore((state) => state.searchHistory);
   const clearHistory = useAppStore((state) => state.clearHistory);
+  const removeFromHistory = useAppStore((state) => state.removeFromHistory);
   const [localSearch, setLocalSearch] = useState("");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -78,7 +79,7 @@ function HomeComponent() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex justify-between items-center px-6 md:px-14 py-5 z-10"
+        className="absolute top-0 left-0 right-0 flex justify-between items-center px-6 md:px-14 py-5 z-30 pointer-events-none"
       >
         <span className="select-none pointer-events-none opacity-0">Ariser Discover</span>
         
@@ -164,29 +165,45 @@ function HomeComponent() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-md bg-theme-card/45 border border-theme-border backdrop-blur-md rounded-2xl p-5 shadow-sm mb-8"
+              className="w-full max-w-md bg-white/40 dark:bg-neutral-900/40 border border-theme-border backdrop-blur-md rounded-3xl p-5 shadow-lg mb-8"
             >
-              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-theme-text opacity-70 mb-3 select-none">
-                <span className="flex items-center gap-1.5"><FaHistory /> Recent Searches</span>
+              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-theme-text opacity-50 mb-3.5 select-none">
+                <span className="flex items-center gap-2"><FaHistory className="text-theme-accent" /> Recent Searches</span>
                 <button 
                   onClick={clearHistory}
-                  className="flex items-center gap-1 text-red-500 hover:opacity-85 transition duration-150"
-                  title="Clear History"
+                  className="flex items-center gap-1 text-red-500 hover:text-red-600 transition font-semibold text-2xs"
+                  title="Clear All History"
                 >
-                  <FaTrashAlt /> Clear
+                  <FaTrashAlt className="text-2xs" /> Clear All
                 </button>
               </div>
-              <div className="flex flex-wrap gap-2 justify-center max-h-[120px] overflow-y-auto scrollbar-none">
+              <div className="flex flex-col gap-1 max-h-[160px] overflow-y-auto pr-1 scrollbar-none">
                 {searchHistory.map((query, index) => (
-                  <motion.button
-                    key={index}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <motion.div
+                    key={query}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.03 }}
+                    className="flex items-center justify-between group/row px-3.5 py-2 hover:bg-theme-accent/5 dark:hover:bg-theme-accent/10 rounded-2xl transition duration-200 cursor-pointer"
                     onClick={() => executeSearch(query)}
-                    className="px-3.5 py-1.5 bg-theme-input hover:bg-theme-accent/10 text-xs md:text-sm text-theme-text rounded-full border border-theme-border/60 shadow-3xs transition duration-150"
                   >
-                    {query}
-                  </motion.button>
+                    <span className="flex items-center gap-2.5 truncate">
+                      <FaHistory className="text-theme-text/30 group-hover/row:text-theme-accent transition-colors" />
+                      <span className="text-sm font-medium text-theme-text/80 group-hover/row:text-theme-accent truncate">
+                        {query}
+                      </span>
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFromHistory(query);
+                      }}
+                      className="opacity-0 group-hover/row:opacity-100 p-1.5 text-theme-text/40 hover:text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/20 rounded-full transition-all duration-200"
+                      title="Remove item"
+                    >
+                      <FaTimes className="text-xs" />
+                    </button>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
