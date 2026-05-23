@@ -62,8 +62,8 @@ export const ThemeSelector: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
           >
-            {/* Color swatches row */}
-            <div className="flex items-center gap-2">
+            {/* Color swatches row - layout enabled for smooth sibling shifting */}
+            <motion.div layout className="flex items-center gap-2">
               {Object.values(THEMES).map((t) => {
                 const isActive = t.id === themeId;
                 const isHovered = hoveredThemeId === t.id;
@@ -85,11 +85,11 @@ export const ThemeSelector: React.FC = () => {
                       borderColor: isActive ? "transparent" : swatchBorder,
                       color: isActive ? "#FFFFFF" : swatchText,
                     }}
-                    className={`h-8 border flex items-center justify-center rounded-full transition-colors duration-200 relative ${
+                    className={`h-8 border flex items-center justify-center rounded-full transition-colors duration-205 relative ${
                       isActive 
                         ? "shadow-sm" 
                         : "hover:scale-[1.03]"
-                    } ${isHovered || isActive ? "px-3.5 gap-2" : "w-8"}`}
+                    } ${isHovered || isActive ? "px-3 gap-2 w-auto" : "w-8"}`}
                     title={t.name}
                   >
                     {/* Circle Color Accent Indicator */}
@@ -98,15 +98,15 @@ export const ThemeSelector: React.FC = () => {
                       className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner transition-colors duration-200"
                     />
                     
-                    {/* Color Name revealed on hover/active */}
+                    {/* Color Name revealed on hover/active - uses GPU opacity fade to prevent layout jitter */}
                     <AnimatePresence>
                       {(isHovered || isActive) && (
                         <motion.span
-                          initial={{ opacity: 0, width: 0 }}
-                          animate={{ opacity: 1, width: "auto" }}
-                          exit={{ opacity: 0, width: 0 }}
-                          transition={{ duration: 0.15 }}
-                          className="text-[10px] font-extrabold uppercase tracking-widest select-none overflow-hidden whitespace-nowrap leading-none"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                          className="text-[10px] font-extrabold uppercase tracking-widest select-none overflow-hidden whitespace-nowrap leading-none pr-0.5"
                         >
                           {t.name}
                         </motion.span>
@@ -115,7 +115,7 @@ export const ThemeSelector: React.FC = () => {
                   </motion.button>
                 );
               })}
-            </div>
+            </motion.div>
 
             {/* Small divider */}
             <span className="w-px h-5 bg-gray-200/60 dark:bg-neutral-800/60" />
