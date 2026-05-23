@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createRoute, useRouter } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { useSearchQuery } from "../hooks/useSearchQuery";
+import { useAppStore } from "../store/useAppStore";
 import { SearchHeader } from "../components/SearchHeader";
 import { SearchTabs } from "../components/SearchTabs";
 import { WebResults } from "../features/results/WebResults";
@@ -34,6 +35,7 @@ function SearchComponent() {
   const { q, type } = searchRoute.useSearch();
   const [inputVal, setInputVal] = useState(q);
   const [page, setPage] = useState(1);
+  const mockMode = useAppStore((s) => s.mockMode);
 
   // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
@@ -99,16 +101,14 @@ function SearchComponent() {
     }
   };
 
-  // Derive result count from real API data
-  const resultCount = data?.searchInformation?.totalResults
+  // Only derive real result stats from live API — never show fake numbers in mock mode
+  const liveResultCount = !mockMode && data?.searchInformation?.totalResults
     ? Number(data.searchInformation.totalResults).toLocaleString()
-    : data?.organic?.length
-    ? `${data.organic.length}`
     : null;
 
-  const searchTime = data?.searchInformation?.timeTaken
+  const liveSearchTime = !mockMode && data?.searchInformation?.timeTaken
     ? `${data.searchInformation.timeTaken.toFixed(2)}s`
-    : "0.38s";
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative overflow-x-hidden">
@@ -137,9 +137,9 @@ function SearchComponent() {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-6 md:px-8 z-10 min-w-0">
         
         {/* Results Metadata Statistics Row */}
-        {q && !isLoading && !isError && data && resultCount && (
+        {q && !isLoading && !isError && liveResultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
-            About {resultCount} results • {searchTime} • Safe search on
+            About {liveResultCount} results • {liveSearchTime} • Safe search on
           </div>
         )}
 
