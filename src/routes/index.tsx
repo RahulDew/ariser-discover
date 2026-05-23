@@ -73,31 +73,31 @@ function HomeComponent() {
       {/* Dynamic Moving Blobs (Spotlights) moving independently with heavy blur */}
       <motion.div
         animate={{
-          x: [0, 40, -20, 0],
-          y: [0, -30, 20, 0],
-          scale: [1, 1.12, 0.98, 1],
+          x: [0, 50, -30, 0],
+          y: [0, -40, 30, 0],
+          scale: [1, 1.15, 0.95, 1],
         }}
         transition={{
-          duration: 20,
+          duration: 22,
           repeat: Infinity,
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute top-[-10%] left-[-15%] w-[60vw] h-[60vw] rounded-full bg-theme-accent/5 blur-[130px] pointer-events-none select-none transition-colors duration-300"
+        className="absolute top-[-10%] left-[-15%] w-[65vw] h-[65vw] rounded-full bg-theme-accent/18 blur-[120px] pointer-events-none select-none transition-colors duration-300 z-0"
       />
       <motion.div
         animate={{
-          x: [0, -30, 40, 0],
-          y: [0, 30, -20, 0],
-          scale: [1, 0.95, 1.05, 1],
+          x: [0, -40, 50, 0],
+          y: [0, 40, -30, 0],
+          scale: [1, 0.9, 1.1, 1],
         }}
         transition={{
-          duration: 24,
+          duration: 26,
           repeat: Infinity,
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute bottom-[-15%] right-[-15%] w-[50vw] h-[50vw] rounded-full bg-theme-text/3 blur-[120px] pointer-events-none select-none transition-colors duration-300"
+        className="absolute bottom-[-15%] right-[-15%] w-[55vw] h-[55vw] rounded-full bg-theme-accent/12 blur-[100px] pointer-events-none select-none transition-colors duration-300 z-0"
       />
 
 
