@@ -9,13 +9,13 @@ import { useEffect } from "react";
  * @param {string} q Search query string
  * @param {string} type Search type: 'search' | 'images' | 'videos' | 'news'
  */
-export const useSearchQuery = (q, type = "search") => {
+export const useSearchQuery = (q, type = "search", page = 1) => {
   const { mockMode, addToHistory } = useAppStore();
   const normalizedQuery = q ? q.trim() : "";
 
   const queryResult = useQuery({
-    queryKey: ["search", normalizedQuery, type, mockMode],
-    queryFn: () => fetchSerperResults(normalizedQuery, type, mockMode),
+    queryKey: ["search", normalizedQuery, type, mockMode, page],
+    queryFn: () => fetchSerperResults(normalizedQuery, type, mockMode, page),
     enabled: normalizedQuery.length > 0, // Prevent running query on empty input
     staleTime: 1000 * 60 * 10, // Consider search cached data fresh for 10 minutes
     gcTime: 1000 * 60 * 60, // Keep in garbage collector cache for 1 hour

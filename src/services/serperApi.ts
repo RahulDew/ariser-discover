@@ -8,14 +8,15 @@ const SERPER_BASE_URL = "https://google.serper.dev";
  * @param {string} q The query to search for
  * @param {string} type The tab type: 'search' | 'images' | 'videos' | 'news'
  * @param {boolean} mockMode Explicit override to use local mock data
+ * @param {number} page Page number for pagination (Serper supports page param)
  * @returns {Promise<object>} The parsed search results JSON structure
  */
-export const fetchSerperResults = async (q, type = "search", mockMode = true) => {
+export const fetchSerperResults = async (q, type = "search", mockMode = true, page = 1) => {
   const apiKey = import.meta.env.VITE_SERPER_KEY;
 
   // Enforce mock mode if selected or if API key is not configured
   if (mockMode || !apiKey) {
-    console.log(`[Serper API] Query: "${q}" [Mock Mode: ${mockMode ? "Active" : "Key Missing Fallback"}]`);
+    console.log(`[Serper API] Query: "${q}" p${page} [${mockMode ? "Mock Mode" : "Key Missing – Fallback"}]`);
     return getMockResults(q, type);
   }
 
@@ -23,7 +24,7 @@ export const fetchSerperResults = async (q, type = "search", mockMode = true) =>
   // Serper.dev URLs: /search, /images, /videos, /news
   const endpoint = `${SERPER_BASE_URL}/${type === "search" ? "search" : type}`;
 
-  console.log(`[Serper API] Query: "${q}" [Calling endpoint: ${endpoint}]`);
+  console.log(`[Serper API] Query: "${q}" p${page} [Calling: ${endpoint}]`);
 
   try {
     const response = await fetch(endpoint, {
@@ -34,7 +35,8 @@ export const fetchSerperResults = async (q, type = "search", mockMode = true) =>
       },
       body: JSON.stringify({
         q,
-        num: 20, // Fetch top 20 results per search
+        num: 10,   // 10 results per page
+        page,      // Serper.dev page offset (1-indexed)
       }),
     });
 

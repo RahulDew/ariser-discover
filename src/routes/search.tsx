@@ -33,14 +33,16 @@ function SearchComponent() {
   const router = useRouter();
   const { q, type } = searchRoute.useSearch();
   const [inputVal, setInputVal] = useState(q);
+  const [page, setPage] = useState(1);
 
   // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
     setInputVal(q);
+    setPage(1); // Reset to page 1 on new query
   }, [q]);
 
   // Execute Search query hook
-  const { data, isLoading, isError, error } = useSearchQuery(q, type);
+  const { data, isLoading, isError, error } = useSearchQuery(q, type, page);
 
   // Form search query submissions
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -65,6 +67,7 @@ function SearchComponent() {
         type: nextType,
       },
     });
+    setPage(1);
   };
 
   // Framer Motion Spring Animations for cascading list cards
@@ -96,14 +99,25 @@ function SearchComponent() {
     }
   };
 
+  // Derive result count from real API data
+  const resultCount = data?.searchInformation?.totalResults
+    ? Number(data.searchInformation.totalResults).toLocaleString()
+    : data?.organic?.length
+    ? `${data.organic.length}`
+    : null;
+
+  const searchTime = data?.searchInformation?.timeTaken
+    ? `${data.searchInformation.timeTaken.toFixed(2)}s`
+    : "0.38s";
+
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative">
+    <div className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative overflow-x-hidden">
       
       {/* Background radial glow spotlights matching active theme accent */}
       <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-theme-accent/5 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-theme-text/3 blur-[90px] pointer-events-none select-none transition-colors duration-300" />
 
-      <div className="z-10">
+      <div className="z-10 w-full">
         {/* Sticky Search Panel & Controls */}
         <SearchHeader 
           type={type} 
@@ -120,12 +134,12 @@ function SearchComponent() {
       </div>
 
       {/* Primary Results Display */}
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 py-6 md:px-8 z-10">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-6 md:px-8 z-10 min-w-0">
         
         {/* Results Metadata Statistics Row */}
-        {q && !isLoading && !isError && data && (
+        {q && !isLoading && !isError && data && resultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
-            About 12,400,000 results • 0.42 seconds • Safe search - on
+            About {resultCount} results • {searchTime} • Safe search on
           </div>
         )}
 
@@ -166,7 +180,7 @@ function SearchComponent() {
             </motion.div>
           ) : (
             <motion.div
-              key={`${q}-${type}`}
+              key={`${q}-${type}-${page}`}
               initial="hidden"
               animate="visible"
               exit="exit"
@@ -185,6 +199,45 @@ function SearchComponent() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Pagination Controls */}
+        {q && !isLoading && !isError && data && (
+          <div className="flex items-center justify-center gap-2 mt-10 mb-4 select-none flex-wrap">
+            <button
+              onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              disabled={page === 1}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-theme-card/40 disabled:hover:text-theme-text disabled:hover:border-theme-border"
+            >
+              ← Prev
+            </button>
+
+            {/* Page number pills */}
+            {[...Array(5)].map((_, i) => {
+              const pageNum = Math.max(1, page - 2) + i;
+              const isActive = pageNum === page;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => { setPage(pageNum); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  className={`w-9 h-9 rounded-full text-sm font-bold transition-all duration-200 ${
+                    isActive
+                      ? "bg-theme-accent text-white shadow-md scale-110"
+                      : "border border-theme-border bg-theme-card/40 text-theme-text hover:bg-theme-accent/10 hover:text-theme-accent hover:border-theme-accent/40"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-200"
+            >
+              Next →
+            </button>
+          </div>
+        )}
       </main>
 
       <Footer />
