@@ -7,19 +7,19 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-  const theme = useAppStore((state) => state.theme);
+  const mode = useAppStore((state) => state.mode);
 
-  // Sync theme with HTML root class for Tailwind on load
+  // Sync dark class for Tailwind dark selector
   useEffect(() => {
-    if (theme === "dark") {
+    if (mode === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [theme]);
+  }, [mode]);
 
   return (
-    <div className="min-h-screen bg-sky-50 dark:bg-neutral-900 text-black dark:text-white transition duration-300 ease-in-out">
+    <div className="min-h-screen bg-theme-bg text-theme-text transition-colors duration-300 ease-in-out font-sans">
       <Outlet />
     </div>
   );

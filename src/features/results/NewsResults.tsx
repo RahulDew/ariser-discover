@@ -25,38 +25,41 @@ export const NewsResults: React.FC<NewsResultsProps> = ({ data, cardVariants }) 
   const newsList = data?.news || [];
 
   if (newsList.length === 0) {
-    return <p className="text-gray-400 text-center py-10">No news results found.</p>;
+    return <p className="text-theme-text opacity-60 text-center py-10">No news results found.</p>;
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 animate-fade-in">
       {newsList.map((item, i) => (
         <motion.article
           key={i}
           variants={cardVariants}
-          whileHover={{ x: 2, borderLeftColor: "#0284c7" }}
-          className="border-l-3 border-transparent border border-sky-100/30 dark:border-neutral-900/80 p-5 rounded-2xl bg-white/70 dark:bg-neutral-900/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-5 justify-between items-start"
+          whileHover={{ x: 2, borderLeftColor: "var(--color-accent)" }}
+          style={{ borderLeftWidth: "3px" }}
+          className="border-l-transparent border border-theme-border/50 p-5 rounded-2xl bg-theme-card/60 backdrop-blur-sm shadow-xs hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-5 justify-between items-start"
         >
           {/* Main news text content */}
           <div className="flex-grow">
-            <div className="flex items-center gap-3 text-2xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 mb-2">
+            <div className="flex items-center gap-3 text-2xs font-bold uppercase tracking-wider text-theme-accent mb-2">
               <span>{item.source}</span>
-              <span className="text-gray-350 dark:text-neutral-700 select-none">&bull;</span>
-              <span className="text-gray-400 dark:text-neutral-500 font-semibold">{item.date}</span>
+              <span className="text-theme-text opacity-35 select-none">&bull;</span>
+              <span className="text-theme-text opacity-50 font-semibold">{item.date}</span>
             </div>
+            
             <a href={item.link} target="_blank" rel="noopener noreferrer" className="group">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors duration-200 mb-2.5 leading-snug">
+              <h3 className="text-lg font-bold font-serif-lumen text-theme-text group-hover:text-theme-accent transition-colors duration-200 mb-2.5 leading-snug">
                 {item.title}
               </h3>
             </a>
-            <p className="text-sm text-gray-655 dark:text-neutral-400 leading-relaxed font-normal">
+            
+            <p className="text-sm text-theme-text opacity-85 leading-relaxed font-normal">
               {item.snippet}
             </p>
           </div>
           
           {/* Optional Right-Aligned Thumbnail */}
           {item.imageUrl && (
-            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-sky-50 dark:bg-neutral-900 shrink-0 border border-sky-100/30 dark:border-neutral-800 shadow-sm">
+            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-theme-bg shrink-0 border border-theme-border/50 shadow-xs">
               <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
             </div>
           )}

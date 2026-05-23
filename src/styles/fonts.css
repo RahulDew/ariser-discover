@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -9,18 +9,22 @@ body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.pacifico {
-  font-family: 'Dancing Script', cursive;
+/* Serif font helper classes for elegant Lumen brand look */
+.font-serif-lumen {
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 ::selection {
-  background-color: rgba(99, 102, 241, 0.25); /* Sleek indigo theme selection */
-  color: inherit;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
 }
 
-/* Custom scrollbars for a premium feel */
+/* Custom premium scrollbars adjusted for dynamic theme colors */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -31,10 +35,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.25);
+  background: rgba(156, 163, 175, 0.2);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.45);
+  background: var(--color-accent);
+  opacity: 0.3;
 }

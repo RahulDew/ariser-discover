@@ -97,11 +97,11 @@ function SearchComponent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-sky-50/10 dark:bg-neutral-950 transition-colors duration-300 relative">
+    <div className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative">
       
-      {/* Background radial glow spotlights */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-sky-200/10 dark:bg-indigo-900/5 blur-[100px] pointer-events-none select-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-violet-200/10 dark:bg-violet-900/5 blur-[90px] pointer-events-none select-none" />
+      {/* Background radial glow spotlights matching active theme accent */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-theme-accent/5 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-theme-text/3 blur-[90px] pointer-events-none select-none transition-colors duration-300" />
 
       <div className="z-10">
         {/* Sticky Search Panel & Controls */}
@@ -129,7 +129,7 @@ function SearchComponent() {
               exit={{ opacity: 0, y: -10 }}
               className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-neutral-500"
             >
-              <FaSearch className="text-6xl mb-4 text-sky-200 dark:text-neutral-800" />
+              <FaSearch className="text-6xl mb-4 text-theme-accent opacity-30" />
               <p className="text-lg font-medium">Please enter a search query above to begin.</p>
             </motion.div>
           ) : isLoading ? (

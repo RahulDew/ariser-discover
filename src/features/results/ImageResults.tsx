@@ -17,17 +17,17 @@ interface ImageResultsProps {
 
 /**
  * Senior Developer Component: ImageResults
- * Renders a structured grid of high-quality image thumbnails, details, and source links.
+ * Renders a structured grid of high-quality image thumbnails, details, and source links matching active theme colors.
  */
 export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }) => {
   const imagesList = data?.images || [];
 
   if (imagesList.length === 0) {
-    return <p className="text-gray-400 text-center py-10">No image results found.</p>;
+    return <p className="text-theme-text opacity-60 text-center py-10">No image results found.</p>;
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 animate-fade-in">
       {imagesList.map((img, i) => (
         <motion.a
           href={img.link}
@@ -36,10 +36,10 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
           rel="noopener noreferrer"
           variants={cardVariants}
           whileHover={{ y: -4, scale: 1.02 }}
-          className="group block border border-sky-100/50 dark:border-neutral-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white/70 dark:bg-neutral-900/50 backdrop-blur-sm"
+          className="group block border border-theme-border/50 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 bg-theme-card/60 backdrop-blur-sm"
         >
           {/* Image Container with Aspect Ratio */}
-          <div className="relative aspect-video overflow-hidden bg-sky-50 dark:bg-neutral-900">
+          <div className="relative aspect-video overflow-hidden bg-theme-bg/30">
             <img
               src={img.imageUrl}
               alt={img.title}
@@ -47,13 +47,13 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
               className="w-full h-full object-cover group-hover:scale-103 transition duration-300"
             />
             {/* Subtle Gradient Shadow Layer on Hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
           </div>
           
           {/* Metadata details */}
-          <div className="p-3.5">
-            <p className="text-2xs text-sky-700 dark:text-sky-400 font-bold uppercase tracking-wider mb-0.5">{img.source}</p>
-            <h4 className="text-xs font-semibold text-gray-800 dark:text-neutral-250 truncate leading-snug" title={img.title}>
+          <div className="p-3.5 border-t border-theme-border/20">
+            <p className="text-2xs text-theme-accent font-bold uppercase tracking-wider mb-0.5">{img.source}</p>
+            <h4 className="text-xs font-semibold text-theme-text truncate leading-snug" title={img.title}>
               {img.title}
             </h4>
           </div>

@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  /* Dynamic custom theme properties mapped to dynamic CSS variables */
+  .bg-theme-bg {
+    background-color: var(--color-bg);
+  }
+  
+  .text-theme-text {
+    color: var(--color-text);
+  }
+  
+  .text-theme-accent {
+    color: var(--color-accent);
+  }
+  
+  .bg-theme-accent {
+    background-color: var(--color-accent);
+  }
+  
+  .border-theme-border {
+    border-color: var(--color-border);
+  }
+  
+  .bg-theme-card {
+    background-color: var(--color-card-bg);
+  }
+  
+  .bg-theme-input {
+    background-color: var(--color-input-bg);
+  }
+  
+  .text-theme-muted {
+    color: var(--color-muted-text);
+  }
+}

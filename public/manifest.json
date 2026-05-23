@@ -1,6 +1,6 @@
 {
-  "short_name": "Ariser Search",
-  "name": "Ariser Search - Sleek Google Search Client",
+  "short_name": "Lumen",
+  "name": "Lumen - Search softly",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#D66240",
+  "background_color": "#FDF6EC"
 }
