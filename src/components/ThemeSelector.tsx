@@ -86,11 +86,11 @@ export const ThemeSelector: React.FC = () => {
                       borderColor: isActive ? "transparent" : swatchBorder,
                       color: isActive ? "#FFFFFF" : swatchText,
                     }}
-                    className={`h-8 border flex items-center rounded-full transition-all duration-200 ease-in-out relative ${
+                    className={`h-8 border flex items-center rounded-full transition-all duration-200 ease-in-out relative overflow-hidden ${
                       isActive 
                         ? "shadow-sm" 
                         : "hover:scale-[1.03]"
-                    } ${isExpanded ? "w-28 px-2.5 gap-1.5 justify-start" : "w-8 justify-center"}`}
+                    } ${isExpanded ? "w-auto max-w-[135px] px-2.5 gap-1.5 justify-start" : "w-8 max-w-[32px] justify-center"}`}
                     title={t.name}
                   >
                     {/* Circle Color Accent Indicator */}
