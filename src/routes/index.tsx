@@ -83,7 +83,7 @@ function HomeComponent() {
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute top-[-10%] left-[-15%] w-[65vw] h-[65vw] rounded-full bg-theme-accent/18 blur-[120px] pointer-events-none select-none transition-colors duration-300 z-0"
+        className="absolute top-[-10%] left-[-15%] w-[65vw] h-[65vw] rounded-full bg-theme-accent-hover/18 blur-[120px] pointer-events-none select-none transition-colors duration-300 z-0"
       />
       <motion.div
         animate={{
@@ -97,7 +97,7 @@ function HomeComponent() {
           repeatType: "mirror" as const,
           ease: "easeInOut",
         }}
-        className="absolute bottom-[-15%] right-[-15%] w-[55vw] h-[55vw] rounded-full bg-theme-accent/12 blur-[100px] pointer-events-none select-none transition-colors duration-300 z-0"
+        className="absolute bottom-[-15%] right-[-15%] w-[55vw] h-[55vw] rounded-full bg-theme-accent-hover/12 blur-[100px] pointer-events-none select-none transition-colors duration-300 z-0"
       />
 
 

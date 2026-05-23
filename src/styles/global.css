@@ -12,12 +12,20 @@
     color: var(--color-text);
   }
   
+  .bg-theme-text {
+    background-color: var(--color-text);
+  }
+  
   .text-theme-accent {
     color: var(--color-accent);
   }
   
   .bg-theme-accent {
     background-color: var(--color-accent);
+  }
+
+  .bg-theme-accent-hover {
+    background-color: var(--color-accent-hover);
   }
   
   .border-theme-border {
@@ -34,5 +42,9 @@
   
   .text-theme-muted {
     color: var(--color-muted-text);
+  }
+
+  .bg-theme-muted {
+    background-color: var(--color-muted-text);
   }
 }
