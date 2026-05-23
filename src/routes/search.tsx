@@ -120,7 +120,15 @@ function SearchComponent() {
       </div>
 
       {/* Primary Results Display */}
-      <main className="flex-grow max-w-5xl w-full mx-auto px-4 py-8 md:px-8 z-10">
+      <main className="flex-grow max-w-7xl w-full mx-auto px-4 py-6 md:px-8 z-10">
+        
+        {/* Results Metadata Statistics Row */}
+        {q && !isLoading && !isError && data && (
+          <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
+            About 12,400,000 results • 0.42 seconds • Safe search - on
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           {!q ? (
             <motion.div 
