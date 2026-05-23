@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { useAppStore } from "../store/useAppStore";
+import { useAppStore, applyThemeColors } from "../store/useAppStore";
 
 export const Route = createRootRoute({
   component: RootComponent,
 });
 
 function RootComponent() {
+  const themeId = useAppStore((state) => state.themeId);
   const mode = useAppStore((state) => state.mode);
 
-  // Sync dark class for Tailwind dark selector
+  // Synchronize CSS custom property tokens inside :root on mount and state changes
   useEffect(() => {
-    if (mode === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [mode]);
+    applyThemeColors(themeId, mode);
+  }, [themeId, mode]);
 
   return (
     <div className="min-h-screen bg-theme-bg text-theme-text transition-colors duration-300 ease-in-out font-sans">
