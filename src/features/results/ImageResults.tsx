@@ -6,6 +6,9 @@ interface ImageResult {
   imageUrl: string;
   source: string;
   link: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  domain?: string;
 }
 
 interface ImageResultsProps {
@@ -25,6 +28,16 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
   if (imagesList.length === 0) {
     return <p className="text-theme-text opacity-60 text-center py-10">No image results found.</p>;
   }
+
+  // Extract simple host for domain fallbacks
+  const getDomainHost = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname.replace("www.", "");
+    } catch {
+      return url;
+    }
+  };
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 animate-fade-in">
@@ -56,6 +69,18 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
             <h4 className="text-xs font-semibold text-theme-text truncate leading-snug" title={img.title}>
               {img.title}
             </h4>
+            
+            {/* Domain & Dimensions row */}
+            <div className="flex justify-between items-center mt-2.5 select-none border-t border-theme-border/10 pt-2 text-[10px]">
+              <span className="text-theme-text opacity-50 truncate max-w-[65%]" title={img.domain || getDomainHost(img.link)}>
+                {img.domain || getDomainHost(img.link)}
+              </span>
+              {img.imageWidth && img.imageHeight && (
+                <span className="text-[9px] text-theme-text opacity-40 font-bold font-mono">
+                  {img.imageWidth} × {img.imageHeight}
+                </span>
+              )}
+            </div>
           </div>
         </motion.a>
       ))}

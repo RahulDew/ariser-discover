@@ -11,6 +11,7 @@ interface VideoResult {
   duration?: string;
   source: string;
   channel?: string;
+  date?: string;
 }
 
 interface VideoResultsProps {
@@ -65,14 +66,20 @@ export const VideoResults: React.FC<VideoResultsProps> = ({ data, cardVariants }
             </a>
             
             <p className="text-sm text-theme-text opacity-80 mb-4 leading-relaxed truncate-3-lines">
-              {vid.snippet}
+               {vid.snippet}
             </p>
           </div>
           
-          {/* Card footer details */}
-          <div className="flex justify-between items-center text-xs text-theme-text opacity-50 font-bold border-t border-theme-border/40 pt-3">
-            <span className="text-theme-accent">{vid.channel || vid.source}</span>
-            <span>{vid.duration && `Length: ${vid.duration}`}</span>
+          {/* Card footer details with publication date and channel name */}
+          <div className="flex justify-between items-center text-xs text-theme-text opacity-50 font-bold border-t border-theme-border/40 pt-3 select-none">
+            <span className="text-theme-accent truncate max-w-[45%]">
+              {vid.channel ? `${vid.channel} • ${vid.source}` : vid.source}
+            </span>
+            <span className="flex items-center gap-1.5 flex-shrink-0">
+              {vid.date && <span>{vid.date}</span>}
+              {vid.date && vid.duration && <span>&bull;</span>}
+              {vid.duration && <span>{vid.duration}</span>}
+            </span>
           </div>
         </motion.div>
       ))}
