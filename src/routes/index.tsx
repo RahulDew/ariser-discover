@@ -234,7 +234,7 @@ function HomeComponent() {
       </motion.div>
 
       {/* Floating Theme Selector pill placed sleekly at the bottom center of the homepage only */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:max-w-fit px-4">
+      <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:max-w-fit px-4">
         <ThemeSelector />
       </div>
 
