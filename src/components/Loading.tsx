@@ -26,7 +26,7 @@ function renderSkeletons(type: string) {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
           {Array.from({ length: 15 }).map((_, i) => (
-            <div key={i} className="rounded-xl overflow-hidden border border-theme-border/20 bg-theme-card/20">
+            <div key={i} className="rounded-xl overflow-hidden border border-theme-border bg-theme-card/20">
               <div className="w-full bg-theme-accent/10" style={{ aspectRatio: "4/3" }} />
               <div className="px-2 py-1.5 space-y-1">
                 <div className={`h-2 w-1/2 ${shimmer}`} />
@@ -42,7 +42,7 @@ function renderSkeletons(type: string) {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden border border-theme-border/20 bg-theme-card/20 flex flex-col">
+            <div key={i} className="rounded-2xl overflow-hidden border border-theme-border bg-theme-card/20 flex flex-col">
               <div className="w-full bg-theme-accent/10" style={{ aspectRatio: "16/9" }} />
               <div className="p-3 space-y-2">
                 <div className={`h-3 w-full ${shimmer}`} style={{ borderRadius: "4px" }} />
@@ -57,7 +57,7 @@ function renderSkeletons(type: string) {
     /* ── NEWS ────────────────────────────────────────────── */
     case "news":
       return (
-        <div className="space-y-0 divide-y divide-theme-border/25">
+        <div className="space-y-0 divide-y divide-theme-border">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex gap-5 justify-between items-start py-5 first:pt-0">
               {/* Text block */}
@@ -88,7 +88,7 @@ function renderSkeletons(type: string) {
       return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="rounded-3xl overflow-hidden border border-theme-border/20 bg-theme-card/20 flex flex-col justify-between">
+            <div key={i} className="rounded-3xl overflow-hidden border border-theme-border bg-theme-card/20 flex flex-col justify-between">
               <div className="aspect-square bg-theme-accent/8 w-full" />
               <div className="p-5 space-y-4 flex-grow flex flex-col justify-between">
                 <div className="space-y-2">
@@ -96,7 +96,7 @@ function renderSkeletons(type: string) {
                   <div className={`h-4 w-5/6 ${shimmerAccent}`} style={{ borderRadius: "4px" }} />
                   <div className={`h-4 w-2/3 ${shimmerAccent}`} style={{ borderRadius: "4px" }} />
                 </div>
-                <div className="flex justify-between items-center border-t border-theme-border/10 pt-3.5 mt-2">
+                <div className="flex justify-between items-center border-t border-theme-border pt-3.5 mt-2">
                   <div className={`h-5 w-14 ${shimmer}`} />
                   <div className={`h-8 w-16 rounded-full ${shimmerAccent}`} />
                 </div>
@@ -111,7 +111,7 @@ function renderSkeletons(type: string) {
       return (
         <div className="space-y-6 max-w-4xl">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="p-6 border border-theme-border/20 bg-theme-card/20 rounded-3xl space-y-4">
+            <div key={i} className="p-6 border border-theme-border bg-theme-card/20 rounded-3xl space-y-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-theme-text/8" />
@@ -140,7 +140,7 @@ function renderSkeletons(type: string) {
           <div className="lg:col-span-8 space-y-0">
 
             {/* Lumen Summary skeleton */}
-            <div className="border border-theme-accent/10 bg-theme-accent/4 p-6 rounded-3xl mb-5 space-y-3">
+            <div className="border border-theme-accent bg-theme-accent/4 p-6 rounded-3xl mb-5 space-y-3">
               <div className={`h-2 w-24 ${shimmerAccent}`} />
               <div className="space-y-2 pt-1">
                 <div className={`h-4 w-full ${shimmer}`} style={{ borderRadius: "6px" }} />
@@ -155,7 +155,7 @@ function renderSkeletons(type: string) {
             </div>
 
             {/* Result rows — no cards, just dividers */}
-            <div className="divide-y divide-theme-border/25">
+            <div className="divide-y divide-theme-border">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="py-5 first:pt-0 space-y-2">
                   {/* Breadcrumb row */}
@@ -186,7 +186,7 @@ function renderSkeletons(type: string) {
             {/* PAA skeleton */}
             <div className="space-y-2">
               <div className={`h-2 w-28 ${shimmer} mb-3`} />
-              <div className="border border-theme-border/20 rounded-3xl overflow-hidden divide-y divide-theme-border/15">
+              <div className="border border-theme-border rounded-3xl overflow-hidden divide-y divide-theme-border">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="px-4 py-4 flex items-center justify-between">
                     <div className={`h-3 w-4/5 ${shimmer}`} />
@@ -199,7 +199,7 @@ function renderSkeletons(type: string) {
             {/* Quick Facts skeleton */}
             <div className="space-y-2">
               <div className={`h-2 w-20 ${shimmer} mb-3`} />
-              <div className="border border-theme-border/20 rounded-3xl overflow-hidden">
+              <div className="border border-theme-border rounded-3xl overflow-hidden">
                 <div className="aspect-video w-full bg-theme-accent/12" />
                 <div className="p-5 space-y-4">
                   <div className={`h-5 w-2/3 ${shimmerAccent}`} style={{ borderRadius: "6px" }} />
@@ -207,7 +207,7 @@ function renderSkeletons(type: string) {
                     <div className={`h-3 w-full ${shimmer}`} />
                     <div className={`h-3 w-4/5 ${shimmer}`} />
                   </div>
-                  <div className="border-t border-theme-border/15 pt-4 space-y-3">
+                  <div className="border-t border-theme-border pt-4 space-y-3">
                     {Array.from({ length: 4 }).map((_, i) => (
                       <div key={i} className="flex justify-between">
                         <div className={`h-3 w-1/3 ${shimmer}`} />
