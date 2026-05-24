@@ -311,7 +311,8 @@ export const useAppStore = create<AppState>()(
       onRehydrateStorage: () => (state) => {
         // Automatically inject theme custom colors as soon as local storage hydrates!
         if (state) {
-          state.mockMode = false;
+          const hasApiKey = !!import.meta.env.VITE_SERPER_KEY;
+          state.mockMode = !hasApiKey;
           applyThemeColors(state.themeId, state.mode);
         }
       },

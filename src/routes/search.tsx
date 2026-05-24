@@ -9,6 +9,7 @@ import { WebResults } from "../features/results/WebResults";
 import { ImageResults } from "../features/results/ImageResults";
 import { VideoResults } from "../features/results/VideoResults";
 import { NewsResults } from "../features/results/NewsResults";
+import { ShoppingResults } from "../features/results/ShoppingResults";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import Loading from "../components/Loading";
@@ -21,6 +22,10 @@ export const searchRoute = createRoute({
   validateSearch: (search) => ({
     q: (search.q as string) || "",
     type: (search.type as string) || "search", // Default to 'search' (All)
+    hl: (search.hl as string) || "en",
+    gl: (search.gl as string) || "us",
+    tbs: (search.tbs as string) || "anytime",
+    batch: (search.batch === "true" || search.batch === true) ? true : false,
   }),
   component: SearchComponent,
 });
@@ -32,19 +37,21 @@ export const searchRoute = createRoute({
  */
 function SearchComponent() {
   const router = useRouter();
-  const { q, type } = searchRoute.useSearch();
+  const { q, type, hl, gl, tbs, batch } = searchRoute.useSearch();
   const [inputVal, setInputVal] = useState(q);
   const [page, setPage] = useState(1);
+  const [activeBatchIndex, setActiveBatchIndex] = useState(0);
   const mockMode = useAppStore((s) => s.mockMode);
 
   // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
     setInputVal(q);
     setPage(1); // Reset to page 1 on new query
+    setActiveBatchIndex(0); // Reset active batch index
   }, [q]);
 
   // Execute Search query hook
-  const { data, isLoading, isError, error } = useSearchQuery(q, type, page);
+  const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch);
 
   // Form search query submissions
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -56,6 +63,10 @@ function SearchComponent() {
       search: {
         q: inputVal.trim(),
         type,
+        hl,
+        gl,
+        tbs,
+        batch,
       },
     });
   };
@@ -67,6 +78,10 @@ function SearchComponent() {
       search: {
         q,
         type: nextType,
+        hl,
+        gl,
+        tbs,
+        batch,
       },
     });
     setPage(1);
@@ -88,26 +103,36 @@ function SearchComponent() {
   const renderResultsDispatcher = () => {
     if (!data) return <p className="text-gray-400 text-center py-10">No results found.</p>;
 
+    // Handle batch data array vs standard data object
+    const activeData = Array.isArray(data) ? data[activeBatchIndex] : data;
+
+    if (!activeData) return <p className="text-gray-400 text-center py-10">No results found for this query.</p>;
+
     switch (type) {
       case "images":
-        return <ImageResults data={data} cardVariants={cardVariants} />;
+        return <ImageResults data={activeData} cardVariants={cardVariants} />;
       case "videos":
-        return <VideoResults data={data} cardVariants={cardVariants} />;
+        return <VideoResults data={activeData} cardVariants={cardVariants} />;
       case "news":
-        return <NewsResults data={data} cardVariants={cardVariants} />;
+        return <NewsResults data={activeData} cardVariants={cardVariants} />;
+      case "shopping":
+        return <ShoppingResults data={activeData} cardVariants={cardVariants} />;
       case "search":
       default:
-        return <WebResults data={data} cardVariants={cardVariants} />;
+        return <WebResults data={activeData} cardVariants={cardVariants} />;
     }
   };
 
   // Only derive real result stats from live API — never show fake numbers in mock mode
-  const liveResultCount = !mockMode && data?.searchInformation?.totalResults
-    ? Number(data.searchInformation.totalResults).toLocaleString()
+  // If data is array (batch), read stats of the active query
+  const activeDataForStats = Array.isArray(data) ? data[activeBatchIndex] : data;
+
+  const liveResultCount = !mockMode && activeDataForStats?.searchInformation?.totalResults
+    ? Number(activeDataForStats.searchInformation.totalResults).toLocaleString()
     : null;
 
-  const liveSearchTime = !mockMode && data?.searchInformation?.timeTaken
-    ? `${data.searchInformation.timeTaken.toFixed(2)}s`
+  const liveSearchTime = !mockMode && activeDataForStats?.searchInformation?.timeTaken
+    ? `${activeDataForStats.searchInformation.timeTaken.toFixed(2)}s`
     : null;
 
   return (
@@ -130,6 +155,24 @@ function SearchComponent() {
         <SearchTabs 
           type={type} 
           onTabChange={handleTabChange} 
+          hl={hl}
+          gl={gl}
+          tbs={tbs}
+          batch={batch}
+          onFiltersChange={(nextFilters) => {
+            router.navigate({
+              to: "/search",
+              search: {
+                q,
+                type,
+                hl: nextFilters.hl ?? hl,
+                gl: nextFilters.gl ?? gl,
+                tbs: nextFilters.tbs ?? tbs,
+                batch: nextFilters.batch ?? batch,
+              },
+            });
+            setPage(1);
+          }}
         />
       </div>
 
@@ -140,6 +183,32 @@ function SearchComponent() {
         {q && !isLoading && !isError && liveResultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
             About {liveResultCount} results • {liveSearchTime} • Safe search on
+          </div>
+        )}
+
+        {/* Batch search sub-tabs if active */}
+        {q && !isLoading && !isError && Array.isArray(data) && data.length > 1 && (
+          <div className="flex flex-wrap items-center gap-2 mb-6 p-1.5 bg-theme-card/30 border border-theme-border/60 rounded-2xl w-fit select-none">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 px-3">
+              Batch Queries:
+            </span>
+            {data.map((item, idx) => {
+              const queryStr = item?.searchParameters?.q || `Query ${idx + 1}`;
+              const isActive = activeBatchIndex === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveBatchIndex(idx)}
+                  className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
+                    isActive
+                      ? "bg-theme-accent text-white shadow-sm"
+                      : "text-theme-text/80 hover:text-theme-accent hover:bg-theme-accent/5"
+                  }`}
+                >
+                  {queryStr}
+                </button>
+              );
+            })}
           </div>
         )}
 
@@ -180,7 +249,7 @@ function SearchComponent() {
             </motion.div>
           ) : (
             <motion.div
-              key={`${q}-${type}-${page}`}
+              key={`${q}-${type}-${page}-${activeBatchIndex}`}
               initial="hidden"
               animate="visible"
               exit="exit"

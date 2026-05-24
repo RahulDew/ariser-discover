@@ -22,11 +22,41 @@ interface PeopleAlsoAskItem {
   link: string;
 }
 
+interface AnswerBox {
+  title?: string;
+  answer?: string;
+  snippet?: string;
+  link?: string;
+  type?: string;
+}
+
+interface KnowledgeGraph {
+  title?: string;
+  type?: string;
+  description?: string;
+  website?: string;
+  imageUrl?: string;
+  descriptionSource?: string;
+  descriptionLink?: string;
+  attributes?: Record<string, string>;
+}
+
+interface TopStory {
+  title: string;
+  link: string;
+  source: string;
+  date: string;
+  imageUrl?: string;
+}
+
 interface WebResultsProps {
   data: {
     organic?: OrganicResult[];
     peopleAlsoAsk?: PeopleAlsoAskItem[];
     relatedSearches?: RelatedSearch[];
+    answerBox?: AnswerBox;
+    knowledgeGraph?: KnowledgeGraph;
+    topStories?: TopStory[];
   };
   cardVariants: any;
 }
@@ -82,8 +112,30 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
       return { id: idx + 1, name, link: item.link };
     });
 
-  // Quick Facts — pulled from first result title/domain
+  // Quick Facts — pulled from API knowledgeGraph if present, else fallback
   const getQuickFacts = () => {
+    if (data.knowledgeGraph) {
+      const kg = data.knowledgeGraph;
+      const factsArray: { key: string; value: string }[] = [];
+      if (kg.attributes) {
+        Object.entries(kg.attributes).forEach(([k, v]) => {
+          factsArray.push({ key: k, value: v });
+        });
+      }
+      return {
+        title: kg.title || "Quick Facts",
+        type: kg.type || "Information",
+        description: kg.description || `${kg.title || "This subject"} is the primary topic of this search query.`,
+        facts: factsArray.length > 0 ? factsArray : [
+          { key: "Source", value: kg.descriptionSource || "Google Panel" },
+          { key: "Website", value: kg.website ? new URL(kg.website).hostname : "Official Portal" }
+        ],
+        imageUrl: kg.imageUrl,
+        website: kg.website,
+        link: kg.descriptionLink
+      };
+    }
+
     const first = organicList[0];
     const rawTitle = first ? first.title.split("-")[0].split("|")[0].trim() : "Information";
     const title = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
@@ -93,6 +145,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
     if (tLower.includes("cherry") || tLower.includes("blossom") || tLower.includes("sakura")) {
       return {
         title: "Cherry blossom",
+        type: "Flora",
         description: "The cherry blossom (sakura) is the flower of Prunus trees, celebrated across East Asia as a symbol of renewal and fleeting beauty.",
         facts: [
           { key: "Bloom period",     value: "7–14 days" },
@@ -104,6 +157,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
     } else if (tLower.includes("matcha") || tLower.includes("tea")) {
       return {
         title: "Matcha",
+        type: "Beverage",
         description: "Matcha is finely ground powder of specially grown green tea leaves, central to Japanese tea ceremonies and popular in modern lattes worldwide.",
         facts: [
           { key: "Type",        value: "Stone-ground powder" },
@@ -115,6 +169,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
     } else {
       return {
         title,
+        type: "Reference",
         description: `${title} is the primary subject of the top-ranked web results matching this query.`,
         facts: [
           { key: "Primary source", value: domain },
@@ -163,6 +218,46 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
       {/* LEFT COLUMN */}
       <div className="lg:col-span-8 space-y-5">
 
+        {/* 💡 Direct Answer (answerBox) */}
+        {data.answerBox && (
+          <motion.div
+            variants={cardVariants}
+            className="border-l-4 border-theme-accent bg-theme-accent/5 p-5 rounded-r-3xl rounded-l-md shadow-2xs relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-16 h-16 bg-theme-accent/5 rounded-full blur-lg pointer-events-none" />
+            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-accent mb-2.5 flex items-center gap-1.5 select-none leading-none">
+              <span>💡</span> Direct Answer
+            </h4>
+            <h3 className="text-xl md:text-2xl font-bold font-serif-lumen text-theme-text mb-2.5">
+              {data.answerBox.answer || data.answerBox.title}
+            </h3>
+            {data.answerBox.snippet && (
+              <p className="text-sm md:text-base text-theme-text/80 leading-relaxed mb-4">
+                {data.answerBox.snippet}
+              </p>
+            )}
+            {data.answerBox.link && (
+              <div className="flex items-center justify-between">
+                <a
+                  href={data.answerBox.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-2xs text-theme-accent font-extrabold uppercase tracking-wider hover:underline"
+                >
+                  Source Details →
+                </a>
+                <button
+                  onClick={(e) => handleCopyLink(e, data.answerBox!.link!)}
+                  className="text-theme-text/45 hover:text-theme-accent p-1.5 rounded-full hover:bg-theme-accent/10 transition"
+                  title="Copy link"
+                >
+                  <FaCopy className="text-3xs" />
+                </button>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* ✨ Lumen Summary */}
         <motion.div
           variants={cardVariants}
@@ -192,6 +287,56 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
             ))}
           </div>
         </motion.div>
+
+        {/* 📰 Top Stories (inline news) */}
+        {data.topStories && data.topStories.length > 0 && (
+          <motion.div
+            variants={cardVariants}
+            className="border border-theme-border/60 bg-theme-card/10 p-5 rounded-3xl space-y-3.5"
+          >
+            <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-accent leading-none select-none flex items-center gap-1.5">
+              <span>📰</span> Top Stories
+            </h4>
+            
+            {/* Horizontal scroll news grid */}
+            <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2 select-none">
+              {data.topStories.map((story, si) => (
+                <a
+                  key={si}
+                  href={story.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-64 flex-shrink-0 border border-theme-border bg-theme-card/40 rounded-2xl overflow-hidden hover:border-theme-accent hover:shadow-2xs transition-all duration-200 flex flex-col justify-between group"
+                >
+                  <div className="p-4 space-y-2">
+                    {/* Source and timestamp */}
+                    <div className="flex items-center justify-between text-4xs font-extrabold uppercase tracking-wider text-theme-text opacity-50">
+                      <span>{story.source}</span>
+                      <span>• {story.date}</span>
+                    </div>
+                    {/* Title */}
+                    <h5 className="text-xs font-bold font-serif-lumen text-theme-text group-hover:text-theme-accent transition-colors leading-tight line-clamp-3">
+                      {story.title}
+                    </h5>
+                  </div>
+                  
+                  {/* Aspect-video image at bottom if present */}
+                  {story.imageUrl && (
+                    <div className="h-28 w-full overflow-hidden border-t border-theme-border relative">
+                      <img
+                        src={story.imageUrl}
+                        alt={story.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+                        onError={(e) => { e.currentTarget.style.display = "none"; }}
+                      />
+                    </div>
+                  )}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* Organic Results — no card boxes, just clean content rows */}
         <div className="divide-y divide-theme-border/30">
@@ -358,22 +503,51 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
           </h4>
           <div className="border border-theme-border bg-theme-card/30 rounded-3xl overflow-hidden shadow-2xs">
             <div className="relative aspect-video w-full bg-theme-accent overflow-hidden flex items-center justify-center select-none">
-              <div
-                className="absolute inset-0 opacity-20"
-                style={{ backgroundImage: "repeating-linear-gradient(45deg,#000 0px,#000 10px,transparent 10px,transparent 20px)" }}
-              />
-              <span className="font-serif-lumen italic text-white text-2xl drop-shadow-md font-bold opacity-80">
+              {factsCard.imageUrl ? (
+                <img
+                  src={factsCard.imageUrl}
+                  alt={factsCard.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition duration-300"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              ) : (
+                <div
+                  className="absolute inset-0 opacity-20"
+                  style={{ backgroundImage: "repeating-linear-gradient(45deg,#000 0px,#000 10px,transparent 10px,transparent 20px)" }}
+                />
+              )}
+              {/* Overlay shading gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              <span className="absolute bottom-4 left-5 font-serif-lumen italic text-white text-xl drop-shadow-md font-bold z-10 leading-none">
                 {factsCard.title}
               </span>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <h3 className="text-lg font-bold font-serif-lumen text-theme-accent mb-1.5 leading-none">
-                  {factsCard.title}
-                </h3>
+                <div className="flex items-center justify-between mb-1.5">
+                  <h3 className="text-lg font-bold font-serif-lumen text-theme-accent leading-none">
+                    {factsCard.title}
+                  </h3>
+                  {factsCard.type && (
+                    <span className="text-[9px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-theme-accent/10 text-theme-accent select-none">
+                      {factsCard.type}
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs md:text-sm text-theme-text/80 leading-relaxed">
                   {factsCard.description}
                 </p>
+                {factsCard.link && (
+                  <a
+                    href={factsCard.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 text-3xs font-bold text-theme-accent hover:underline mt-2 select-none"
+                  >
+                    Read more on Wikipedia →
+                  </a>
+                )}
               </div>
               <div className="border-t border-theme-border/20 pt-4 space-y-2.5">
                 {factsCard.facts.map((fact, idx) => (

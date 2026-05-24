@@ -19,6 +19,9 @@ export const getMockResults = (query, type = "search") => {
         case "news":
           resolve(generateMockNews(formattedQuery));
           break;
+        case "shopping":
+          resolve(generateMockShopping(formattedQuery));
+          break;
         case "search":
         default:
           resolve(generateMockWeb(formattedQuery));
@@ -34,6 +37,42 @@ const generateMockWeb = (q) => ({
     type: "search",
     engine: "google"
   },
+  answerBox: {
+    title: `Direct Answer: ${q}`,
+    snippet: `${q} is widely considered a leading global subject, recognized for its high quality, historical significance, and continuous industry innovation since its founding.`,
+    link: `https://en.wikipedia.org/wiki/${q}`,
+    type: "organic_result"
+  },
+  knowledgeGraph: {
+    title: q,
+    type: "Global Technology Entity",
+    description: `${q} is a pioneering organization and cultural subject representing consumer electronics, design excellence, and athletic or digital lifestyle products across the globe.`,
+    website: `https://www.official-${q.toLowerCase()}.com`,
+    imageUrl: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&q=80",
+    attributes: {
+      "Headquarters": "San Jose, California, USA",
+      "Founded": "April 1, 1976",
+      "CEO": "Tim Cook (2011-)",
+      "Founders": "Steve Jobs, Steve Wozniak, Ronald Wayne",
+      "Industry": "Technology and Consumer Goods"
+    }
+  },
+  topStories: [
+    {
+      title: `The future of ${q} in modern digital and cultural architecture`,
+      link: `https://www.trendsetter-mag.com/culture/${q.toLowerCase()}-trends`,
+      source: "Trendsetter Magazine",
+      date: "3 hours ago",
+      imageUrl: "https://images.unsplash.com/photo-1508609348619-482c77a4aa27?w=150&q=80"
+    },
+    {
+      title: `How ${q} is redefining sustainable development standards in manufacturing`,
+      link: `https://www.business-wire.com/news/${q.toLowerCase()}-sustainability`,
+      source: "BusinessWire",
+      date: "1 day ago",
+      imageUrl: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=150&q=80"
+    }
+  ],
   organic: [
     {
       title: `${q} Official Site | Shop Shoes, Apparel & Gear`,
@@ -42,28 +81,22 @@ const generateMockWeb = (q) => ({
       position: 1
     },
     {
-      title: `Buy ${q} Products Online at Discounted Prices`,
-      link: `https://www.e-shop.com/brands/${q.toLowerCase()}`,
-      snippet: `Shop online for the latest range of ${q} footwear, accessories, and sportswear at our marketplace. Enjoy quick delivery, easy returns, and 24/7 client support.`,
-      position: 2
-    },
-    {
       title: `${q} - Wikipedia Entry`,
       link: `https://en.wikipedia.org/wiki/${q}`,
       snippet: `${q} is an international corporation engaged in the design, development, manufacturing, and worldwide marketing and sales of apparel, equipment, and accessories.`,
-      position: 3
+      position: 2
     },
     {
       title: `Latest reviews of ${q} premium products | GearHead`,
       link: `https://www.gearhead-reviews.com/${q.toLowerCase()}-review`,
       snippet: `We review the top 5 ${q} products released this quarter. Read our unbiased hands-on performance analysis, pros and cons, and sizing guide before you buy.`,
-      position: 4
+      position: 3
     },
     {
       title: `Why ${q} is dominating the modern lifestyle trends`,
       link: `https://www.trendsetter-mag.com/culture/${q.toLowerCase()}-trends`,
       snippet: `From athletics to high fashion, here is a detailed analytical breakdown of how ${q} successfully positioned itself as a cultural icon in this generation.`,
-      position: 5
+      position: 4
     }
   ],
   peopleAlsoAsk: [
@@ -85,6 +118,44 @@ const generateMockWeb = (q) => ({
     { query: `${q} new release` },
     { query: `${q} size chart` },
     { query: `alternatives to ${q}` }
+  ]
+});
+
+const generateMockShopping = (q) => ({
+  searchParameters: {
+    q,
+    type: "shopping",
+    engine: "google"
+  },
+  shopping: [
+    {
+      title: `${q} Pro Edition 256GB Midnight Black`,
+      source: "Ariser Store",
+      link: "https://www.google.com/search?q=shopping",
+      price: "$999.00",
+      imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80"
+    },
+    {
+      title: `${q} Lite Slim Edition 128GB Polar White`,
+      source: "eBay",
+      price: "$499.00",
+      link: "https://www.google.com/search?q=shopping",
+      imageUrl: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&q=80"
+    },
+    {
+      title: `${q} Accessories Bundle Pack (Premium Case + Screen Protector)`,
+      source: "Amazon",
+      price: "$49.99",
+      link: "https://www.google.com/search?q=shopping",
+      imageUrl: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=400&q=80"
+    },
+    {
+      title: `Official Refurbished ${q} Special Edition`,
+      source: "BestBuy",
+      price: "$649.00",
+      link: "https://www.google.com/search?q=shopping",
+      imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80"
+    }
   ]
 });
 
