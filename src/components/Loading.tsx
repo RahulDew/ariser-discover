@@ -24,14 +24,13 @@ function renderSkeletons(type: string) {
     /* ── IMAGES ─────────────────────────────────────────── */
     case "images":
       return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden border border-theme-border/20 bg-theme-card/20">
-              <div className="aspect-video w-full bg-theme-accent/10" />
-              <div className="p-3 space-y-2">
-                <div className={`h-2 w-1/3 ${shimmerAccent}`} />
-                <div className={`h-3 w-5/6 ${shimmer}`} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div key={i} className="rounded-xl overflow-hidden border border-theme-border/20 bg-theme-card/20">
+              <div className="w-full bg-theme-accent/10" style={{ aspectRatio: "4/3" }} />
+              <div className="px-2 py-1.5 space-y-1">
                 <div className={`h-2 w-1/2 ${shimmer}`} />
+                <div className={`h-2.5 w-5/6 ${shimmer}`} />
               </div>
             </div>
           ))}
@@ -41,23 +40,14 @@ function renderSkeletons(type: string) {
     /* ── VIDEOS ─────────────────────────────────────────── */
     case "videos":
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-theme-border/20 bg-theme-card/20 p-4 flex flex-col gap-4">
-              {/* Video thumbnail */}
-              <div className="aspect-video w-full bg-theme-accent/10 rounded-xl" />
-              {/* Title */}
-              <div className={`h-5 w-4/5 ${shimmerAccent}`} />
-              {/* Snippet lines */}
-              <div className="space-y-2">
-                <div className={`h-3 w-full ${shimmer}`} />
-                <div className={`h-3 w-5/6 ${shimmer}`} />
-                <div className={`h-3 w-3/4 ${shimmer}`} />
-              </div>
-              {/* Footer */}
-              <div className="flex justify-between items-center border-t border-theme-border/15 pt-3">
-                <div className={`h-2 w-1/4 ${shimmerAccent}`} />
-                <div className={`h-2 w-1/6 ${shimmer}`} />
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="rounded-2xl overflow-hidden border border-theme-border/20 bg-theme-card/20 flex flex-col">
+              <div className="w-full bg-theme-accent/10" style={{ aspectRatio: "16/9" }} />
+              <div className="p-3 space-y-2">
+                <div className={`h-3 w-full ${shimmer}`} style={{ borderRadius: "4px" }} />
+                <div className={`h-3 w-3/4 ${shimmer}`} style={{ borderRadius: "4px" }} />
+                <div className={`h-2.5 w-1/2 ${shimmerAccent}`} />
               </div>
             </div>
           ))}

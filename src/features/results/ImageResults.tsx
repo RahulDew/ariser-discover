@@ -12,16 +12,10 @@ interface ImageResult {
 }
 
 interface ImageResultsProps {
-  data: {
-    images?: ImageResult[];
-  };
-  cardVariants: any; // Framer motion animation variants passed from parent
+  data: { images?: ImageResult[] };
+  cardVariants: any;
 }
 
-/**
- * Senior Developer Component: ImageResults
- * Renders a structured grid of high-quality image thumbnails, details, and source links matching active theme colors.
- */
 export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }) => {
   const imagesList = data?.images || [];
 
@@ -29,58 +23,49 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
     return <p className="text-theme-text opacity-60 text-center py-10">No image results found.</p>;
   }
 
-  // Extract simple host for domain fallbacks
-  const getDomainHost = (url: string) => {
-    try {
-      const parsed = new URL(url);
-      return parsed.hostname.replace("www.", "");
-    } catch {
-      return url;
-    }
+  const getDomain = (url: string) => {
+    try { return new URL(url).hostname.replace("www.", ""); }
+    catch { return url; }
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 animate-fade-in">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 animate-fade-in">
       {imagesList.map((img, i) => (
         <motion.a
-          href={img.link}
           key={i}
+          href={img.link}
           target="_blank"
           rel="noopener noreferrer"
           variants={cardVariants}
-          whileHover={{ y: -4, scale: 1.02 }}
-          className="group block border border-theme-border/50 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 bg-theme-card/60 backdrop-blur-sm"
+          whileHover={{ scale: 1.03 }}
+          className="group block rounded-xl overflow-hidden border border-theme-border/30 bg-theme-card/40 shadow-xs hover:shadow-md transition-all duration-200"
         >
-          {/* Image Container with Aspect Ratio */}
-          <div className="relative aspect-video overflow-hidden bg-theme-bg/30">
+          {/* Thumbnail */}
+          <div className="relative overflow-hidden bg-theme-bg/30" style={{ aspectRatio: "4/3" }}>
             <img
               src={img.imageUrl}
               alt={img.title}
               loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-103 transition duration-300"
+              className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
             />
-            {/* Subtle Gradient Shadow Layer on Hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
-          </div>
-          
-          {/* Metadata details */}
-          <div className="p-3.5 border-t border-theme-border/20">
-            <p className="text-2xs text-theme-accent font-bold uppercase tracking-wider mb-0.5">{img.source}</p>
-            <h4 className="text-xs font-semibold text-theme-text truncate leading-snug" title={img.title}>
-              {img.title}
-            </h4>
-            
-            {/* Domain & Dimensions row */}
-            <div className="flex justify-between items-center mt-2.5 select-none border-t border-theme-border/10 pt-2 text-[10px]">
-              <span className="text-theme-text opacity-50 truncate max-w-[65%]" title={img.domain || getDomainHost(img.link)}>
-                {img.domain || getDomainHost(img.link)}
-              </span>
-              {img.imageWidth && img.imageHeight && (
-                <span className="text-[9px] text-theme-text opacity-40 font-bold font-mono">
-                  {img.imageWidth} × {img.imageHeight}
+            {/* Hover overlay with dims */}
+            {img.imageWidth && img.imageHeight && (
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-200 flex items-end justify-end p-1.5">
+                <span className="text-[9px] text-white/80 font-mono font-bold bg-black/50 px-1.5 py-0.5 rounded">
+                  {img.imageWidth}×{img.imageHeight}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
+
+          {/* Caption */}
+          <div className="px-2 py-1.5">
+            <p className="text-[10px] font-semibold text-theme-text/60 truncate">
+              {img.source || img.domain || getDomain(img.link)}
+            </p>
+            <p className="text-[11px] font-medium text-theme-text/85 truncate leading-snug" title={img.title}>
+              {img.title}
+            </p>
           </div>
         </motion.a>
       ))}
