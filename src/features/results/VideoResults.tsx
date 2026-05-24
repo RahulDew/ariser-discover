@@ -64,7 +64,7 @@ const VideoCard: React.FC<{ vid: VideoResult; variants: any }> = ({ vid, variant
       ref={ref}
       variants={variants}
       whileHover={{ y: -2 }}
-      className="group flex flex-col rounded-2xl overflow-hidden border border-theme-border/30 bg-theme-card/40 backdrop-blur-sm shadow-xs hover:shadow-md transition-all duration-200"
+      className="group flex flex-col rounded-2xl overflow-hidden border border-theme-border bg-theme-card/40 backdrop-blur-sm shadow-xs hover:shadow-md transition-all duration-200"
     >
       {/* Player area */}
       <div className="relative w-full bg-black" style={{ aspectRatio: "16/9" }}>

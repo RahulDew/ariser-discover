@@ -37,7 +37,7 @@ export const NewsResults: React.FC<NewsResultsProps> = ({ data, cardVariants }) 
           variants={cardVariants}
           whileHover={{ x: 2, borderLeftColor: "var(--color-accent)" }}
           style={{ borderLeftWidth: "3px" }}
-          className="border-l-transparent border border-theme-border/50 p-5 rounded-2xl bg-theme-card/60 backdrop-blur-sm shadow-xs hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-5 justify-between items-start"
+          className="border-l-transparent border border-theme-border p-5 rounded-2xl bg-theme-card/60 backdrop-blur-sm shadow-xs hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-5 justify-between items-start"
         >
           {/* Main news text content */}
           <div className="flex-grow">
@@ -60,7 +60,7 @@ export const NewsResults: React.FC<NewsResultsProps> = ({ data, cardVariants }) 
           
           {/* Optional Right-Aligned Thumbnail */}
           {item.imageUrl && (
-            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-theme-bg shrink-0 border border-theme-border/50 shadow-xs">
+            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-theme-bg shrink-0 border border-theme-border shadow-xs">
               <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
             </div>
           )}

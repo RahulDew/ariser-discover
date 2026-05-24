@@ -39,7 +39,7 @@ export const ShoppingResults: React.FC<ShoppingResultsProps> = ({ data, cardVari
           className="group border border-theme-border bg-theme-card/30 rounded-3xl overflow-hidden shadow-2xs hover:shadow-sm hover:border-theme-accent/30 transition-all duration-200 flex flex-col justify-between"
         >
           {/* Aspect-square product image container */}
-          <div className="aspect-square bg-theme-card/50 overflow-hidden relative flex items-center justify-center p-6 border-b border-theme-border/40 select-none">
+          <div className="aspect-square bg-theme-card/50 overflow-hidden relative flex items-center justify-center p-6 border-b border-theme-border select-none">
             <img
               src={item.imageUrl}
               alt={item.title}
@@ -69,7 +69,7 @@ export const ShoppingResults: React.FC<ShoppingResultsProps> = ({ data, cardVari
               </h4>
             </div>
 
-            <div className="flex items-center justify-between gap-4 border-t border-theme-border/20 pt-3.5 mt-2">
+            <div className="flex items-center justify-between gap-4 border-t border-theme-border pt-3.5 mt-2">
               {/* Price Tag */}
               <div className="text-base font-extrabold text-theme-accent font-serif-lumen italic">
                 {item.price}

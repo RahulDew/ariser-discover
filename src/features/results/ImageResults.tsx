@@ -44,7 +44,7 @@ const ImageTile: React.FC<{ img: ImageResult; variants: any }> = ({ img, variant
       rel="noopener noreferrer"
       variants={variants}
       whileHover={{ scale: 1.03 }}
-      className="group block rounded-xl overflow-hidden border border-theme-border/30 bg-theme-card/40 shadow-xs hover:shadow-md transition-all duration-200"
+      className="group block rounded-xl overflow-hidden border border-theme-border bg-theme-card/40 shadow-xs hover:shadow-md transition-all duration-200"
     >
       {/* Thumbnail */}
       <div className="relative overflow-hidden bg-theme-card/30" style={{ aspectRatio: "4/3" }}>

@@ -293,7 +293,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
         {data.topStories && data.topStories.length > 0 && (
           <motion.div
             variants={cardVariants}
-            className="border border-theme-border/60 bg-theme-card/10 p-5 rounded-3xl space-y-3.5"
+            className="border border-theme-border bg-theme-card/10 p-5 rounded-3xl space-y-3.5"
           >
             <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-accent leading-none select-none flex items-center gap-1.5">
               <span>📰</span> Top Stories
@@ -340,7 +340,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
         )}
 
         {/* Organic Results — no card boxes, just clean content rows */}
-        <div className="divide-y divide-theme-border/30">
+        <div className="divide-y divide-theme-border">
           {organicList.map((item, i) => {
             const domain        = getDomainHost(item.link);
             const displayDomain = domain.replace("www.", "");
@@ -451,7 +451,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
               return (
                 <div
                   key={idx}
-                  className={`border-theme-border/20 ${idx !== paaList.length - 1 ? "border-b" : ""}`}
+                  className={`border-theme-border ${idx !== paaList.length - 1 ? "border-b" : ""}`}
                 >
                   <button
                     onClick={() => setOpenAccordionIdx(isOpen ? null : idx)}
@@ -471,7 +471,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
                         transition={{ duration: 0.2, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-4 pb-4 text-xs md:text-sm text-theme-text/85 space-y-3 leading-relaxed border-t border-theme-border/10 pt-3">
+                        <div className="px-4 pb-4 text-xs md:text-sm text-theme-text/85 space-y-3 leading-relaxed border-t border-theme-border pt-3">
                           <p>{item.snippet}</p>
                           <div className="flex items-center justify-between">
                             <a
@@ -553,7 +553,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
                   </a>
                 )}
               </div>
-              <div className="border-t border-theme-border/20 pt-4 space-y-2.5">
+              <div className="border-t border-theme-border pt-4 space-y-2.5">
                 {factsCard.facts.map((fact, idx) => (
                   <div key={idx} className="flex items-start justify-between text-xs md:text-sm gap-2">
                     <span className="text-theme-text opacity-45 font-semibold flex-shrink-0 select-none">
