@@ -120,16 +120,21 @@ const VideoCard: React.FC<{ vid: VideoResult; variants: any }> = ({ vid, variant
       </div>
 
       {/* Info */}
-      <div className="p-3 flex flex-col gap-1 flex-grow">
-        <a href={vid.link} target="_blank" rel="noopener noreferrer">
-          <h3 className="text-xs sm:text-sm font-bold text-theme-text group-hover:text-theme-accent transition-colors duration-150 leading-snug line-clamp-2">
-            {vid.title}
-          </h3>
-        </a>
-        <p className="text-[11px] text-theme-text/50 font-medium truncate">
-          {vid.channel ? `${vid.channel} · ${vid.source}` : vid.source}
-          {vid.date && ` · ${vid.date}`}
-        </p>
+      <div className="p-3 flex flex-col gap-2.5 flex-grow justify-between">
+        <div className="space-y-1">
+          <a href={vid.link} target="_blank" rel="noopener noreferrer">
+            <h3 className="text-xs sm:text-sm font-bold text-theme-text group-hover:text-theme-accent transition-colors duration-150 leading-snug line-clamp-2">
+              {vid.title}
+            </h3>
+          </a>
+          <p className="text-[11px] text-theme-text/50 font-medium truncate">
+            {vid.channel ? `${vid.channel} · ${vid.source}` : vid.source}
+            {vid.date && ` · ${vid.date}`}
+          </p>
+        </div>
+        <span className="w-fit inline-flex items-center px-2 py-0.5 bg-theme-accent/10 border border-theme-accent/20 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-theme-accent select-none leading-none">
+          Video
+        </span>
       </div>
     </motion.div>
   );

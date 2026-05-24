@@ -422,6 +422,9 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
                       <FaRegStar className="text-[10px]" /> Top Result
                     </span>
                   )}
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-theme-accent/10 border border-theme-accent/25 text-theme-accent rounded-full text-3xs font-extrabold uppercase tracking-widest leading-none">
+                    Organic
+                  </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-theme-text/5 text-theme-text/45 rounded-full text-3xs font-bold">
                     <FaRegClock className="text-[10px]" />
                     {item.date ?? (i % 2 === 0 ? "Updated recently" : "Published this year")}
