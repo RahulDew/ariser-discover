@@ -83,6 +83,54 @@ function renderSkeletons(type: string) {
         </div>
       );
 
+    /* ── SHOPPING ───────────────────────────────────────── */
+    case "shopping":
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="rounded-3xl overflow-hidden border border-theme-border/20 bg-theme-card/20 flex flex-col justify-between">
+              <div className="aspect-square bg-theme-accent/8 w-full" />
+              <div className="p-5 space-y-4 flex-grow flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className={`h-2.5 w-16 ${shimmer}`} />
+                  <div className={`h-4 w-5/6 ${shimmerAccent}`} style={{ borderRadius: "4px" }} />
+                  <div className={`h-4 w-2/3 ${shimmerAccent}`} style={{ borderRadius: "4px" }} />
+                </div>
+                <div className="flex justify-between items-center border-t border-theme-border/10 pt-3.5 mt-2">
+                  <div className={`h-5 w-14 ${shimmer}`} />
+                  <div className={`h-8 w-16 rounded-full ${shimmerAccent}`} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+
+    /* ── SCHOLAR ────────────────────────────────────────── */
+    case "scholar":
+      return (
+        <div className="space-y-6 max-w-4xl">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="p-6 border border-theme-border/20 bg-theme-card/20 rounded-3xl space-y-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-theme-text/8" />
+                  <div className={`h-2.5 w-24 ${shimmer}`} />
+                </div>
+                <div className={`h-5 w-24 rounded-full ${shimmerAccent}`} />
+              </div>
+              <div className={`h-5 w-3/4 ${shimmerAccent}`} style={{ borderRadius: "4px" }} />
+              <div className={`h-3 w-48 ${shimmer}`} />
+              <div className="space-y-1.5">
+                <div className={`h-3 w-full ${shimmer}`} />
+                <div className={`h-3 w-5/6 ${shimmer}`} />
+              </div>
+              <div className={`h-8 w-28 rounded-full ${shimmer}`} />
+            </div>
+          ))}
+        </div>
+      );
+
     /* ── WEB / ALL ───────────────────────────────────────── */
     case "search":
     default:

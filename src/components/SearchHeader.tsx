@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useAppStore } from "../store/useAppStore";
-import { FaSearch, FaTimes, FaFlask, FaArrowLeft } from "react-icons/fa";
+import { FaSearch, FaTimes, FaArrowLeft } from "react-icons/fa";
 import { Brand } from "./Brand";
 // ThemeSelector is rendered globally in __root.tsx
 
@@ -23,8 +23,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   onSubmit,
 }) => {
   const router = useRouter();
-  const mockMode = useAppStore((state) => state.mockMode);
-  const setMockMode = useAppStore((state) => state.setMockMode);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -64,24 +62,19 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           </Link>
         </div>
 
-        {/* Quick controls panel (Mobile Only) */}
-        <div className="flex items-center gap-2 md:hidden">
-          <button
-            onClick={() => setMockMode(!mockMode)}
-            className={`p-2 rounded-full text-xs font-bold flex items-center border ${
-              mockMode 
-                ? "bg-amber-500/10 text-amber-500 border-amber-500/30" 
-                : "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
-            }`}
-          >
-            <FaFlask className="mr-1 animate-pulse" /> {mockMode ? "Mock" : "Live"}
-          </button>
-          
-        </div>
       </div>
 
       {/* Dynamic Search Bar Input */}
-      <form className="w-full md:max-w-2xl flex-grow" onSubmit={onSubmit}>
+      <form 
+        className="w-full md:max-w-2xl flex-grow" 
+        onSubmit={(e) => {
+          setShowDropdown(false);
+          if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+          }
+          onSubmit(e);
+        }}
+      >
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-theme-accent to-theme-text rounded-full blur opacity-5 group-hover:opacity-15 group-focus-within:opacity-25 transition duration-300" />
           <input
@@ -141,22 +134,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         </div>
       </form>
 
-      {/* Controls panel (Desktop Only) */}
-      <div className="hidden md:flex items-center gap-3">
-        <button
-          onClick={() => setMockMode(!mockMode)}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center border transition ${
-            mockMode 
-              ? "bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20" 
-              : "bg-emerald-500/10 text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/20"
-          }`}
-          title="Toggle Sandbox Mock/Live Search API Mode"
-        >
-          <FaFlask className="mr-1.5 animate-pulse text-sm" /> 
-          {mockMode ? "Mock Sandbox" : "Live API Enabled"}
-        </button>
-
-      </div>
     </header>
   );
 };

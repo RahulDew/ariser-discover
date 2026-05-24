@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCopy, FaMinus, FaPlus, FaRegClock, FaRegStar, FaSearch } from "react-icons/fa";
+import { NoData } from "../../components/NoData";
 
 interface OrganicResult {
   title: string;
@@ -69,7 +70,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
   const [openAccordionIdx, setOpenAccordionIdx] = useState<number | null>(0);
 
   if (organicList.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No web results found.</p>;
+    return <NoData resultType="search" />;
   }
 
   const handleCopyLink = (e: React.MouseEvent, link: string) => {

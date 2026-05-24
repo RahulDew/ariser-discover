@@ -48,6 +48,10 @@ function HomeComponent() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!localSearch.trim()) return;
+    setShowDropdown(false);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     executeSearch(localSearch.trim());
   };
 

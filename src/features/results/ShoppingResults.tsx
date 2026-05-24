@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaExternalLinkAlt, FaTag } from "react-icons/fa";
+import { NoData } from "../../components/NoData";
 
 interface ShoppingItem {
   title: string;
@@ -25,7 +26,7 @@ export const ShoppingResults: React.FC<ShoppingResultsProps> = ({ data, cardVari
   const shoppingList = data?.shopping || [];
 
   if (shoppingList.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No products found.</p>;
+    return <NoData resultType="shopping" />;
   }
 
   return (

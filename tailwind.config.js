@@ -6,6 +6,18 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      colors: {
+        theme: {
+          bg: 'var(--color-bg)',
+          text: 'var(--color-text)',
+          accent: 'var(--color-accent)',
+          'accent-hover': 'var(--color-accent-hover)',
+          border: 'var(--color-border)',
+          card: 'var(--color-card-bg)',
+          input: 'var(--color-input-bg)',
+          muted: 'var(--color-muted-text)',
+        }
+      },
       fontSize: {
         '2xs': '0.625rem',   // 10px
         '3xs': '0.5625rem',  // 9px
@@ -15,3 +27,4 @@ module.exports = {
   },
   plugins: [],
 }
+

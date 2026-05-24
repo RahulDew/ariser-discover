@@ -15,6 +15,7 @@ import { ScraperResults } from "../features/results/ScraperResults";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import Loading from "../components/Loading";
+import { NoData } from "../components/NoData";
 import Footer from "../components/Footer";
 
 // Programmatic route validation and parameter tracking
@@ -43,7 +44,6 @@ function SearchComponent() {
   const [inputVal, setInputVal] = useState(q);
   const [page, setPage] = useState(1);
   const [activeBatchIndex, setActiveBatchIndex] = useState(0);
-  const mockMode = useAppStore((s) => s.mockMode);
 
   // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
@@ -103,12 +103,12 @@ function SearchComponent() {
    * Helper dispatcher to choose the correct modular results view
    */
   const renderResultsDispatcher = () => {
-    if (!data) return <p className="text-gray-400 text-center py-10">No results found.</p>;
+    if (!data) return <NoData resultType={type} />;
 
     // Handle batch data array vs standard data object
     const activeData = Array.isArray(data) ? data[activeBatchIndex] : data;
 
-    if (!activeData) return <p className="text-gray-400 text-center py-10">No results found for this query.</p>;
+    if (!activeData) return <NoData resultType={type} />;
 
     // Check if query is a URL to trigger Webpage reader
     const isUrl = q.startsWith("http://") || q.startsWith("https://") || q.includes(".") && !q.includes(" ") && q.length > 4;
@@ -134,15 +134,14 @@ function SearchComponent() {
     }
   };
 
-  // Only derive real result stats from live API — never show fake numbers in mock mode
   // If data is array (batch), read stats of the active query
   const activeDataForStats = Array.isArray(data) ? data[activeBatchIndex] : data;
 
-  const liveResultCount = !mockMode && activeDataForStats?.searchInformation?.totalResults
+  const liveResultCount = activeDataForStats?.searchInformation?.totalResults
     ? Number(activeDataForStats.searchInformation.totalResults).toLocaleString()
     : null;
 
-  const liveSearchTime = !mockMode && activeDataForStats?.searchInformation?.timeTaken
+  const liveSearchTime = activeDataForStats?.searchInformation?.timeTaken
     ? `${activeDataForStats.searchInformation.timeTaken.toFixed(2)}s`
     : null;
 
@@ -223,12 +222,12 @@ function SearchComponent() {
           </div>
         )}
 
-        <AnimatePresence mode="wait">
+        <div>
           {!q ? (
             <motion.div 
+              key="no-query"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
               className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-neutral-500"
             >
               <FaSearch className="text-6xl mb-4 text-theme-accent opacity-30" />
@@ -239,8 +238,7 @@ function SearchComponent() {
               key="loading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex items-center justify-center py-24"
+              className="w-full py-6"
             >
               <Loading />
             </motion.div>
@@ -249,7 +247,6 @@ function SearchComponent() {
               key="error"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
               className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-400 p-6 rounded-2xl max-w-lg mx-auto mt-10 shadow-sm"
             >
               <h3 className="font-bold text-lg mb-2 flex items-center">
@@ -263,7 +260,6 @@ function SearchComponent() {
               key={`${q}-${type}-${page}-${activeBatchIndex}`}
               initial="hidden"
               animate="visible"
-              exit="exit"
               variants={{
                 hidden: { opacity: 0 },
                 visible: {
@@ -272,13 +268,12 @@ function SearchComponent() {
                     staggerChildren: 0.08,
                   },
                 },
-                exit: { opacity: 0 }
               }}
             >
               {renderResultsDispatcher()}
             </motion.div>
           )}
-        </AnimatePresence>
+        </div>
 
         {/* Pagination Controls */}
         {q && !isLoading && !isError && data && (

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { NoData } from "../../components/NoData";
 
 interface NewsResult {
   title: string;
@@ -25,7 +26,7 @@ export const NewsResults: React.FC<NewsResultsProps> = ({ data, cardVariants }) 
   const newsList = data?.news || [];
 
   if (newsList.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No news results found.</p>;
+    return <NoData resultType="news" />;
   }
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaImage } from "react-icons/fa";
+import { NoData } from "../../components/NoData";
 
 interface ImageResult {
   title: string;
@@ -87,7 +88,7 @@ export const ImageResults: React.FC<ImageResultsProps> = ({ data, cardVariants }
   const imagesList = data?.images || [];
 
   if (imagesList.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No image results found.</p>;
+    return <NoData resultType="images" />;
   }
 
   return (

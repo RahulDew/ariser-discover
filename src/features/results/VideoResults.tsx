@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ReactPlayer from "react-player";
 import { FaPlay, FaVideo } from "react-icons/fa";
+import { NoData } from "../../components/NoData";
 
 interface VideoResult {
   title: string;
@@ -144,7 +145,7 @@ export const VideoResults: React.FC<VideoResultsProps> = ({ data, cardVariants }
   const videosList = data?.videos || [];
 
   if (videosList.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No video results found.</p>;
+    return <NoData resultType="videos" />;
   }
 
   return (

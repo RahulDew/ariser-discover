@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaGraduationCap, FaQuoteRight, FaBook, FaExternalLinkAlt } from "react-icons/fa";
+import { NoData } from "../../components/NoData";
 
 interface ScholarArticle {
   title: string;
@@ -26,7 +27,7 @@ export const ScholarResults: React.FC<ScholarResultsProps> = ({ data, cardVarian
   const articles = data?.organic || [];
 
   if (articles.length === 0) {
-    return <p className="text-theme-text opacity-60 text-center py-10">No scholarly articles found.</p>;
+    return <NoData resultType="scholar" />;
   }
 
   return (
