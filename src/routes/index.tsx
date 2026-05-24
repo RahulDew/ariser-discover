@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createRoute, useRouter } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { useAppStore, THEMES } from "../store/useAppStore";
@@ -22,6 +22,25 @@ function HomeComponent() {
   const themeId = useAppStore((state) => state.themeId);
   const mode = useAppStore((state) => state.mode);
   const [localSearch, setLocalSearch] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (!localSearch.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(localSearch)}`);
+        const data = await res.json();
+        setSuggestions(data[1] || []);
+      } catch (e) {
+        console.error("Autocomplete failed:", e);
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [localSearch]);
 
   const activeTheme = THEMES[themeId] || THEMES.apricot;
   const currentAccentHover = mode === "dark" ? activeTheme.dark.accentHover : activeTheme.light.accentHover;
@@ -145,6 +164,8 @@ function HomeComponent() {
               className="relative w-full py-4 pl-6 pr-32 rounded-full border border-theme-border bg-theme-input text-theme-text shadow-lg outline-none focus:border-theme-accent focus:shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition-all duration-300 text-lg font-medium"
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
               autoFocus
             />
             
@@ -155,6 +176,27 @@ function HomeComponent() {
             >
               Search
             </button>
+
+            {/* Floating Autocomplete drop panel */}
+            {showDropdown && suggestions.length > 0 && (
+              <div className="absolute top-[110%] left-0 right-0 border border-theme-border bg-theme-card/95 backdrop-blur-md rounded-3xl shadow-lg z-50 overflow-hidden py-2.5 select-none">
+                {suggestions.slice(0, 7).map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setLocalSearch(item);
+                      setShowDropdown(false);
+                      executeSearch(item);
+                    }}
+                    className="w-full text-left px-6 py-2.5 hover:bg-theme-accent/10 hover:text-theme-accent text-sm text-theme-text font-bold transition-colors duration-150 flex items-center gap-3.5"
+                  >
+                    <FaSearch className="text-[10px] opacity-40 text-theme-accent" />
+                    <span>{item}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </motion.form>
 

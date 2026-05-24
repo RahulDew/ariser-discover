@@ -10,6 +10,8 @@ import { ImageResults } from "../features/results/ImageResults";
 import { VideoResults } from "../features/results/VideoResults";
 import { NewsResults } from "../features/results/NewsResults";
 import { ShoppingResults } from "../features/results/ShoppingResults";
+import { ScholarResults } from "../features/results/ScholarResults";
+import { ScraperResults } from "../features/results/ScraperResults";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import Loading from "../components/Loading";
@@ -108,6 +110,13 @@ function SearchComponent() {
 
     if (!activeData) return <p className="text-gray-400 text-center py-10">No results found for this query.</p>;
 
+    // Check if query is a URL to trigger Webpage reader
+    const isUrl = q.startsWith("http://") || q.startsWith("https://") || q.includes(".") && !q.includes(" ") && q.length > 4;
+
+    if (isUrl) {
+      return <ScraperResults url={q} data={activeData?.scrapedData} cardVariants={cardVariants} />;
+    }
+
     switch (type) {
       case "images":
         return <ImageResults data={activeData} cardVariants={cardVariants} />;
@@ -117,6 +126,8 @@ function SearchComponent() {
         return <NewsResults data={activeData} cardVariants={cardVariants} />;
       case "shopping":
         return <ShoppingResults data={activeData} cardVariants={cardVariants} />;
+      case "scholar":
+        return <ScholarResults data={activeData} cardVariants={cardVariants} />;
       case "search":
       default:
         return <WebResults data={activeData} cardVariants={cardVariants} />;

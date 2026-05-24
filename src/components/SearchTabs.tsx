@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaSlidersH, FaChevronDown } from "react-icons/fa";
+import { FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaSlidersH, FaChevronDown, FaGraduationCap } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchTabsProps {
@@ -33,6 +33,7 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
     { id: "news",   label: "News",     icon: <FaRegNewspaper className="text-xs" /> },
     { id: "videos", label: "Videos",   icon: <FaVideo className="text-xs" /> },
     { id: "shopping", label: "Shopping", icon: <FaShoppingCart className="text-xs" /> },
+    { id: "scholar", label: "Scholar",  icon: <FaGraduationCap className="text-xs" /> },
   ];
 
   const timeFilters = [

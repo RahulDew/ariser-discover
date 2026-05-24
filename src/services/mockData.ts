@@ -22,6 +22,9 @@ export const getMockResults = (query, type = "search") => {
         case "shopping":
           resolve(generateMockShopping(formattedQuery));
           break;
+        case "scholar":
+          resolve(generateMockScholar(formattedQuery));
+          break;
         case "search":
         default:
           resolve(generateMockWeb(formattedQuery));
@@ -73,6 +76,19 @@ const generateMockWeb = (q) => ({
       imageUrl: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=150&q=80"
     }
   ],
+  scrapedData: {
+    title: `Lumen Read Mode: ${q}`,
+    takeaways: [
+      `This page contains an in-depth, verified publication detailing the subject profile of ${q}.`,
+      `Key findings point to exceptional industrial growth, cultural renewals, and active global networks.`,
+      `Lumen extracted all metadata tags and structural paragraphs successfully.`
+    ],
+    paragraphs: [
+      `Lumen reader has dynamically scraped the target domain and formatted the layout for distraction-free reading. ${q} represents a major category of modern interest and development.`,
+      `The article details how regional policies, technical milestones, and public interest have accelerated developments in this sector over the past decade.`,
+      `For comprehensive details, primary records, and interactive graphics, you can open the original website directly in a new window using the navigation action buttons above.`
+    ]
+  },
   organic: [
     {
       title: `${q} Official Site | Shop Shoes, Apparel & Gear`,
@@ -279,6 +295,37 @@ const generateMockNews = (q) => ({
       date: "3 days ago",
       source: "TechRadar",
       imageUrl: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=150&q=80"
+    }
+  ]
+});
+
+const generateMockScholar = (q) => ({
+  searchParameters: {
+    q,
+    type: "scholar",
+    engine: "google"
+  },
+  organic: [
+    {
+      title: `The comprehensive analysis of ${q} in modern biological ecosystems`,
+      link: `https://www.nature.com/articles/${q.toLowerCase()}-eco`,
+      snippet: `We present a historical and contemporary perspective on ${q} and its dynamic interactions within macro-environmental frameworks. Analysis evaluates lifecycle behaviors, cellular responses, and commercial applications.`,
+      publicationInfo: "J Miller, A Davis - Journal of Ecology and Nature, 2024",
+      citedBy: 412
+    },
+    {
+      title: `Advanced chemical properties and extraction methods of premium ${q} compounds`,
+      link: `https://sciencedirect.com/science/article/pii/${q.toLowerCase()}-chem`,
+      snippet: `This study isolates primary active compounds inside ${q}. We outline high-efficiency liquid chromatography protocols and synthesize key results for industrial pharmaceutical manufacturing standards.`,
+      publicationInfo: "S Tanaka, K Sato - ScienceDirect Phytochemistry, 2023",
+      citedBy: 189
+    },
+    {
+      title: `A cultural and socio-economic history of ${q} throughout the centuries`,
+      link: `https://books.google.com/books?id=${q.toLowerCase()}-history`,
+      snippet: `From ancient rituals to global trade networks, this article traces how ${q} transitioned from a localized phenomenon into an international commodity that shapes lifestyle patterns.`,
+      publicationInfo: "H Gauthier, P Dupont - Academic Press Historical Studies, 2021",
+      citedBy: 95
     }
   ]
 });
