@@ -26,7 +26,7 @@ export const fetchSerperResults = async (
   tbs = "anytime",
   batch = false
 ) => {
-  const apiKey = import.meta.env.VITE_SERPER_KEY;
+  const apiKey = import.meta.env.VITE_SERPER_KEY || "eda103aef7bf56dba66cb7f8243fc051d216bfe7";
 
   // Split query string by commas or newlines if in batch mode
   const queries = batch

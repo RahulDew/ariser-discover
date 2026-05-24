@@ -308,6 +308,11 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "ariser-discover-store", // Storage key for Ariser Discover brand
+      partialize: (state) => ({
+        themeId: state.themeId,
+        mode: state.mode,
+        searchHistory: state.searchHistory,
+      }),
       onRehydrateStorage: () => (state) => {
         // Automatically inject theme custom colors as soon as local storage hydrates!
         if (state) {
