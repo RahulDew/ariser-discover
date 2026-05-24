@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaSlidersH } from "react-icons/fa";
+import { FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaSlidersH, FaChevronDown } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchTabsProps {
@@ -131,18 +131,21 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 select-none">
                   Language
                 </span>
-                <select
-                  value={hl}
-                  onChange={(e) => onFiltersChange({ hl: e.target.value })}
-                  className="px-3 py-1.5 rounded-xl border border-theme-border bg-theme-input text-theme-text text-xs outline-none focus:border-theme-accent transition cursor-pointer"
-                >
-                  <option value="en">English (US)</option>
-                  <option value="hi">Hindi (India)</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                  <option value="ja">Japanese</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={hl}
+                    onChange={(e) => onFiltersChange({ hl: e.target.value })}
+                    className="appearance-none pl-4 pr-8 py-1.5 rounded-full border border-theme-border bg-theme-card/50 text-theme-text text-xs font-bold outline-none hover:border-theme-accent/50 focus:border-theme-accent transition cursor-pointer select-none"
+                  >
+                    <option value="en">English (US)</option>
+                    <option value="hi">Hindi (India)</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="ja">Japanese</option>
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-theme-accent text-[9px] pointer-events-none opacity-80" />
+                </div>
               </div>
 
               {/* Country/Region Selector */}
@@ -150,19 +153,22 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 select-none">
                   Region
                 </span>
-                <select
-                  value={gl}
-                  onChange={(e) => onFiltersChange({ gl: e.target.value })}
-                  className="px-3 py-1.5 rounded-xl border border-theme-border bg-theme-input text-theme-text text-xs outline-none focus:border-theme-accent transition cursor-pointer"
-                >
-                  <option value="us">United States</option>
-                  <option value="in">India</option>
-                  <option value="uk">United Kingdom</option>
-                  <option value="ca">Canada</option>
-                  <option value="de">Germany</option>
-                  <option value="fr">France</option>
-                  <option value="jp">Japan</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={gl}
+                    onChange={(e) => onFiltersChange({ gl: e.target.value })}
+                    className="appearance-none pl-4 pr-8 py-1.5 rounded-full border border-theme-border bg-theme-card/50 text-theme-text text-xs font-bold outline-none hover:border-theme-accent/50 focus:border-theme-accent transition cursor-pointer select-none"
+                  >
+                    <option value="us">United States</option>
+                    <option value="in">India</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="ca">Canada</option>
+                    <option value="de">Germany</option>
+                    <option value="fr">France</option>
+                    <option value="jp">Japan</option>
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-theme-accent text-[9px] pointer-events-none opacity-80" />
+                </div>
               </div>
 
               {/* Batch Toggle */}
