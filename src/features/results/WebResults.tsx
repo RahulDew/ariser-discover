@@ -101,7 +101,7 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
       summary += ` Additionally, ${s2.charAt(0).toLowerCase() + s2.slice(1)}`;
       if (!summary.endsWith(".")) summary += ".";
     }
-    return summary || "Lumen is gathering comprehensive information on this topic.";
+    return summary || "Ariser is gathering comprehensive information on this topic.";
   };
 
   // Citation chips below summary
@@ -213,6 +213,74 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
   const paaList    = getPAAList();
   const citations  = getCitations();
 
+  const renderQuickFactsCard = () => (
+    <div className="space-y-2.5">
+      <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 pl-1.5 leading-none select-none">
+        Quick Facts
+      </h4>
+      <div className="border border-theme-border bg-theme-card/30 rounded-3xl overflow-hidden shadow-2xs">
+        <div className="relative aspect-video w-full bg-theme-accent overflow-hidden flex items-center justify-center select-none">
+          {factsCard.imageUrl ? (
+            <img
+              src={factsCard.imageUrl}
+              alt={factsCard.title}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover transition duration-300"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+            />
+          ) : (
+            <div
+              className="absolute inset-0 opacity-20"
+              style={{ backgroundImage: "repeating-linear-gradient(45deg,#000 0px,#000 10px,transparent 10px,transparent 20px)" }}
+            />
+          )}
+          {/* Overlay shading gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+          <span className="absolute bottom-4 left-5 font-serif-lumen italic text-white text-xl drop-shadow-md font-bold z-10 leading-none">
+            {factsCard.title}
+          </span>
+        </div>
+        <div className="p-5 space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <h3 className="text-lg font-bold font-serif-lumen text-theme-accent leading-none">
+                {factsCard.title}
+              </h3>
+              {factsCard.type && (
+                <span className="text-[9px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-theme-accent/10 text-theme-accent select-none">
+                  {factsCard.type}
+                </span>
+              )}
+            </div>
+            <p className="text-xs md:text-sm text-theme-text/80 leading-relaxed">
+              {factsCard.description}
+            </p>
+            {factsCard.link && (
+              <a
+                href={factsCard.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 text-3xs font-bold text-theme-accent hover:underline mt-2 select-none"
+              >
+                Read more on Wikipedia →
+              </a>
+            )}
+          </div>
+          <div className="border-t border-theme-border pt-4 space-y-2.5">
+            {factsCard.facts.map((fact, idx) => (
+              <div key={idx} className="flex items-start justify-between text-xs md:text-sm gap-2">
+                <span className="text-theme-text opacity-45 font-semibold flex-shrink-0 select-none">
+                  {fact.key}
+                </span>
+                <span className="text-theme-text/90 font-bold text-right">{fact.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in">
 
@@ -259,14 +327,14 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
           </motion.div>
         )}
 
-        {/* ✨ Lumen Summary */}
+        {/* ✨ Ariser Summary */}
         <motion.div
           variants={cardVariants}
           className="border border-theme-accent/15 bg-theme-accent/5 p-6 rounded-3xl relative overflow-hidden shadow-2xs"
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-theme-accent/5 rounded-full blur-xl pointer-events-none" />
           <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-accent mb-3 flex items-center gap-1.5 select-none leading-none">
-            <span>✨</span> Lumen Summary
+            <span>✨</span> Ariser Summary
           </h4>
           <p className="text-base md:text-lg text-theme-text/90 leading-relaxed font-serif-lumen italic font-normal mb-5">
             {generateAiSummary()}
@@ -338,6 +406,11 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
             </div>
           </motion.div>
         )}
+
+        {/* Mobile-Only Quick Facts */}
+        <div className="block lg:hidden mb-5">
+          {renderQuickFactsCard()}
+        </div>
 
         {/* Organic Results — no card boxes, just clean content rows */}
         <div className="divide-y divide-theme-border">
@@ -500,71 +573,9 @@ export const WebResults: React.FC<WebResultsProps> = ({ data, cardVariants }) =>
           </div>
         </div>
 
-        {/* Quick Facts */}
-        <div className="space-y-2.5">
-          <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 pl-1.5 leading-none select-none">
-            Quick Facts
-          </h4>
-          <div className="border border-theme-border bg-theme-card/30 rounded-3xl overflow-hidden shadow-2xs">
-            <div className="relative aspect-video w-full bg-theme-accent overflow-hidden flex items-center justify-center select-none">
-              {factsCard.imageUrl ? (
-                <img
-                  src={factsCard.imageUrl}
-                  alt={factsCard.title}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition duration-300"
-                  onError={(e) => { e.currentTarget.style.display = "none"; }}
-                />
-              ) : (
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{ backgroundImage: "repeating-linear-gradient(45deg,#000 0px,#000 10px,transparent 10px,transparent 20px)" }}
-                />
-              )}
-              {/* Overlay shading gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-4 left-5 font-serif-lumen italic text-white text-xl drop-shadow-md font-bold z-10 leading-none">
-                {factsCard.title}
-              </span>
-            </div>
-            <div className="p-5 space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <h3 className="text-lg font-bold font-serif-lumen text-theme-accent leading-none">
-                    {factsCard.title}
-                  </h3>
-                  {factsCard.type && (
-                    <span className="text-[9px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-theme-accent/10 text-theme-accent select-none">
-                      {factsCard.type}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs md:text-sm text-theme-text/80 leading-relaxed">
-                  {factsCard.description}
-                </p>
-                {factsCard.link && (
-                  <a
-                    href={factsCard.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-0.5 text-3xs font-bold text-theme-accent hover:underline mt-2 select-none"
-                  >
-                    Read more on Wikipedia →
-                  </a>
-                )}
-              </div>
-              <div className="border-t border-theme-border pt-4 space-y-2.5">
-                {factsCard.facts.map((fact, idx) => (
-                  <div key={idx} className="flex items-start justify-between text-xs md:text-sm gap-2">
-                    <span className="text-theme-text opacity-45 font-semibold flex-shrink-0 select-none">
-                      {fact.key}
-                    </span>
-                    <span className="text-theme-text/90 font-bold text-right">{fact.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* Desktop-Only Quick Facts */}
+        <div className="hidden lg:block">
+          {renderQuickFactsCard()}
         </div>
 
       </div>

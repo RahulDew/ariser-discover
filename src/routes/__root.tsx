@@ -16,7 +16,7 @@ function RootComponent() {
   }, [themeId, mode]);
 
   return (
-    <div className="min-h-screen bg-theme-bg text-theme-text transition-colors duration-300 ease-in-out font-sans">
+    <div className="min-h-screen min-h-[100dvh] bg-theme-bg text-theme-text transition-colors duration-300 ease-in-out font-sans">
       <Outlet />
     </div>
   );

@@ -10,6 +10,7 @@ interface SearchTabsProps {
   tbs: string;
   batch: boolean;
   onFiltersChange: (filters: { hl?: string; gl?: string; tbs?: string; batch?: boolean }) => void;
+  totalResults?: string;
 }
 
 /**
@@ -24,8 +25,21 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
   tbs,
   batch,
   onFiltersChange,
+  totalResults,
 }) => {
   const [showDrawer, setShowDrawer] = useState(false);
+
+  const formatCount = (countStr?: string) => {
+    if (!countStr) return "";
+    const num = parseInt(countStr.replace(/,/g, ""), 10);
+    if (isNaN(num)) return "";
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1).replace(/\.0$/, "")}K`;
+    return num.toString();
+  };
+
+  const allCount = formatCount(totalResults);
+  const imagesCount = totalResults ? formatCount((parseInt(totalResults.replace(/,/g, ""), 10) * 0.65).toString()) : "";
 
   const tabs = [
     { id: "search", label: "All",      icon: <FaGlobe className="text-xs" /> },
@@ -45,26 +59,30 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
   ];
 
   return (
-    <div className="border-b border-theme-border bg-theme-bg/40 backdrop-blur-sm px-4 md:px-8 py-2.5 transition-colors duration-300">
+    <div className="border-b border-theme-border bg-theme-bg/40 backdrop-blur-sm px-4 md:px-8 py-2 md:py-2.5 transition-colors duration-300">
       <div className="max-w-7xl mx-auto flex flex-col">
         
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
           {/* Unified Pill-Based Tabs Container */}
           <div className="flex items-center gap-1.5 p-1 bg-theme-card/60 border border-theme-border rounded-full w-fit max-w-full overflow-x-auto scrollbar-none select-none">
             {tabs.map((tab) => {
               const isActive = type === tab.id;
+              let displayLabel = tab.label;
+              if (tab.id === "search" && allCount) displayLabel = `All ${allCount}`;
+              if (tab.id === "images" && imagesCount) displayLabel = `Images ${imagesCount}`;
+              
               return (
                 <button
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
-                  className={`py-1.5 px-4 rounded-full flex items-center gap-2 font-bold text-xs md:text-sm transition-all duration-200 ${
+                  className={`py-1.5 px-4 rounded-full flex items-center gap-2 font-bold text-xs md:text-sm transition-all duration-200 flex-shrink-0 ${
                     isActive
                       ? "bg-theme-accent text-white shadow-sm scale-102"
                       : "text-theme-text/80 hover:text-theme-accent hover:bg-theme-accent/5"
                   }`}
                 >
                   {tab.icon}
-                  <span>{tab.label}</span>
+                  <span>{displayLabel}</span>
                 </button>
               );
             })}
@@ -76,7 +94,7 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
             {/* Time Filters */}
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 pr-1.5">
-                Time
+                TIME
               </span>
               <div className="flex items-center gap-1.5">
                 {timeFilters.map((filter) => {

@@ -10,7 +10,9 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-loader-spinner": "^5.1.5",
+    "react-markdown": "^10.1.0",
     "react-player": "^2.10.1",
+    "remark-gfm": "^4.0.1",
     "use-debounce": "^8.0.1",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.2"

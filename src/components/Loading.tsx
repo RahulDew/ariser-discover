@@ -139,7 +139,7 @@ function renderSkeletons(type: string) {
           {/* Left column */}
           <div className="lg:col-span-8 space-y-0">
 
-            {/* Lumen Summary skeleton */}
+            {/* Ariser Summary skeleton */}
             <div className="border border-theme-accent bg-theme-accent/4 p-6 rounded-3xl mb-5 space-y-3">
               <div className={`h-2 w-24 ${shimmerAccent}`} />
               <div className="space-y-2 pt-1">

@@ -254,6 +254,8 @@ export interface AppState {
   mode: "light" | "dark";
   searchHistory: string[];
   mockMode: boolean;
+  themeCustomizeOpen: boolean;
+  setThemeCustomizeOpen: (val: boolean) => void;
   setTheme: (themeId: string) => void;
   toggleMode: () => void;
   addToHistory: (query: string) => void;
@@ -269,6 +271,8 @@ export const useAppStore = create<AppState>()(
       mode: "light",
       searchHistory: [],
       mockMode: false,
+      themeCustomizeOpen: false,
+      setThemeCustomizeOpen: (val) => set({ themeCustomizeOpen: val }),
 
       setTheme: (themeId) => {
         const mode = get().mode;

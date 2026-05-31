@@ -13,7 +13,8 @@ import { ShoppingResults } from "../features/results/ShoppingResults";
 import { ScholarResults } from "../features/results/ScholarResults";
 import { ScraperResults } from "../features/results/ScraperResults";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaGraduationCap, FaTimes, FaArrowLeft } from "react-icons/fa";
+import { Link } from "@tanstack/react-router";
 import Loading from "../components/Loading";
 import { NoData } from "../components/NoData";
 import Footer from "../components/Footer";
@@ -29,6 +30,7 @@ export const searchRoute = createRoute({
     gl: (search.gl as string) || "us",
     tbs: (search.tbs as string) || "anytime",
     batch: (search.batch === "true" || search.batch === true) ? true : false,
+    scrape: (search.scrape === "true" || search.scrape === true) ? true : false,
   }),
   component: SearchComponent,
 });
@@ -40,20 +42,56 @@ export const searchRoute = createRoute({
  */
 function SearchComponent() {
   const router = useRouter();
-  const { q, type, hl, gl, tbs, batch } = searchRoute.useSearch();
+  const { q, type, hl, gl, tbs, batch, scrape } = searchRoute.useSearch();
   const [inputVal, setInputVal] = useState(q);
   const [page, setPage] = useState(1);
   const [activeBatchIndex, setActiveBatchIndex] = useState(0);
+  const [scrapeMode, setScrapeMode] = useState(scrape);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
     setInputVal(q);
     setPage(1); // Reset to page 1 on new query
     setActiveBatchIndex(0); // Reset active batch index
-  }, [q]);
+    setScrapeMode(scrape);
+  }, [q, scrape]);
+
+  // Autocomplete fetcher for mobile bottom search bar
+  useEffect(() => {
+    if (!inputVal.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(inputVal)}`);
+        const data = await res.json();
+        setSuggestions(data[1] || []);
+      } catch (e) {
+        console.error("Autocomplete failed:", e);
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [inputVal]);
+
+  // When the toggle is flipped, update the URL immediately so the view switches
+  const handleScrapeModeToggle = (val: boolean) => {
+    setScrapeMode(val);
+    router.navigate({
+      to: "/search",
+      search: { q, type, hl, gl, tbs, batch, scrape: val },
+      replace: true,
+    });
+  };
+
+  const isUrl = (q.startsWith("http://") || q.startsWith("https://")) ||
+    (!q.includes(" ") && q.includes(".") && q.length > 4);
+  const shouldScrape = scrape && isUrl;
 
   // Execute Search query hook
-  const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch);
+  const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch, !shouldScrape);
 
   // Form search query submissions
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -69,6 +107,7 @@ function SearchComponent() {
         gl,
         tbs,
         batch,
+        scrape: scrapeMode,
       },
     });
   };
@@ -84,6 +123,7 @@ function SearchComponent() {
         gl,
         tbs,
         batch,
+        scrape: scrapeMode,
       },
     });
     setPage(1);
@@ -103,6 +143,14 @@ function SearchComponent() {
    * Helper dispatcher to choose the correct modular results view
    */
   const renderResultsDispatcher = () => {
+    // If scrape mode is ON and query looks like a URL → open the deep web reader immediately
+    const isUrl = (q.startsWith("http://") || q.startsWith("https://")) ||
+      (!q.includes(" ") && q.includes(".") && q.length > 4);
+
+    if (scrape && isUrl) {
+      return <ScraperResults url={q} cardVariants={cardVariants} />;
+    }
+
     if (!data) return <NoData resultType={type} />;
 
     // Handle batch data array vs standard data object
@@ -110,13 +158,8 @@ function SearchComponent() {
 
     if (!activeData) return <NoData resultType={type} />;
 
-    // Check if query is a URL to trigger Webpage reader
-    const isUrl = q.startsWith("http://") || q.startsWith("https://") || q.includes(".") && !q.includes(" ") && q.length > 4;
-
-    if (isUrl) {
-      return <ScraperResults url={q} data={activeData?.scrapedData} cardVariants={cardVariants} />;
-    }
-
+    // If scrape mode is ON but query is a keyword → render standard web results
+    // (scrape mode is intended for URLs; for keywords it still returns web results)
     switch (type) {
       case "images":
         return <ImageResults data={activeData} cardVariants={cardVariants} />;
@@ -159,6 +202,8 @@ function SearchComponent() {
           inputVal={inputVal} 
           setInputVal={setInputVal} 
           onSubmit={handleSearchSubmit} 
+          scrapeMode={scrapeMode}
+          setScrapeMode={handleScrapeModeToggle}
         />
 
         {/* Dynamic sliding Tab underlines */}
@@ -183,16 +228,17 @@ function SearchComponent() {
             });
             setPage(1);
           }}
+          totalResults={data?.searchInformation?.totalResults}
         />
       </div>
 
       {/* Primary Results Display */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-6 md:px-8 z-10 min-w-0">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 pt-6 pb-24 md:pb-6 md:px-8 z-10 min-w-0">
         
         {/* Results Metadata Statistics Row */}
         {q && !isLoading && !isError && liveResultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
-            About {liveResultCount} results • {liveSearchTime} • Safe search on
+            About {liveResultCount} results • {liveSearchTime}
           </div>
         )}
 
@@ -232,6 +278,23 @@ function SearchComponent() {
             >
               <FaSearch className="text-6xl mb-4 text-theme-accent opacity-30" />
               <p className="text-lg font-medium">Please enter a search query above to begin.</p>
+            </motion.div>
+          ) : shouldScrape ? (
+            <motion.div
+              key={`${q}-${type}-${page}-${activeBatchIndex}`}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08,
+                  },
+                },
+              }}
+            >
+              {renderResultsDispatcher()}
             </motion.div>
           ) : isLoading ? (
             <motion.div 
@@ -314,6 +377,11 @@ function SearchComponent() {
           </div>
         )}
       </main>
+
+      {/* Floating Customize ThemeSelector pill for mobile screens only (matches user's preference) */}
+      <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:hidden px-4">
+        <ThemeSelector layoutId="theme-selector-floating" />
+      </div>
 
       <Footer />
     </div>

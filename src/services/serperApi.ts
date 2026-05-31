@@ -90,3 +90,36 @@ export const fetchSerperResults = async (
   const data = await response.json();
   return data;
 };
+
+/**
+ * Scrape a URL using Serper's /webpage endpoint.
+ * Returns the full text content of the page.
+ *
+ * @param {string} url The URL to scrape
+ * @returns {Promise<{ title: string; text: string }>}
+ */
+export const fetchSerperWebpage = async (url: string) => {
+  const apiKey = import.meta.env.VITE_SERPER_KEY || "eda103aef7bf56dba66cb7f8243fc051d216bfe7";
+
+  if (!apiKey) {
+    throw new Error("Serper API Key is not configured.");
+  }
+
+  console.log(`[Serper Webpage] Scraping: ${url}`);
+
+  const response = await fetch(`${SERPER_BASE_URL}/webpage`, {
+    method: "POST",
+    headers: {
+      "X-API-KEY": apiKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ url }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Webpage scrape failed: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data;
+};

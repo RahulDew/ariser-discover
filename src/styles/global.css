@@ -95,5 +95,14 @@
   .border-theme-accent\/20 { border-color: color-mix(in srgb, var(--color-accent) 20%, transparent); }
   .border-theme-accent\/25 { border-color: color-mix(in srgb, var(--color-accent) 25%, transparent); }
   .border-theme-accent\/40 { border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+
+  /* Hide scrollbars for scrollable rows */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 

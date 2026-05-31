@@ -9,8 +9,13 @@ import { FaPalette, FaSun, FaMoon, FaTimes } from "react-icons/fa";
  * When clicked, it morphs dynamically into a sleek color selection bar.
  * When hovering over a color swatch, it expands horizontally to show the colorway name.
  */
-export const ThemeSelector: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface ThemeSelectorProps {
+  layoutId?: string;
+}
+
+export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-selector-container" }) => {
+  const isOpen = useAppStore((state) => state.themeCustomizeOpen);
+  const setIsOpen = useAppStore((state) => state.setThemeCustomizeOpen);
   const [hoveredThemeId, setHoveredThemeId] = useState<string | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   
@@ -33,7 +38,7 @@ export const ThemeSelector: React.FC = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   return (
     <div className="relative pointer-events-auto" ref={popoverRef}>
@@ -41,7 +46,7 @@ export const ThemeSelector: React.FC = () => {
         {!isOpen ? (
           <motion.button
             key="collapsed-button"
-            layoutId="theme-selector-container"
+            layoutId={layoutId}
             onClick={() => setIsOpen(true)}
             className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/10 hover:bg-theme-accent/20 border border-theme-accent/20 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -55,7 +60,7 @@ export const ThemeSelector: React.FC = () => {
           /* Expanded Sleek Theme Selection Bar - dynamically matches light/dark active theme */
           <motion.div
             key="expanded-bar"
-            layoutId="theme-selector-container"
+            layoutId={layoutId}
             className="flex items-center gap-3.5 px-4 py-2 bg-theme-card/95 border border-theme-border backdrop-blur-xl rounded-full shadow-2xl z-50 max-w-full overflow-x-auto scrollbar-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
