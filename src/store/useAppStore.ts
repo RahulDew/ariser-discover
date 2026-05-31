@@ -253,7 +253,6 @@ export interface AppState {
   themeId: string;
   mode: "light" | "dark";
   searchHistory: string[];
-  mockMode: boolean;
   themeCustomizeOpen: boolean;
   setThemeCustomizeOpen: (val: boolean) => void;
   setTheme: (themeId: string) => void;
@@ -261,7 +260,6 @@ export interface AppState {
   addToHistory: (query: string) => void;
   clearHistory: () => void;
   removeFromHistory: (query: string) => void;
-  setMockMode: (val: boolean) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -270,7 +268,6 @@ export const useAppStore = create<AppState>()(
       themeId: "apricot", // Default theme from the PDF (Apricot Cream + Terracotta)
       mode: "light",
       searchHistory: [],
-      mockMode: false,
       themeCustomizeOpen: false,
       setThemeCustomizeOpen: (val) => set({ themeCustomizeOpen: val }),
 
@@ -307,8 +304,6 @@ export const useAppStore = create<AppState>()(
         const currentHistory = get().searchHistory;
         set({ searchHistory: currentHistory.filter((item) => item !== query) });
       },
-
-      setMockMode: (val) => set({ mockMode: val }),
     }),
     {
       name: "ariser-discover-store", // Storage key for Ariser Discover brand
@@ -320,7 +315,6 @@ export const useAppStore = create<AppState>()(
       onRehydrateStorage: () => (state) => {
         // Automatically inject theme custom colors as soon as local storage hydrates!
         if (state) {
-          state.mockMode = false;
           applyThemeColors(state.themeId, state.mode);
         }
       },

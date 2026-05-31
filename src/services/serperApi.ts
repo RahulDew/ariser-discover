@@ -17,7 +17,6 @@ const SERPER_BASE_URL = "https://google.serper.dev";
 export const fetchSerperResults = async (
   q, 
   type = "search", 
-  mockMode = false, 
   page = 1,
   hl = "en",
   gl = "us",
