@@ -287,7 +287,7 @@ function HomeComponent() {
           <p className="text-[10px] md:text-xs text-theme-text/50 font-medium h-4 transition-all duration-300">
             {scrapeMode 
               ? "Deep Web Scraper — Fetch, extract clean text & metadata." 
-              : "Search the web — All, Images, Videos & News."}
+              : "Search the web — All, Images, Videos & More."}
           </p>
         </motion.div>
 
