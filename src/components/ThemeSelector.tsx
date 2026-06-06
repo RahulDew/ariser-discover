@@ -19,10 +19,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
   const [hoveredThemeId, setHoveredThemeId] = useState<string | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   
-  const themeId = useAppStore((state) => state.themeId);
-  const mode = useAppStore((state) => state.mode);
-  const setTheme = useAppStore((state) => state.setTheme);
-  const toggleMode = useAppStore((state) => state.toggleMode);
+  const { themeId, mode, setTheme, toggleMode } = useAppStore();
 
   // Close the popover on clicking outside
   useEffect(() => {
@@ -42,16 +39,17 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
 
   return (
     <div className="relative pointer-events-auto" ref={popoverRef}>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {!isOpen ? (
           <motion.button
             key="collapsed-button"
             layoutId={layoutId}
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/10 hover:bg-theme-accent/20 border border-theme-accent/20 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-200 font-bold text-sm tracking-wide select-none"
+            className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/10 hover:bg-theme-accent/20 border border-theme-accent/20 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-colors duration-150 font-bold text-sm tracking-wide select-none"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 550, damping: 36 }}
           >
             <FaPalette className="text-base text-theme-accent" />
             <span className="text-theme-accent">Customize</span>
@@ -65,6 +63,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 550, damping: 36 }}
           >
             {/* Color swatches row - standard flex container with CSS width transitions */}
             <div className="flex items-center gap-2">

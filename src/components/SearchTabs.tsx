@@ -75,12 +75,19 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
-                  className={`py-1.5 px-4 rounded-full flex items-center gap-2 font-bold text-xs md:text-sm transition-all duration-200 flex-shrink-0 ${
+                  className={`py-1.5 px-4 rounded-full flex items-center gap-2 font-bold text-xs md:text-sm relative transition-all duration-150 flex-shrink-0 z-10 ${
                     isActive
-                      ? "bg-theme-accent text-white shadow-sm scale-102"
-                      : "text-theme-text/80 hover:text-theme-accent hover:bg-theme-accent/5"
+                      ? "text-white font-extrabold shadow-xs"
+                      : "text-theme-text/80 hover:text-theme-accent"
                   }`}
                 >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeSearchTab"
+                      transition={{ type: "spring", stiffness: 550, damping: 36 }}
+                      className="absolute inset-0 bg-theme-accent rounded-full -z-10 shadow-sm"
+                    />
+                  )}
                   {tab.icon}
                   <span>{displayLabel}</span>
                 </button>
@@ -103,12 +110,19 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                     <button
                       key={filter.id}
                       onClick={() => onFiltersChange({ tbs: filter.id })}
-                      className={`px-4 py-1.5 rounded-full border text-xs font-semibold transition-all duration-200 ${
+                      className={`px-4 py-1.5 rounded-full border text-xs font-semibold relative transition-all duration-150 flex-shrink-0 z-10 ${
                         isSelected
-                          ? "border-theme-accent bg-theme-accent/5 text-theme-accent font-bold"
+                          ? "border-theme-accent text-theme-accent font-bold"
                           : "border-theme-border bg-theme-card/30 hover:border-theme-accent text-theme-text/80 hover:text-theme-accent"
                       }`}
                     >
+                      {isSelected && (
+                        <motion.div
+                          layoutId="activeTimeFilter"
+                          transition={{ type: "spring", stiffness: 550, damping: 36 }}
+                          className="absolute inset-0 bg-theme-accent/10 rounded-full -z-10"
+                        />
+                      )}
                       {filter.label}
                     </button>
                   );
@@ -142,7 +156,7 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
               className="overflow-hidden border-t border-theme-border/20 mt-3 pt-3 flex flex-wrap items-center gap-6"
             >
               {/* Language Selector */}

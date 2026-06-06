@@ -14,8 +14,8 @@ export const Brand: React.FC<BrandProps> = ({ className = "", size = "md" }) => 
   };
 
   return (
-    <div className={`font-serif-lumen font-normal tracking-tight italic select-none ${sizeClasses[size]} ${className}`}>
-      <span className="inline">
+    <div className={`inline-flex items-center font-serif-lumen font-normal tracking-tight italic select-none ${sizeClasses[size]} ${className}`}>
+      <span className="inline-flex">
         <span className="text-theme-text transition-colors duration-300">Ariser Discov</span>
         <span className="text-theme-accent transition-colors duration-300">e</span>
         <span className="text-theme-text transition-colors duration-300">r</span>

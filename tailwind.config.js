@@ -6,6 +6,9 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-family-theme)', 'sans-serif'],
+      },
       colors: {
         theme: {
           bg: 'var(--color-bg)',

@@ -40,7 +40,7 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ type: "spring", stiffness: 450, damping: 32 }}
       className="flex flex-col items-center justify-center text-center p-8 py-16 w-full max-w-lg mx-auto select-none"
     >
       {/* Dynamic Animated theme-accented SVG Artwork */}

@@ -4,13 +4,14 @@ import { Route as rootRoute } from "./routes/__root";
 import { indexRoute } from "./routes/index";
 import { searchRoute } from "./routes/search";
 import { helpRoute } from "./routes/help";
+import { customizeRoute } from "./routes/customize";
 
 // Load global and modern styling
 import "./styles/global.css";
 import "./styles/fonts.css";
 
 // Programmatically build route tree
-const routeTree = rootRoute.addChildren([indexRoute, searchRoute, helpRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, searchRoute, helpRoute, customizeRoute]);
 
 // Initialize the router instance
 const router = createRouter({

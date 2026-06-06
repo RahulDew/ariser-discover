@@ -63,13 +63,13 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         type="button"
         onClick={() => setScrapeMode(false)}
         className={`flex-shrink-0 flex items-center justify-center gap-1 px-3 py-1 rounded-full text-[10px] md:text-xs font-extrabold transition-all relative duration-300 z-10 ${
-          !scrapeMode ? "text-neutral-950" : "text-theme-text opacity-70 hover:opacity-100"
+          !scrapeMode ? "text-white" : "text-theme-text opacity-70 hover:opacity-100"
         }`}
       >
         {!scrapeMode && (
           <motion.div
             layoutId="activeHeaderTab"
-            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+            transition={{ type: "spring", stiffness: 550, damping: 36 }}
             className="absolute inset-0 bg-theme-accent rounded-full -z-10 shadow-sm"
           />
         )}
@@ -81,13 +81,13 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         type="button"
         onClick={() => setScrapeMode(true)}
         className={`flex-shrink-0 flex items-center justify-center gap-1 px-3 py-1 rounded-full text-[10px] md:text-xs font-extrabold transition-all relative duration-300 z-10 ${
-          scrapeMode ? "text-neutral-950" : "text-theme-text opacity-70 hover:opacity-100"
+          scrapeMode ? "text-white" : "text-theme-text opacity-70 hover:opacity-100"
         }`}
       >
         {scrapeMode && (
           <motion.div
             layoutId="activeHeaderTab"
-            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+            transition={{ type: "spring", stiffness: 550, damping: 36 }}
             className="absolute inset-0 bg-theme-accent rounded-full -z-10 shadow-sm"
           />
         )}
@@ -147,31 +147,39 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         </div>
 
         {/* Floating Autocomplete drop panel */}
-        {showDropdown && suggestions.length > 0 && !isValidationError && (
-          <div className="absolute top-[110%] left-0 right-0 border border-theme-border bg-theme-card/95 backdrop-blur-md rounded-2xl shadow-lg z-50 overflow-hidden py-2 select-none">
-            {suggestions.slice(0, 7).map((item, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => {
-                  setInputVal(item);
-                  setShowDropdown(false);
-                  router.navigate({
-                    to: "/search",
-                    search: {
-                      q: item.trim(),
-                      type,
-                    },
-                  });
-                }}
-                className="w-full text-left px-5 py-2.5 hover:bg-theme-accent/10 hover:text-theme-accent text-sm text-theme-text font-bold transition-colors duration-150 flex items-center gap-3"
-              >
-                <FaSearch className="text-[10px] opacity-40 text-theme-accent" />
-                <span>{item}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        <AnimatePresence>
+          {showDropdown && suggestions.length > 0 && !isValidationError && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 550, damping: 36 }}
+              className="absolute top-[110%] left-0 right-0 border border-theme-border bg-theme-card/95 backdrop-blur-md rounded-2xl shadow-lg z-50 overflow-hidden py-2 select-none origin-top"
+            >
+              {suggestions.slice(0, 7).map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setInputVal(item);
+                    setShowDropdown(false);
+                    router.navigate({
+                      to: "/search",
+                      search: {
+                        q: item.trim(),
+                        type,
+                      },
+                    });
+                  }}
+                  className="w-full text-left px-5 py-2.5 hover:bg-theme-accent/10 hover:text-theme-accent text-sm text-theme-text font-bold transition-colors duration-150 flex items-center gap-3"
+                >
+                  <FaSearch className="text-[10px] opacity-40 text-theme-accent" />
+                  <span>{item}</span>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </form>
   );

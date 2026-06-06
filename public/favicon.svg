@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Base line -->
+  <path d="M15 75 H85" stroke="#D66240" stroke-width="7.5" stroke-linecap="round" />
+  <!-- Sunrise Arch -->
+  <path d="M26 75 A24 24 0 0 1 74 75" stroke="#2E2724" stroke-width="7.5" stroke-linecap="round" fill="none" />
+  <!-- Sun Core Dot -->
+  <circle cx="50" cy="48" r="10.5" fill="#D66240" />
+</svg>

@@ -13,6 +13,7 @@ import {
   FaExclamationTriangle
 } from "react-icons/fa";
 import { useWebpageQuery } from "../../hooks/useWebpageQuery";
+import { QuotaExceeded } from "../../components/QuotaExceeded";
 
 interface ScraperResultsProps {
   url: string;
@@ -251,26 +252,30 @@ export const ScraperResults: React.FC<ScraperResultsProps> = ({ url, cardVariant
             </div>
           </motion.div>
         ) : isError ? (
-          <motion.div
-            key="error"
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center py-24 text-center space-y-4"
-          >
-            <span className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-              <FaExclamationTriangle className="text-2xl text-red-500" />
-            </span>
-            <p className="text-base font-bold text-theme-text/80">Deep Scrape Failed</p>
-            <p className="text-sm text-theme-text/50 max-w-sm">{(error as Error)?.message || "The website rejected our scraper requests or has anti-bot firewalls."}</p>
-            <a
-              href={normalizedUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-theme-accent hover:bg-theme-accent-hover text-white rounded-full text-sm font-bold shadow-sm transition-all"
+          (error as Error)?.message === "QUOTA_EXCEEDED" ? (
+            <QuotaExceeded isScraper={true} />
+          ) : (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-24 text-center space-y-4"
             >
-              Open Live Page <FaExternalLinkAlt className="text-[10px]" />
-            </a>
-          </motion.div>
+              <span className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                <FaExclamationTriangle className="text-2xl text-red-500" />
+              </span>
+              <p className="text-base font-bold text-theme-text/80">Deep Scrape Failed</p>
+              <p className="text-sm text-theme-text/50 max-w-sm">{(error as Error)?.message || "The website rejected our scraper requests or has anti-bot firewalls."}</p>
+              <a
+                href={normalizedUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-theme-accent hover:bg-theme-accent-hover text-white rounded-full text-sm font-bold shadow-sm transition-all"
+              >
+                Open Live Page <FaExternalLinkAlt className="text-[10px]" />
+              </a>
+            </motion.div>
+          )
         ) : !hasData ? (
           <motion.div
             key="empty"

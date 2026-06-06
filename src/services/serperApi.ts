@@ -83,6 +83,9 @@ export const fetchSerperResults = async (
   });
 
   if (!response.ok) {
+    if (response.status === 403 || response.status === 429) {
+      throw new Error("QUOTA_EXCEEDED");
+    }
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
 
@@ -116,6 +119,9 @@ export const fetchSerperWebpage = async (url: string) => {
   });
 
   if (!response.ok) {
+    if (response.status === 403 || response.status === 429) {
+      throw new Error("QUOTA_EXCEEDED");
+    }
     throw new Error(`Webpage scrape failed: ${response.status} ${response.statusText}`);
   }
 

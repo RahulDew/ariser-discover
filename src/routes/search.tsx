@@ -13,10 +13,11 @@ import { ShoppingResults } from "../features/results/ShoppingResults";
 import { ScholarResults } from "../features/results/ScholarResults";
 import { ScraperResults } from "../features/results/ScraperResults";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaGraduationCap, FaTimes, FaArrowLeft } from "react-icons/fa";
+import { FaSearch, FaGlobe, FaImage, FaRegNewspaper, FaVideo, FaShoppingCart, FaGraduationCap, FaTimes, FaArrowLeft, FaPalette } from "react-icons/fa";
 import { Link } from "@tanstack/react-router";
 import Loading from "../components/Loading";
 import { NoData } from "../components/NoData";
+import { QuotaExceeded } from "../components/QuotaExceeded";
 import Footer from "../components/Footer";
 
 // Programmatic route validation and parameter tracking
@@ -129,13 +130,27 @@ function SearchComponent() {
     setPage(1);
   };
 
+  // Custom inertia-based fast smooth scroll helper
+  const fastScrollToTop = () => {
+    const scrollStep = () => {
+      const c = document.documentElement.scrollTop || document.body.scrollTop;
+      if (c > 1) {
+        window.requestAnimationFrame(scrollStep);
+        window.scrollTo(0, c - c / 5);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    window.requestAnimationFrame(scrollStep);
+  };
+
   // Framer Motion Spring Animations for cascading list cards
   const cardVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 12 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 }
+      transition: { type: "spring" as const, stiffness: 450, damping: 32 }
     }
   };
 
@@ -189,11 +204,18 @@ function SearchComponent() {
     : null;
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative overflow-x-hidden">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative"
+    >
       
-      {/* Background radial glow spotlights matching active theme accent */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-theme-accent/5 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-theme-text/3 blur-[90px] pointer-events-none select-none transition-colors duration-300" />
+      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-theme-accent/5 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-theme-text/3 blur-[90px] pointer-events-none select-none transition-colors duration-300" />
+      </div>
 
       <div className="z-10 w-full">
         {/* Sticky Search Panel & Controls */}
@@ -289,7 +311,7 @@ function SearchComponent() {
                 visible: {
                   opacity: 1,
                   transition: {
-                    staggerChildren: 0.08,
+                    staggerChildren: 0.03,
                   },
                 },
               }}
@@ -306,18 +328,22 @@ function SearchComponent() {
               <Loading />
             </motion.div>
           ) : isError ? (
-            <motion.div 
-              key="error"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-400 p-6 rounded-2xl max-w-lg mx-auto mt-10 shadow-sm"
-            >
-              <h3 className="font-bold text-lg mb-2 flex items-center">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2.5 animate-pulse" />
-                Search failed
-              </h3>
-              <p className="text-sm">{error?.message || "An unexpected error occurred."}</p>
-            </motion.div>
+            error?.message === "QUOTA_EXCEEDED" ? (
+              <QuotaExceeded />
+            ) : (
+              <motion.div 
+                key="error"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-400 p-6 rounded-2xl max-w-lg mx-auto mt-10 shadow-sm"
+              >
+                <h3 className="font-bold text-lg mb-2 flex items-center">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2.5 animate-pulse" />
+                  Search failed
+                </h3>
+                <p className="text-sm">{error?.message || "An unexpected error occurred."}</p>
+              </motion.div>
+            )
           ) : (
             <motion.div
               key={`${q}-${type}-${page}-${activeBatchIndex}`}
@@ -328,7 +354,7 @@ function SearchComponent() {
                 visible: {
                   opacity: 1,
                   transition: {
-                    staggerChildren: 0.08,
+                    staggerChildren: 0.03,
                   },
                 },
               }}
@@ -342,9 +368,9 @@ function SearchComponent() {
         {q && !isLoading && !isError && data && (
           <div className="flex items-center justify-center gap-2 mt-10 mb-4 select-none flex-wrap">
             <button
-              onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              onClick={() => { setPage((p) => Math.max(1, p - 1)); fastScrollToTop(); }}
               disabled={page === 1}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-theme-card/40 disabled:hover:text-theme-text disabled:hover:border-theme-border"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-theme-card/40 disabled:hover:text-theme-text disabled:hover:border-theme-border"
             >
               ← Prev
             </button>
@@ -356,8 +382,8 @@ function SearchComponent() {
               return (
                 <button
                   key={pageNum}
-                  onClick={() => { setPage(pageNum); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                  className={`w-9 h-9 rounded-full text-sm font-bold transition-all duration-200 ${
+                  onClick={() => { setPage(pageNum); fastScrollToTop(); }}
+                  className={`w-9 h-9 rounded-full text-sm font-bold transition-all duration-150 ${
                     isActive
                       ? "bg-theme-accent text-white shadow-md scale-110"
                       : "border border-theme-border bg-theme-card/40 text-theme-text hover:bg-theme-accent/10 hover:text-theme-accent hover:border-theme-accent/40"
@@ -369,8 +395,8 @@ function SearchComponent() {
             })}
 
             <button
-              onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-200"
+              onClick={() => { setPage((p) => p + 1); fastScrollToTop(); }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150"
             >
               Next →
             </button>
@@ -378,12 +404,18 @@ function SearchComponent() {
         )}
       </main>
 
-      {/* Floating Customize ThemeSelector pill for mobile screens only (matches user's preference) */}
+      {/* Floating Customize button for mobile screens only (matches user's preference) */}
       <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:hidden px-4">
-        <ThemeSelector layoutId="theme-selector-floating" />
+        <Link
+          to="/customize"
+          className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/15 hover:bg-theme-accent/25 border border-theme-accent/25 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-sm tracking-wide select-none"
+        >
+          <FaPalette className="text-base text-theme-accent" />
+          <span className="text-theme-accent">Customize</span>
+        </Link>
       </div>
 
       <Footer />
-    </div>
+    </motion.div>
   );
 }

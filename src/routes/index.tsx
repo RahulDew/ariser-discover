@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { createRoute, useRouter } from "@tanstack/react-router";
+import { createRoute, useRouter, Link } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { useAppStore, THEMES } from "../store/useAppStore";
 import { FaSearch, FaHistory, FaTrashAlt, FaTimes, FaGlobe, FaPalette } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "../components/Brand";
-import { ThemeSelector } from "../components/ThemeSelector";
 import Footer from "../components/Footer";
 
 export const indexRoute = createRoute({
@@ -16,11 +15,7 @@ export const indexRoute = createRoute({
 
 function HomeComponent() {
   const router = useRouter();
-  const searchHistory = useAppStore((state) => state.searchHistory);
-  const clearHistory = useAppStore((state) => state.clearHistory);
-  const removeFromHistory = useAppStore((state) => state.removeFromHistory);
-  const themeId = useAppStore((state) => state.themeId);
-  const mode = useAppStore((state) => state.mode);
+  const { searchHistory, clearHistory, removeFromHistory, themeId, mode } = useAppStore();
   const [localSearch, setLocalSearch] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -98,55 +93,57 @@ function HomeComponent() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
+        staggerChildren: 0.03,
+        delayChildren: 0.01,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring" as const, stiffness: 100, damping: 15 },
+      transition: { type: "spring" as const, stiffness: 450, damping: 32 },
     },
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] flex flex-col justify-center items-center relative overflow-hidden bg-theme-bg transition-colors duration-300">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col justify-center items-center relative bg-theme-bg transition-colors duration-300">
       
-      {/* Dynamic Moving Blobs (Spotlights) moving independently with heavy blur */}
-      <motion.div
-        animate={{
-          x: [0, 20, -15, 0],
-          y: [0, -16, 12, 0],
-          scale: [1, 1.06, 0.97, 1],
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          repeatType: "mirror" as const,
-          ease: "easeInOut",
-        }}
-        style={{ backgroundColor: currentAccentHover, opacity: 0.25 }}
-        className="absolute top-[-4%] left-[-4%] w-[28vw] h-[28vw] rounded-full blur-[65px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
-      />
-      <motion.div
-        animate={{
-          x: [0, -15, 20, 0],
-          y: [0, 12, -16, 0],
-          scale: [1, 0.97, 1.03, 1],
-        }}
-        transition={{
-          duration: 26,
-          repeat: Infinity,
-          repeatType: "mirror" as const,
-          ease: "easeInOut",
-        }}
-        style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
-        className="absolute bottom-[-4%] right-[-4%] w-[24vw] h-[24vw] rounded-full blur-[55px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
-      />
+      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            x: [0, 20, -15, 0],
+            y: [0, -16, 12, 0],
+            scale: [1, 1.06, 0.97, 1],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            repeatType: "mirror" as const,
+            ease: "easeInOut",
+          }}
+          style={{ backgroundColor: currentAccentHover, opacity: 0.25 }}
+          className="absolute top-[-4%] left-[-4%] w-[28vw] h-[28vw] rounded-full blur-[65px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
+        />
+        <motion.div
+          animate={{
+            x: [0, -15, 20, 0],
+            y: [0, 12, -16, 0],
+            scale: [1, 0.97, 1.03, 1],
+          }}
+          transition={{
+            duration: 26,
+            repeat: Infinity,
+            repeatType: "mirror" as const,
+            ease: "easeInOut",
+          }}
+          style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
+          className="absolute bottom-[-4%] right-[-4%] w-[24vw] h-[24vw] rounded-full blur-[55px] pointer-events-none select-none transition-colors duration-300 z-0 transform-gpu"
+        />
+      </div>
 
       {/* Main Brand Centered Panel */}
       <motion.div 
@@ -203,32 +200,40 @@ function HomeComponent() {
             <button 
               type="submit" 
               disabled={isValidationError}
-              className="absolute right-1.5 md:right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 md:px-5 md:py-2 bg-theme-accent hover:bg-theme-accent-hover text-neutral-950 font-extrabold rounded-full hover:scale-103 active:scale-97 shadow-sm transition-all duration-200 text-xs md:text-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100 flex items-center gap-1 md:gap-1.5"
+              className="absolute right-1.5 md:right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 md:px-5 md:py-2 bg-theme-accent hover:bg-theme-accent-hover text-white font-extrabold rounded-full hover:scale-103 active:scale-97 shadow-sm transition-all duration-200 text-xs md:text-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100 flex items-center gap-1 md:gap-1.5"
             >
               <FaSearch className="text-[10px] md:text-xs" />
               <span>Search</span>
             </button>
 
             {/* Floating Autocomplete drop panel */}
-            {showDropdown && suggestions.length > 0 && !isValidationError && (
-              <div className="absolute top-[110%] left-0 right-0 border border-theme-border bg-theme-card/95 backdrop-blur-md rounded-2xl md:rounded-3xl shadow-lg z-50 overflow-hidden py-1.5 md:py-2.5 select-none">
-                {suggestions.slice(0, 7).map((item, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setLocalSearch(item);
-                      setShowDropdown(false);
-                      executeSearch(item);
-                    }}
-                    className="w-full text-left px-4 md:px-6 py-2 md:py-2.5 hover:bg-theme-accent/10 hover:text-theme-accent text-xs md:text-sm text-theme-text font-bold transition-colors duration-150 flex items-center gap-2.5 md:gap-3.5"
-                  >
-                    <FaSearch className="text-[9px] md:text-[10px] opacity-40 text-theme-accent" />
-                    <span>{item}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+            <AnimatePresence>
+              {showDropdown && suggestions.length > 0 && !isValidationError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.99 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                  transition={{ type: "spring", stiffness: 550, damping: 36 }}
+                  className="absolute top-[110%] left-0 right-0 border border-theme-border bg-theme-card/95 backdrop-blur-md rounded-2xl md:rounded-3xl shadow-lg z-50 overflow-hidden py-1.5 md:py-2.5 select-none origin-top"
+                >
+                  {suggestions.slice(0, 7).map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setLocalSearch(item);
+                        setShowDropdown(false);
+                        executeSearch(item);
+                      }}
+                      className="w-full text-left px-4 md:px-6 py-2 md:py-2.5 hover:bg-theme-accent/10 hover:text-theme-accent text-xs md:text-sm text-theme-text font-bold transition-colors duration-150 flex items-center gap-2.5 md:gap-3.5"
+                    >
+                      <FaSearch className="text-[9px] md:text-[10px] opacity-40 text-theme-accent" />
+                      <span>{item}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.form>
 
@@ -241,14 +246,14 @@ function HomeComponent() {
             <button
               type="button"
               onClick={() => setScrapeMode(false)}
-              className={`flex items-center gap-1.5 md:gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-extrabold transition-all relative duration-300 z-10 ${
-                !scrapeMode ? "text-neutral-950" : "text-theme-text opacity-70 hover:opacity-100"
+              className={`flex items-center gap-1.5 md:gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-extrabold transition-all relative duration-150 z-10 ${
+                !scrapeMode ? "text-white" : "text-theme-text opacity-70 hover:opacity-100"
               }`}
             >
               {!scrapeMode && (
                 <motion.div
                   layoutId="activeHomeTab"
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  transition={{ type: "spring", stiffness: 550, damping: 36 }}
                   className="absolute inset-0 bg-theme-accent rounded-full -z-10 shadow-sm"
                 />
               )}
@@ -262,14 +267,14 @@ function HomeComponent() {
             <button
               type="button"
               onClick={() => setScrapeMode(true)}
-              className={`flex items-center gap-1.5 md:gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-extrabold transition-all relative duration-300 z-10 ${
-                scrapeMode ? "text-neutral-950" : "text-theme-text opacity-70 hover:opacity-100"
+              className={`flex items-center gap-1.5 md:gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-extrabold transition-all relative duration-150 z-10 ${
+                scrapeMode ? "text-white" : "text-theme-text opacity-70 hover:opacity-100"
               }`}
             >
               {scrapeMode && (
                 <motion.div
                   layoutId="activeHomeTab"
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  transition={{ type: "spring", stiffness: 550, damping: 36 }}
                   className="absolute inset-0 bg-theme-accent rounded-full -z-10 shadow-sm"
                 />
               )}
@@ -301,7 +306,7 @@ function HomeComponent() {
               <button
                 key={index}
                 onClick={() => executeSearch(chip)}
-                className="px-3 py-1 md:px-4 md:py-1.5 bg-theme-card/40 hover:bg-theme-accent/15 border border-theme-border hover:border-theme-accent text-theme-text hover:text-theme-accent rounded-full text-[10px] md:text-xs font-semibold shadow-2xs transition-all duration-200"
+                className="px-3 py-1 md:px-4 md:py-1.5 bg-theme-card/40 hover:bg-theme-accent/15 border border-theme-border hover:border-theme-accent text-theme-text hover:text-theme-accent rounded-full text-[10px] md:text-xs font-semibold shadow-2xs transition-all duration-150 hover:scale-102 active:scale-98"
               >
                 {chip}
               </button>
@@ -367,9 +372,15 @@ function HomeComponent() {
           )}
         </AnimatePresence>
       </motion.div>
-      {/* Floating Customize ThemeSelector pill for mobile screens only (matches user's preference) */}
+      {/* Floating Customize button for mobile screens only (matches user's preference) */}
       <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:hidden px-4">
-        <ThemeSelector layoutId="theme-selector-floating" />
+        <Link
+          to="/customize"
+          className="flex items-center gap-2.5 px-5 py-3 bg-theme-accent/15 hover:bg-theme-accent/25 border border-theme-accent/25 backdrop-blur-md rounded-full shadow-md text-theme-accent hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-sm tracking-wide select-none"
+        >
+          <FaPalette className="text-base text-theme-accent" />
+          <span className="text-theme-accent">Customize</span>
+        </Link>
       </div>
 
       <Footer className="absolute bottom-0 left-0 right-0 z-30" />

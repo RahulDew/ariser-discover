@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { ThemeSelector } from "./ThemeSelector";
+import { FaPalette } from "react-icons/fa";
 
 interface FooterProps {
   className?: string;
@@ -26,9 +26,15 @@ const Footer: React.FC<FooterProps> = ({ className = "mt-auto" }) => {
           </Link>
         </div>
         
-        {/* Right Side: Theme Switcher Selector Pill (Hidden on Mobile, Visible on Desktop) */}
+        {/* Right Side: Customize Button (Hidden on Mobile, Visible on Desktop) */}
         <div className="hidden md:flex items-center justify-end flex-shrink-0 z-40">
-          <ThemeSelector layoutId="theme-selector-footer" />
+          <Link
+            to="/customize"
+            className="flex items-center gap-2 px-4 py-2 bg-theme-accent/10 hover:bg-theme-accent/20 border border-theme-accent/20 rounded-full text-theme-accent hover:scale-103 active:scale-97 transition-all duration-200 font-bold text-xs select-none"
+          >
+            <FaPalette className="text-sm" />
+            <span>Customize Theme</span>
+          </Link>
         </div>
       </div>
     </footer>

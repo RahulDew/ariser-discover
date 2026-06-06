@@ -17,6 +17,7 @@ export interface ThemeConfig {
   id: string;
   name: string;
   description: string;
+  fontFamily: string;
   light: ThemePalette;
   dark: ThemePalette;
 }
@@ -27,6 +28,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "apricot",
     name: "Apricot",
     description: "Cream + terracotta",
+    fontFamily: "'Playfair Display', Georgia, serif",
     light: {
       bg: "#FDF6EC",
       text: "#2E2724",
@@ -52,6 +54,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "marina",
     name: "Marina",
     description: "Misty white + deep aqua",
+    fontFamily: "'Outfit', sans-serif",
     light: {
       bg: "#EEF6F8",
       text: "#1A2F37",
@@ -77,6 +80,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "bloom",
     name: "Bloom",
     description: "Blush + magenta",
+    fontFamily: "'Syne', sans-serif",
     light: {
       bg: "#FCF0F4",
       text: "#3F1B24",
@@ -102,6 +106,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "honey",
     name: "Honey",
     description: "Warm cream + amber",
+    fontFamily: "'Lora', Georgia, serif",
     light: {
       bg: "#FDF8E7",
       text: "#332505",
@@ -127,6 +132,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "violet",
     name: "Violet",
     description: "Lavender + cool purple",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
     light: {
       bg: "#F3F0FA",
       text: "#28233C",
@@ -152,6 +158,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "plum",
     name: "Plum",
     description: "Cream + deep warm purple",
+    fontFamily: "'Cormorant Garamond', Georgia, serif",
     light: {
       bg: "#FAF0F5",
       text: "#37132D",
@@ -177,6 +184,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "sage",
     name: "Sage",
     description: "Soft green + muted forest",
+    fontFamily: "'Lora', Georgia, serif",
     light: {
       bg: "#F4F6F0",
       text: "#232B1E",
@@ -202,6 +210,7 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: "rosewood",
     name: "Rosewood",
     description: "Pink-beige + dusty burgundy",
+    fontFamily: "'Playfair Display', Georgia, serif",
     light: {
       bg: "#FAF0EE",
       text: "#3D1B1B",
@@ -240,6 +249,7 @@ export const applyThemeColors = (themeId: string, mode: "light" | "dark") => {
   root.style.setProperty("--color-input-bg", palette.inputBg);
   root.style.setProperty("--color-border", palette.borderColor);
   root.style.setProperty("--color-muted-text", palette.mutedText);
+  root.style.setProperty("--font-family-theme", selectedTheme.fontFamily);
 
   // Sync dark class for standard tailwind options if needed
   if (mode === "dark") {

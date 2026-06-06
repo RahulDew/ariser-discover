@@ -25,8 +25,7 @@ export const helpRoute = createRoute({
 });
 
 function HelpComponent() {
-  const themeId = useAppStore((state) => state.themeId);
-  const mode = useAppStore((state) => state.mode);
+  const { themeId, mode } = useAppStore();
 
   const activeTheme = THEMES[themeId] || THEMES.apricot;
   const currentAccentHover = mode === "dark" ? activeTheme.dark.accentHover : activeTheme.light.accentHover;
@@ -36,18 +35,18 @@ function HelpComponent() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.05,
+        staggerChildren: 0.03,
+        delayChildren: 0.01,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 },
+      transition: { type: "spring" as const, stiffness: 450, damping: 32 },
     },
   };
 
@@ -73,12 +72,20 @@ function HelpComponent() {
     {
       icon: <FaTerminal className="text-theme-text/80 text-base" />,
       title: "Core Search Engine API",
-      value: "Google Serper API (Blazing fast live scraping engine delivering organic results under 1s)"
+      value: (
+        <span>
+          <a href="https://serper.dev" target="_blank" rel="noopener noreferrer" className="text-theme-accent hover:underline font-bold">Serper.dev</a> Google Search API (Blazing fast live scraping engine delivering organic results under 1s)
+        </span>
+      )
     },
     {
       icon: <FaKey className="text-theme-text/80 text-base" />,
       title: "Deep Scraper API",
-      value: "Serper /webpage Endpoint proxy (Scrapes, parses and structures static DOM body copy)"
+      value: (
+        <span>
+          <a href="https://serper.dev" target="_blank" rel="noopener noreferrer" className="text-theme-accent hover:underline font-bold">Serper.dev</a> /webpage Endpoint proxy (Scrapes, parses and structures static DOM body copy)
+        </span>
+      )
     },
     {
       icon: <FaHistory className="text-theme-text/80 text-base" />,
@@ -88,29 +95,31 @@ function HelpComponent() {
   ];
 
   return (
-    <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between relative overflow-x-hidden bg-theme-bg transition-colors duration-300">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between relative bg-theme-bg transition-colors duration-300">
       
-      {/* Spotlight background decorations */}
-      <motion.div
-        animate={{
-          x: [0, 20, -15, 0],
-          y: [0, -16, 12, 0],
-          scale: [1, 1.05, 0.98, 1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, repeatType: "mirror" as const, ease: "easeInOut" }}
-        style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
-        className="absolute top-[-5%] left-[-5%] w-[35vw] h-[35vw] rounded-full blur-[80px] pointer-events-none select-none z-0 transform-gpu"
-      />
-      <motion.div
-        animate={{
-          x: [0, -15, 20, 0],
-          y: [0, 12, -16, 0],
-          scale: [1, 0.98, 1.02, 1],
-        }}
-        transition={{ duration: 30, repeat: Infinity, repeatType: "mirror" as const, ease: "easeInOut" }}
-        style={{ backgroundColor: currentAccentHover, opacity: 0.12 }}
-        className="absolute bottom-[-5%] right-[-5%] w-[30vw] h-[30vw] rounded-full blur-[70px] pointer-events-none select-none z-0 transform-gpu"
-      />
+      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            x: [0, 20, -15, 0],
+            y: [0, -16, 12, 0],
+            scale: [1, 1.05, 0.98, 1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, repeatType: "mirror" as const, ease: "easeInOut" }}
+          style={{ backgroundColor: currentAccentHover, opacity: 0.18 }}
+          className="absolute top-[-5%] left-[-5%] w-[35vw] h-[35vw] rounded-full blur-[80px] pointer-events-none select-none z-0 transform-gpu"
+        />
+        <motion.div
+          animate={{
+            x: [0, -15, 20, 0],
+            y: [0, 12, -16, 0],
+            scale: [1, 0.98, 1.02, 1],
+          }}
+          transition={{ duration: 30, repeat: Infinity, repeatType: "mirror" as const, ease: "easeInOut" }}
+          style={{ backgroundColor: currentAccentHover, opacity: 0.12 }}
+          className="absolute bottom-[-5%] right-[-5%] w-[30vw] h-[30vw] rounded-full blur-[70px] pointer-events-none select-none z-0 transform-gpu"
+        />
+      </div>
 
       {/* Modern Header Navigation */}
       <header className="border-b border-theme-border bg-theme-bg/85 backdrop-blur-md sticky top-0 z-40 px-4 py-3.5 md:px-8 flex items-center justify-between gap-4 transition-colors duration-300">
