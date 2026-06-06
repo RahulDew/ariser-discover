@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette, FaGithub } from "react-icons/fa";
 
 interface FooterProps {
   className?: string;
@@ -14,9 +14,15 @@ const Footer: React.FC<FooterProps> = ({ className = "mt-auto" }) => {
         {/* Left Side: Attribution and Help link */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 font-medium select-none w-full md:w-auto">
           <span>Crafted and passioned by</span>
-          <span className="font-bold text-theme-accent hover:text-theme-accent-hover transition cursor-default">
-            Rahul Dewangan
-          </span>
+          <a
+            href="https://github.com/RahulDew"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-bold text-theme-accent hover:text-theme-accent-hover transition duration-200"
+          >
+            <span>Rahul Dewangan</span>
+            <FaGithub className="text-xs md:text-sm" />
+          </a>
           <span className="text-theme-text/30 mx-1">&bull;</span>
           <Link
             to="/help"
