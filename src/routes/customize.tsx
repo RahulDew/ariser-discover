@@ -14,7 +14,6 @@ export const customizeRoute = createRoute({
 
 function CustomizeComponent() {
   const router = useRouter();
-  
   const { themeId, mode, setTheme, toggleMode } = useAppStore();
 
   const activeTheme = THEMES[themeId] || THEMES.apricot;
@@ -50,7 +49,6 @@ function CustomizeComponent() {
   return (
     <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between relative bg-theme-bg transition-colors duration-300">
       
-      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
           animate={{
@@ -74,7 +72,6 @@ function CustomizeComponent() {
         />
       </div>
 
-      {/* Header Navigation */}
       <header className="border-b border-theme-border bg-theme-bg/85 backdrop-blur-md sticky top-0 z-40 px-4 py-3.5 md:px-8 flex items-center justify-between gap-4 transition-colors duration-300">
         <div className="flex items-center gap-3">
           <button 
@@ -96,7 +93,6 @@ function CustomizeComponent() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-5xl mx-auto px-4 py-8 md:py-12 z-10">
         <motion.div
           variants={containerVariants}
@@ -104,7 +100,6 @@ function CustomizeComponent() {
           animate="visible"
           className="space-y-8"
         >
-          {/* Header Title section */}
           <motion.div variants={itemVariants} className="text-center space-y-3">
             <h1 className="text-3xl md:text-5xl font-bold font-serif-lumen text-theme-text leading-tight">
               Personalize <span className="font-serif-lumen italic text-theme-accent">Your Experience</span>
@@ -114,7 +109,6 @@ function CustomizeComponent() {
             </p>
           </motion.div>
 
-          {/* Mode switch - Sun/Moon Selector */}
           <motion.div variants={itemVariants} className="flex justify-center select-none pt-2">
             <div className="flex p-1 bg-theme-card/60 backdrop-blur-md border border-theme-border rounded-full shadow-md relative">
               <button
@@ -157,7 +151,6 @@ function CustomizeComponent() {
 
           <hr className="border-theme-border/60" />
 
-          {/* Grid of Theme Cards */}
           <motion.div 
             variants={itemVariants}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -178,14 +171,12 @@ function CustomizeComponent() {
                     isSelected ? "border-2" : "border"
                   }`}
                 >
-                  {/* Selected Badge */}
                   {isSelected && (
                     <div className="absolute top-4 right-4 bg-theme-accent text-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
                       <FaCheck className="text-[10px]" />
                     </div>
                   )}
 
-                  {/* Header Title / Description */}
                   <div className="space-y-1">
                     <h3 
                       style={{ fontFamily: theme.fontFamily }} 
@@ -198,13 +189,11 @@ function CustomizeComponent() {
                     </p>
                   </div>
 
-                  {/* Color Swatch Previews */}
                   <div className="space-y-2 select-none">
                     <span className="text-[9px] font-extrabold uppercase tracking-widest text-theme-accent block leading-none">
                       Color Palette
                     </span>
                     <div className="flex items-center gap-1.5">
-                      {/* Accent / Primary Swatch */}
                       <div className="flex flex-col items-center gap-1">
                         <div 
                           style={{ backgroundColor: palette.accent }} 
@@ -213,7 +202,6 @@ function CustomizeComponent() {
                         <span className="text-[8px] font-semibold text-theme-text/40">Accent</span>
                       </div>
                       
-                      {/* Background Swatch */}
                       <div className="flex flex-col items-center gap-1">
                         <div 
                           style={{ backgroundColor: palette.bg }} 
@@ -222,7 +210,6 @@ function CustomizeComponent() {
                         <span className="text-[8px] font-semibold text-theme-text/40">Page</span>
                       </div>
 
-                      {/* Card Swatch */}
                       <div className="flex flex-col items-center gap-1">
                         <div 
                           style={{ backgroundColor: palette.cardBg }} 
@@ -231,7 +218,6 @@ function CustomizeComponent() {
                         <span className="text-[8px] font-semibold text-theme-text/40">Cards</span>
                       </div>
 
-                      {/* Foreground Text Swatch */}
                       <div className="flex flex-col items-center gap-1">
                         <div 
                           style={{ backgroundColor: palette.text }} 
@@ -242,21 +228,13 @@ function CustomizeComponent() {
                     </div>
                   </div>
 
-                  {/* Font Typography Showcase */}
                   <div className="space-y-2 border-t border-theme-border/40 pt-3 flex-grow flex flex-col justify-end">
                     <span className="text-[9px] font-extrabold uppercase tracking-widest text-theme-text/40 flex items-center gap-1 leading-none select-none">
-                      <FaFont className="text-[8px]" /> 
-                      <span>Font Identity</span>
+                      <FaFont /> Typography
                     </span>
-                    <div 
-                      style={{ fontFamily: theme.fontFamily }} 
-                      className="text-sm font-medium text-theme-text leading-snug tracking-wide line-clamp-1 italic"
-                    >
-                      Discover the web, softly.
+                    <div className="text-sm font-semibold truncate" style={{ fontFamily: theme.fontFamily }}>
+                      Aa Bb Cc Dd Ee Ff Gg
                     </div>
-                    <span className="text-[9px] font-extrabold text-theme-text/50 uppercase tracking-widest leading-none select-none block pt-0.5">
-                      {theme.fontFamily.split(",")[0].replace(/'/g, "")}
-                    </span>
                   </div>
                 </button>
               );

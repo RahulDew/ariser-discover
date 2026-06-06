@@ -14,11 +14,6 @@ interface SearchHeaderProps {
   setScrapeMode: (val: boolean) => void;
 }
 
-/**
- * Senior Developer Component: SearchHeader
- * Renders the top sticky search header with the segmented Search/Scrape switcher pill
- * embedded DIRECTLY inside the input field to maximize typing space and perfectly match the PDF designs.
- */
 export const SearchHeader: React.FC<SearchHeaderProps> = ({
   type,
   inputVal,
@@ -128,7 +123,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
         />
         
-        {/* Inside input: Clear button (positioned to the left of the switcher) */}
         {inputVal && (
           <div className="absolute right-[112px] top-1/2 -translate-y-1/2 z-10 text-theme-text opacity-50 flex items-center">
             <button 
@@ -141,12 +135,10 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           </div>
         )}
 
-        {/* Inside input: Embedded Switcher Pill */}
         <div className="absolute right-1 top-1/2 -translate-y-1/2 z-10">
           {renderSwitcherPill()}
         </div>
 
-        {/* Floating Autocomplete drop panel */}
         <AnimatePresence>
           {showDropdown && suggestions.length > 0 && !isValidationError && (
             <motion.div
@@ -187,9 +179,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   return (
     <header className="border-b border-theme-border bg-theme-bg/85 backdrop-blur-md sticky top-0 z-50 px-4 py-3 md:px-8 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4 transition-colors duration-300">
       
-      {/* MOBILE-ONLY VIEW */}
       <div className="flex md:hidden items-center justify-between gap-3 w-full">
-        {/* Back button */}
         <Link 
           to="/" 
           className="p-1.5 text-theme-text opacity-70 hover:opacity-100 hover:bg-theme-card rounded-full transition duration-200 flex-shrink-0"
@@ -198,15 +188,12 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           <FaArrowLeft className="text-sm" />
         </Link>
         
-        {/* Compact Search Form */}
         <div className="flex-grow min-w-0">
           {renderSearchForm(true)}
         </div>
       </div>
 
-      {/* DESKTOP-ONLY HEADER VIEW */}
       <div className="hidden md:flex items-center justify-between w-full">
-        {/* Brand / Logo + Back Arrow */}
         <div className="flex items-center gap-3 flex-shrink-0">
           <Link 
             to="/" 
@@ -220,7 +207,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           </Link>
         </div>
 
-        {/* Form and Switcher */}
         <div className="flex items-center gap-3 max-w-xl flex-grow justify-end pl-8">
           {renderSearchForm(false)}
         </div>

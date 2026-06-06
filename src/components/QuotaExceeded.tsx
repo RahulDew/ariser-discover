@@ -8,11 +8,6 @@ interface QuotaExceededProps {
   isScraper?: boolean;
 }
 
-/**
- * Premium QuotaExceeded Fallback Component.
- * Displays a beautiful, theme-matching SVG illustration of a sleeping moon next to a magnifier,
- * signaling that search API limits have been temporarily exceeded, and guides users back safely.
- */
 export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper = false }) => {
   return (
     <motion.div
@@ -21,9 +16,7 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
       transition={{ type: "spring", stiffness: 450, damping: 32 }}
       className="flex flex-col items-center justify-center text-center p-8 py-16 w-full max-w-lg mx-auto select-none"
     >
-      {/* Sleeping Search / Quota Exceeded SVG Illustration */}
       <div className="relative w-56 h-56 mb-8 flex items-center justify-center">
-        {/* Soft atmospheric glowing halo */}
         <div className="absolute inset-8 rounded-full bg-theme-accent/5 blur-2xl animate-pulse" />
 
         <svg
@@ -32,7 +25,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Slow rotating star-dust outer circle */}
           <motion.circle
             cx="100"
             cy="100"
@@ -45,7 +37,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           />
 
-          {/* Floating tiny sleep sparkles / stars */}
           <motion.path
             d="M50 65L52 69L56 71L52 73L50 77L48 73L44 71L48 69L50 65Z"
             fill="var(--color-accent)"
@@ -61,7 +52,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
 
-          {/* Soft cloud elements */}
           <motion.g
             animate={{ x: [-3, 3, -3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -73,19 +63,16 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
             />
           </motion.g>
 
-          {/* Cozy Sleeping Crescent Moon */}
           <motion.g
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           >
-            {/* The crescent moon body */}
             <path
               d="M130 65C130 95.3757 105.376 120 75 120C69.664 120 64.5517 119.239 59.7344 117.82C69.3496 126.657 82.0469 132 96 132C129.137 132 156 105.137 156 72C156 53.6454 147.781 37.2144 134.779 26.241C131.696 37.8929 130 50.8447 130 65Z"
               fill="var(--color-card-bg)"
               stroke="var(--color-accent)"
               strokeWidth="2.5"
             />
-            {/* Sleep lines (Zzz) floating out from moon */}
             <motion.text
               x="138"
               y="40"
@@ -112,7 +99,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
             </motion.text>
           </motion.g>
 
-          {/* Bobbing and leaning Magnifier Glass (Search resting) */}
           <motion.g
             animate={{
               rotate: [15, 12, 15],
@@ -126,7 +112,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
             }}
             className="origin-[100px_98px]"
           >
-            {/* Magnifier Handle */}
             <line
               x1="90"
               y1="108"
@@ -146,7 +131,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
               strokeWidth="5"
               strokeLinecap="round"
             />
-            {/* Magnifier Rim */}
             <circle
               cx="106"
               cy="92"
@@ -155,8 +139,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
               stroke="var(--color-border)"
               strokeWidth="3"
             />
-            {/* Sleeping closed eye expressions inside magnifier */}
-            {/* Left Eye */}
             <path
               d="M96 92C97 94 99 94 100 92"
               stroke="var(--color-text)"
@@ -164,7 +146,6 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
               strokeLinecap="round"
               className="opacity-75"
             />
-            {/* Right Eye */}
             <path
               d="M107 92C108 94 110 94 111 92"
               stroke="var(--color-text)"
@@ -176,19 +157,16 @@ export const QuotaExceeded: React.FC<QuotaExceededProps> = ({ onBack, isScraper 
         </svg>
       </div>
 
-      {/* Elegant Serif Alert Header */}
       <h3 className="text-2xl md:text-3xl font-extrabold font-serif-lumen text-theme-accent mb-3.5">
         {isScraper ? "Deep Reader is Resting" : "Ariser is Softly Resting"}
       </h3>
 
-      {/* Quota Exceeded Context Message */}
       <p className="text-sm md:text-base text-theme-text/70 leading-relaxed max-w-md mb-8 font-medium">
         {isScraper
           ? "Our webpage reader API limits have been reached for today. We'll be back online soon! In the meantime, you can try opening the live page directly."
           : "We have reached our daily search query limits. Ariser is resting to replenish its quota. Please check back shortly, or navigate home."}
       </p>
 
-      {/* Action Buttons */}
       <div className="flex items-center gap-3 justify-center">
         {onBack ? (
           <button

@@ -29,6 +29,7 @@ function HomeComponent() {
   };
 
   const isValidationError = scrapeMode && localSearch.trim().length > 0 && !isValidUrl(localSearch);
+
   useEffect(() => {
     if (!localSearch.trim()) {
       setSuggestions([]);
@@ -78,7 +79,6 @@ function HomeComponent() {
     return `${time} · web · ${count}`;
   };
 
-  // Suggestion chips from the "TRY" section of Page 3 of the PDF
   const suggestionChips = [
     "kyoto in spring",
     "matcha latte",
@@ -87,7 +87,6 @@ function HomeComponent() {
     "film photography",
   ];
 
-  // Framer Motion spring-based animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -111,7 +110,6 @@ function HomeComponent() {
   return (
     <div className="min-h-screen min-h-[100dvh] flex flex-col justify-center items-center relative bg-theme-bg transition-colors duration-300">
       
-      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
           animate={{
@@ -145,20 +143,17 @@ function HomeComponent() {
         />
       </div>
 
-      {/* Main Brand Centered Panel */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="flex flex-col items-center justify-center text-center w-full px-4 pb-16 md:pb-0 z-10"
       >
-        {/* Centered Serif Brand Logo Ariser & Palette icon next to it */}
         <motion.div variants={itemVariants} className="mb-3 flex items-start justify-start gap-3 relative">
           <Brand size="xl" className="drop-shadow-[0_4px_16px_rgba(var(--color-accent),0.15)] hidden md:inline-block" />
           <Brand size="lg" className="drop-shadow-[0_4px_16px_rgba(var(--color-accent),0.15)] md:hidden" />
         </motion.div>
 
-        {/* Elegant Serif Subtitle matching the PDF */}
         <motion.p 
           variants={itemVariants}
           className="font-serif-lumen italic text-theme-text opacity-70 text-base md:text-lg mb-8 select-none"
@@ -166,17 +161,14 @@ function HomeComponent() {
           Discover the web, softly.
         </motion.p>
         
-        {/* Search Input Box */}
         <motion.form 
           variants={itemVariants}
           className="w-full max-w-xl mb-4 md:mb-6" 
           onSubmit={handleSearchSubmit}
         >
           <div className="relative group">
-            {/* Ambient accent ring glow */}
             <div className="absolute -inset-0.5 bg-theme-accent rounded-full blur opacity-10 group-hover:opacity-20 group-focus-within:opacity-30 transition duration-300" />
             
-            {/* Left side search icon */}
             <div className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-theme-text opacity-40 select-none pointer-events-none">
               <FaSearch className="text-xs md:text-base" />
             </div>
@@ -196,7 +188,6 @@ function HomeComponent() {
               autoFocus
             />
 
-            {/* Rounded filled Search Button */}
             <button 
               type="submit" 
               disabled={isValidationError}
@@ -206,7 +197,6 @@ function HomeComponent() {
               <span>Search</span>
             </button>
 
-            {/* Floating Autocomplete drop panel */}
             <AnimatePresence>
               {showDropdown && suggestions.length > 0 && !isValidationError && (
                 <motion.div
@@ -237,7 +227,6 @@ function HomeComponent() {
           </div>
         </motion.form>
 
-        {/* Premium Mode Selector Toggle */}
         <motion.div
           variants={itemVariants}
           className="flex flex-col items-center gap-2 md:gap-3 mb-6 md:mb-8 select-none"
@@ -293,7 +282,6 @@ function HomeComponent() {
           </p>
         </motion.div>
 
-        {/* Suggestion "TRY" chips panel from Page 3 of the PDF */}
         <motion.div 
           variants={itemVariants}
           className="flex flex-col items-center gap-2 md:gap-2.5 mb-6 md:mb-8 select-none"
@@ -314,7 +302,6 @@ function HomeComponent() {
           </div>
         </motion.div>
 
-        {/* Persistent Search History Panel */}
         <AnimatePresence>
           {searchHistory.length > 0 && (
             <motion.div 
@@ -372,7 +359,6 @@ function HomeComponent() {
           )}
         </AnimatePresence>
       </motion.div>
-      {/* Floating Customize button for mobile screens only (matches user's preference) */}
       <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:hidden px-4">
         <Link
           to="/customize"

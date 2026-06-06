@@ -3,12 +3,6 @@ import { useAppStore, THEMES } from "../store/useAppStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPalette, FaSun, FaMoon, FaTimes } from "react-icons/fa";
 
-/**
- * Senior Developer Component: ThemeSelector
- * Displays an elegant floating pill theme button in the center-bottom of the page.
- * When clicked, it morphs dynamically into a sleek color selection bar.
- * When hovering over a color swatch, it expands horizontally to show the colorway name.
- */
 interface ThemeSelectorProps {
   layoutId?: string;
 }
@@ -21,7 +15,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
   
   const { themeId, mode, setTheme, toggleMode } = useAppStore();
 
-  // Close the popover on clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
@@ -55,7 +48,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
             <span className="text-theme-accent">Customize</span>
           </motion.button>
         ) : (
-          /* Expanded Sleek Theme Selection Bar - dynamically matches light/dark active theme */
           <motion.div
             key="expanded-bar"
             layoutId={layoutId}
@@ -65,7 +57,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 550, damping: 36 }}
           >
-            {/* Color swatches row - standard flex container with CSS width transitions */}
             <div className="flex items-center gap-2">
               {Object.values(THEMES).map((t) => {
                 const isActive = t.id === themeId;
@@ -96,13 +87,11 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
                     } ${isExpanded ? "w-auto max-w-[135px] px-2.5 gap-1.5 justify-start" : "w-8 max-w-[32px] justify-center"}`}
                     title={t.name}
                   >
-                    {/* Circle Color Indicator */}
                     <span 
                       style={{ backgroundColor: isActive ? "#FFFFFF" : previewColor }} 
                       className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-inner transition-colors duration-200"
                     />
                     
-                    {/* Color Name revealed on hover/active */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.span
@@ -121,10 +110,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
               })}
             </div>
 
-            {/* Dynamic theme-aware divider */}
             <span className="w-px h-5 bg-theme-border" />
 
-            {/* Mode switch button - theme-aware bg and hover */}
             <button
               onClick={toggleMode}
               className="p-2 bg-theme-bg/60 hover:bg-theme-accent/10 border border-theme-border text-theme-text rounded-full transition flex-shrink-0"
@@ -137,7 +124,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ layoutId = "theme-
               )}
             </button>
 
-            {/* Collapse / Close Button */}
             <button
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-red-500/10 dark:hover:bg-red-500/20 text-red-500 rounded-full transition flex-shrink-0"

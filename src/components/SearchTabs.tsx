@@ -13,10 +13,6 @@ interface SearchTabsProps {
   totalResults?: string;
 }
 
-/**
- * Senior Developer Component: SearchTabs
- * Renders the new unified pill-based tabs, responsive Time Filter rows, and the collapsible Filters options panel.
- */
 export const SearchTabs: React.FC<SearchTabsProps> = ({
   type,
   onTabChange,
@@ -63,7 +59,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
       <div className="max-w-7xl mx-auto flex flex-col">
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
-          {/* Unified Pill-Based Tabs Container */}
           <div className="flex items-center gap-1.5 p-1 bg-theme-card/60 border border-theme-border rounded-full w-fit max-w-full overflow-x-auto scrollbar-none select-none">
             {tabs.map((tab) => {
               const isActive = type === tab.id;
@@ -95,10 +90,8 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
             })}
           </div>
 
-          {/* Filters and Options Row */}
           <div className="flex items-center gap-3 max-w-full overflow-x-auto scrollbar-none select-none">
             
-            {/* Time Filters */}
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 pr-1.5">
                 TIME
@@ -132,7 +125,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
 
             <span className="w-px h-6 bg-theme-border" />
 
-            {/* Collapsible Filter Panel Toggle FAB */}
             <button
               onClick={() => setShowDrawer(!showDrawer)}
               className={`px-4 py-1.5 rounded-full border text-xs font-bold transition-all duration-200 flex items-center gap-1.5 ${
@@ -149,7 +141,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
           </div>
         </div>
 
-        {/* Collapsible Advanced Filters Drawer */}
         <AnimatePresence>
           {showDrawer && (
             <motion.div
@@ -159,7 +150,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
               transition={{ type: "spring", stiffness: 450, damping: 32 }}
               className="overflow-hidden border-t border-theme-border/20 mt-3 pt-3 flex flex-wrap items-center gap-6"
             >
-              {/* Language Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 select-none">
                   Language
@@ -181,7 +171,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                 </div>
               </div>
 
-              {/* Country/Region Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 select-none">
                   Region
@@ -204,7 +193,6 @@ export const SearchTabs: React.FC<SearchTabsProps> = ({
                 </div>
               </div>
 
-              {/* Batch Toggle */}
               <div className="flex items-center gap-2.5">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 select-none">
                   Batch Search

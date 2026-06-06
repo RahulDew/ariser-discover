@@ -20,13 +20,12 @@ import { NoData } from "../components/NoData";
 import { QuotaExceeded } from "../components/QuotaExceeded";
 import Footer from "../components/Footer";
 
-// Programmatic route validation and parameter tracking
 export const searchRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/search",
   validateSearch: (search) => ({
     q: (search.q as string) || "",
-    type: (search.type as string) || "search", // Default to 'search' (All)
+    type: (search.type as string) || "search", 
     hl: (search.hl as string) || "en",
     gl: (search.gl as string) || "us",
     tbs: (search.tbs as string) || "anytime",
@@ -36,11 +35,6 @@ export const searchRoute = createRoute({
   component: SearchComponent,
 });
 
-/**
- * Senior Developer Page Orchestrator: SearchComponent
- * Acts as the Container page that retrieves search parameters, coordinates data queries, 
- * and distributes results to granular, isolated rendering components.
- */
 function SearchComponent() {
   const router = useRouter();
   const { q, type, hl, gl, tbs, batch, scrape } = searchRoute.useSearch();
@@ -51,15 +45,13 @@ function SearchComponent() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Sync state with URL parameter updates (e.g. back navigation or click-pills)
   useEffect(() => {
     setInputVal(q);
-    setPage(1); // Reset to page 1 on new query
-    setActiveBatchIndex(0); // Reset active batch index
+    setPage(1); 
+    setActiveBatchIndex(0); 
     setScrapeMode(scrape);
   }, [q, scrape]);
 
-  // Autocomplete fetcher for mobile bottom search bar
   useEffect(() => {
     if (!inputVal.trim()) {
       setSuggestions([]);
@@ -77,7 +69,6 @@ function SearchComponent() {
     return () => clearTimeout(timer);
   }, [inputVal]);
 
-  // When the toggle is flipped, update the URL immediately so the view switches
   const handleScrapeModeToggle = (val: boolean) => {
     setScrapeMode(val);
     router.navigate({
@@ -91,10 +82,8 @@ function SearchComponent() {
     (!q.includes(" ") && q.includes(".") && q.length > 4);
   const shouldScrape = scrape && isUrl;
 
-  // Execute Search query hook
   const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch, !shouldScrape);
 
-  // Form search query submissions
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputVal.trim()) return;
@@ -113,7 +102,6 @@ function SearchComponent() {
     });
   };
 
-  // Safe tab switches
   const handleTabChange = (nextType: string) => {
     router.navigate({
       to: "/search",
@@ -130,7 +118,6 @@ function SearchComponent() {
     setPage(1);
   };
 
-  // Custom inertia-based fast smooth scroll helper
   const fastScrollToTop = () => {
     const scrollStep = () => {
       const c = document.documentElement.scrollTop || document.body.scrollTop;
@@ -144,7 +131,6 @@ function SearchComponent() {
     window.requestAnimationFrame(scrollStep);
   };
 
-  // Framer Motion Spring Animations for cascading list cards
   const cardVariants = {
     hidden: { opacity: 0, y: 12 },
     visible: { 
@@ -154,11 +140,7 @@ function SearchComponent() {
     }
   };
 
-  /**
-   * Helper dispatcher to choose the correct modular results view
-   */
   const renderResultsDispatcher = () => {
-    // If scrape mode is ON and query looks like a URL → open the deep web reader immediately
     const isUrl = (q.startsWith("http://") || q.startsWith("https://")) ||
       (!q.includes(" ") && q.includes(".") && q.length > 4);
 
@@ -168,13 +150,10 @@ function SearchComponent() {
 
     if (!data) return <NoData resultType={type} />;
 
-    // Handle batch data array vs standard data object
     const activeData = Array.isArray(data) ? data[activeBatchIndex] : data;
 
     if (!activeData) return <NoData resultType={type} />;
 
-    // If scrape mode is ON but query is a keyword → render standard web results
-    // (scrape mode is intended for URLs; for keywords it still returns web results)
     switch (type) {
       case "images":
         return <ImageResults data={activeData} cardVariants={cardVariants} />;
@@ -192,7 +171,6 @@ function SearchComponent() {
     }
   };
 
-  // If data is array (batch), read stats of the active query
   const activeDataForStats = Array.isArray(data) ? data[activeBatchIndex] : data;
 
   const liveResultCount = activeDataForStats?.searchInformation?.totalResults
@@ -211,14 +189,12 @@ function SearchComponent() {
       className="min-h-screen flex flex-col justify-between bg-theme-bg transition-colors duration-300 relative"
     >
       
-      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-theme-accent/5 blur-[100px] pointer-events-none select-none transition-colors duration-300" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-theme-text/3 blur-[90px] pointer-events-none select-none transition-colors duration-300" />
       </div>
 
       <div className="z-10 w-full">
-        {/* Sticky Search Panel & Controls */}
         <SearchHeader 
           type={type} 
           inputVal={inputVal} 
@@ -228,7 +204,6 @@ function SearchComponent() {
           setScrapeMode={handleScrapeModeToggle}
         />
 
-        {/* Dynamic sliding Tab underlines */}
         <SearchTabs 
           type={type} 
           onTabChange={handleTabChange} 
@@ -254,17 +229,14 @@ function SearchComponent() {
         />
       </div>
 
-      {/* Primary Results Display */}
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 pt-6 pb-24 md:pb-6 md:px-8 z-10 min-w-0">
         
-        {/* Results Metadata Statistics Row */}
         {q && !isLoading && !isError && liveResultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
             About {liveResultCount} results • {liveSearchTime}
           </div>
         )}
 
-        {/* Batch search sub-tabs if active */}
         {q && !isLoading && !isError && Array.isArray(data) && data.length > 1 && (
           <div className="flex flex-wrap items-center gap-2 mb-6 p-1.5 bg-theme-card/30 border border-theme-border/60 rounded-2xl w-fit select-none">
             <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 px-3">
@@ -364,7 +336,6 @@ function SearchComponent() {
           )}
         </div>
 
-        {/* Pagination Controls */}
         {q && !isLoading && !isError && data && (
           <div className="flex items-center justify-center gap-2 mt-10 mb-4 select-none flex-wrap">
             <button
@@ -375,7 +346,6 @@ function SearchComponent() {
               ← Prev
             </button>
 
-            {/* Page number pills */}
             {[...Array(5)].map((_, i) => {
               const pageNum = Math.max(1, page - 2) + i;
               const isActive = pageNum === page;
@@ -404,7 +374,6 @@ function SearchComponent() {
         )}
       </main>
 
-      {/* Floating Customize button for mobile screens only (matches user's preference) */}
       <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 flex justify-center w-full max-w-[95vw] md:hidden px-4">
         <Link
           to="/customize"

@@ -97,7 +97,6 @@ function HelpComponent() {
   return (
     <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between relative bg-theme-bg transition-colors duration-300">
       
-      {/* Ambient background blob container to prevent overflow and ensure clean scrolling */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
           animate={{
@@ -121,7 +120,6 @@ function HelpComponent() {
         />
       </div>
 
-      {/* Modern Header Navigation */}
       <header className="border-b border-theme-border bg-theme-bg/85 backdrop-blur-md sticky top-0 z-40 px-4 py-3.5 md:px-8 flex items-center justify-between gap-4 transition-colors duration-300">
         <div className="flex items-center gap-3">
           <Link 
@@ -141,7 +139,6 @@ function HelpComponent() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-4xl mx-auto px-4 py-8 md:py-12 z-10">
         <motion.div
           variants={containerVariants}
@@ -149,7 +146,6 @@ function HelpComponent() {
           animate="visible"
           className="space-y-10"
         >
-          {/* Header Description */}
           <motion.div variants={itemVariants} className="text-center space-y-4">
             <h1 className="text-3xl md:text-5xl font-bold font-serif-lumen text-theme-text leading-tight">
               Using <span className="font-serif-lumen italic text-theme-accent">Ariser Discover</span>
@@ -161,7 +157,6 @@ function HelpComponent() {
 
           <hr className="border-theme-border/60" />
 
-          {/* Quick-Start Guides */}
           <motion.div variants={itemVariants} className="space-y-6">
             <h2 className="text-lg md:text-xl font-bold font-serif-lumen text-theme-accent flex items-center gap-2 select-none">
               <FaBook className="text-xs" />
@@ -185,7 +180,6 @@ function HelpComponent() {
 
           <hr className="border-theme-border/60" />
 
-          {/* Core Technical Specifications & API details */}
           <motion.div variants={itemVariants} className="space-y-6">
             <h2 className="text-lg md:text-xl font-bold font-serif-lumen text-theme-accent flex items-center gap-2 select-none">
               <FaTerminal className="text-xs" />
@@ -208,9 +202,7 @@ function HelpComponent() {
 
           <hr className="border-theme-border/60" />
 
-          {/* Features Highlights Cards */}
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Feature 1 */}
             <div className="p-6 border border-theme-border/80 bg-theme-card/15 rounded-3xl space-y-4 shadow-3xs">
               <h3 className="text-base font-bold text-theme-accent flex items-center gap-1.5 leading-none">
                 <FaCheckCircle className="text-xs" />
@@ -221,7 +213,6 @@ function HelpComponent() {
               </p>
             </div>
             
-            {/* Feature 2 */}
             <div className="p-6 border border-theme-border/80 bg-theme-card/15 rounded-3xl space-y-4 shadow-3xs">
               <h3 className="text-base font-bold text-theme-accent flex items-center gap-1.5 leading-none">
                 <FaCheckCircle className="text-xs" />

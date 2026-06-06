@@ -6,13 +6,7 @@ interface NoDataProps {
   resultType: string;
 }
 
-/**
- * Senior Developer UI Component: NoData
- * Renders a gorgeous, custom-themed, interactive SVG empty state.
- * Fully adapts to the active color variables (--color-accent, --color-text, etc.)
- */
 export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
-  // Map internal tab identifiers to beautiful human-readable titles
   const getReadableType = (type: string) => {
     switch (type.toLowerCase()) {
       case "search":
@@ -43,9 +37,7 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
       transition={{ type: "spring", stiffness: 450, damping: 32 }}
       className="flex flex-col items-center justify-center text-center p-8 py-16 w-full max-w-lg mx-auto select-none"
     >
-      {/* Dynamic Animated theme-accented SVG Artwork */}
       <div className="relative w-48 h-48 mb-6 flex items-center justify-center">
-        {/* Soft atmospheric background glow */}
         <div className="absolute inset-4 rounded-full bg-theme-accent/5 blur-xl animate-pulse" />
         
         <svg
@@ -54,7 +46,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Outer slow-spinning compass circle ring */}
           <motion.circle
             cx="100"
             cy="100"
@@ -67,7 +58,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
             transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
           />
 
-          {/* Inner solid border ring */}
           <circle
             cx="100"
             cy="100"
@@ -77,7 +67,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
             className="opacity-25"
           />
 
-          {/* Floating magic sparkles */}
           <motion.path
             d="M50 80L52 84L56 86L52 88L50 92L48 88L44 86L48 84L50 80Z"
             fill="var(--color-accent)"
@@ -102,12 +91,10 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
 
-          {/* Clean document sketch representing a blank state */}
           <motion.g
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           >
-            {/* Folder / Document shape */}
             <rect
               x="70"
               y="55"
@@ -119,7 +106,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeWidth="2"
               className="shadow-sm"
             />
-            {/* Page header line */}
             <path
               d="M82 72H102"
               stroke="var(--color-accent)"
@@ -127,7 +113,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeLinecap="round"
               className="opacity-80"
             />
-            {/* Blank page placeholder mock content lines */}
             <path
               d="M82 85H118"
               stroke="var(--color-border)"
@@ -150,7 +135,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               className="opacity-40"
             />
 
-            {/* Empty dotted center magnifier target */}
             <circle
               cx="100"
               cy="95"
@@ -163,7 +147,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
             />
           </motion.g>
 
-          {/* Bobbing Magnifying glass searching */}
           <motion.g
             animate={{
               x: [0, 4, -4, 0],
@@ -175,7 +158,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               ease: "easeInOut",
             }}
           >
-            {/* Magnifier glass handle shadow */}
             <line
               x1="117.5"
               y1="113.5"
@@ -185,7 +167,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeWidth="6"
               strokeLinecap="round"
             />
-            {/* Magnifier glass handle */}
             <line
               x1="117"
               y1="113"
@@ -195,7 +176,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeWidth="5"
               strokeLinecap="round"
             />
-            {/* Magnifier inner accent grip cap */}
             <line
               x1="130"
               y1="126"
@@ -205,7 +185,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeWidth="5"
               strokeLinecap="round"
             />
-            {/* Magnifier glass outer rim */}
             <circle
               cx="102"
               cy="98"
@@ -215,7 +194,6 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
               strokeWidth="3.5"
               className="backdrop-blur-xs"
             />
-            {/* Magnifier shiny light reflections */}
             <path
               d="M90 88C93.5 84.5 97.5 83 100 83"
               stroke="white"
@@ -228,12 +206,10 @@ export const NoData: React.FC<NoDataProps> = ({ resultType }) => {
         </svg>
       </div>
 
-      {/* Elegant Serif Alert Header */}
       <h3 className="text-xl md:text-2xl font-bold font-serif-lumen text-theme-accent mb-2.5">
         No {readableType} Available
       </h3>
 
-      {/* Helpful context subtitle */}
       <p className="text-sm text-theme-text/60 leading-relaxed max-w-sm">
         We couldn't find any results under this section. Try adjusting your search query keywords, changing filters, or selecting a different tab.
       </p>
