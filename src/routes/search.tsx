@@ -86,7 +86,7 @@ function SearchComponent() {
     (!q.includes(" ") && q.includes(".") && q.length > 4);
   const shouldScrape = scrape && isUrl;
 
-  const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch, !shouldScrape);
+  const { data, isLoading, isError, error } = useSearchQuery(q, type, page, hl, gl, tbs, batch, !scrape);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -235,154 +235,172 @@ function SearchComponent() {
       </div>
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 pt-6 pb-24 md:pb-6 md:px-8 z-10 min-w-0">
-        
-        {scrape && !isUrl && (
-          <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-600 dark:text-yellow-400 rounded-2xl text-xs md:text-sm font-semibold flex items-center gap-2 select-none animate-fade-in">
-            <span>⚠️</span>
-            <span>Deep Reader Scraper requires a valid URL (e.g., https://example.com). Showing standard search results instead.</span>
-          </div>
-        )}
-
-        {q && !isLoading && !isError && liveResultCount && (
-          <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
-            About {liveResultCount} results • {liveSearchTime}
-          </div>
-        )}
-
-        {q && !isLoading && !isError && Array.isArray(data) && data.length > 1 && (
-          <div className="flex flex-wrap items-center gap-2 mb-6 p-1.5 bg-theme-card/30 border border-theme-border/60 rounded-2xl w-fit select-none">
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 px-3">
-              Batch Queries:
-            </span>
-            {data.map((item, idx) => {
-              const queryStr = item?.searchParameters?.q || `Query ${idx + 1}`;
-              const isActive = activeBatchIndex === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActiveBatchIndex(idx)}
-                  className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
-                    isActive
-                      ? "bg-theme-accent text-white shadow-sm"
-                      : "text-theme-text/80 hover:text-theme-accent hover:bg-theme-accent/5"
-                  }`}
-                >
-                  {queryStr}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        <div>
-          {!q ? (
-            <motion.div 
-              key="no-query"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-neutral-500"
-            >
-              <FaSearch className="text-6xl mb-4 text-theme-accent opacity-30" />
-              <p className="text-lg font-medium">Please enter a search query above to begin.</p>
-            </motion.div>
-          ) : shouldScrape ? (
-            <motion.div
-              key={`${q}-${type}-${page}-${activeBatchIndex}`}
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.03,
-                  },
-                },
-              }}
-            >
-              {renderResultsDispatcher()}
-            </motion.div>
-          ) : isLoading ? (
-            <motion.div 
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="w-full py-6"
-            >
-              <Loading />
-            </motion.div>
-          ) : isError ? (
-            error?.message === "QUOTA_EXCEEDED" ? (
-              <QuotaExceeded />
-            ) : (
-              <motion.div 
-                key="error"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-400 p-6 rounded-2xl max-w-lg mx-auto mt-10 shadow-sm"
-              >
-                <h3 className="font-bold text-lg mb-2 flex items-center">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2.5 animate-pulse" />
-                  Search failed
-                </h3>
-                <p className="text-sm">{error?.message || "An unexpected error occurred."}</p>
-              </motion.div>
-            )
-          ) : (
-            <motion.div
-              key={`${q}-${type}-${page}-${activeBatchIndex}`}
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.03,
-                  },
-                },
-              }}
-            >
-              {renderResultsDispatcher()}
-            </motion.div>
-          )}
-        </div>
-
-        {q && !isLoading && !isError && data && (
-          <div className="flex items-center justify-center gap-2 mt-10 mb-4 select-none flex-wrap">
+        {scrape && !isUrl ? (
+          <motion.div
+            key="invalid-url-scrape"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 450, damping: 30 }}
+            className="flex flex-col items-center justify-center py-20 text-center select-none"
+          >
+            <div className="w-16 h-16 bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 dark:text-yellow-400 rounded-full flex items-center justify-center mb-6 text-3xl shadow-sm">
+              ⚠️
+            </div>
+            <h2 className="text-xl md:text-2xl font-bold text-theme-text mb-3">Invalid URL for Scraper</h2>
+            <p className="text-sm md:text-base text-theme-text/60 max-w-lg mb-6 leading-relaxed">
+              Deep Reader Scraper requires a valid website address starting with <code className="bg-theme-card px-1.5 py-0.5 rounded border border-theme-border font-mono text-xs text-theme-accent">http://</code> or <code className="bg-theme-card px-1.5 py-0.5 rounded border border-theme-border font-mono text-xs text-theme-accent">https://</code>.
+            </p>
             <button
-              onClick={() => { setPage((p) => Math.max(1, p - 1)); fastScrollToTop(); }}
-              disabled={page === 1}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-theme-card/40 disabled:hover:text-theme-text disabled:hover:border-theme-border"
+              onClick={() => handleScrapeModeToggle(false)}
+              className="px-6 py-2.5 bg-theme-accent hover:bg-theme-accent-hover text-white font-extrabold rounded-full shadow-md hover:scale-103 active:scale-97 transition duration-150 text-sm"
             >
-              ← Prev
+              Switch to Standard Search
             </button>
+          </motion.div>
+        ) : (
+          <>
+            {q && !isLoading && !isError && liveResultCount && (
+              <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
+                About {liveResultCount} results • {liveSearchTime}
+              </div>
+            )}
 
-            {[...Array(5)].map((_, i) => {
-              const pageNum = Math.max(1, page - 2) + i;
-              const isActive = pageNum === page;
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => { setPage(pageNum); fastScrollToTop(); }}
-                  className={`w-9 h-9 rounded-full text-sm font-bold transition-all duration-150 ${
-                    isActive
-                      ? "bg-theme-accent text-white shadow-md scale-110"
-                      : "border border-theme-border bg-theme-card/40 text-theme-text hover:bg-theme-accent/10 hover:text-theme-accent hover:border-theme-accent/40"
-                  }`}
+            {q && !isLoading && !isError && Array.isArray(data) && data.length > 1 && (
+              <div className="flex flex-wrap items-center gap-2 mb-6 p-1.5 bg-theme-card/30 border border-theme-border/60 rounded-2xl w-fit select-none">
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-theme-text opacity-45 px-3">
+                  Batch Queries:
+                </span>
+                {data.map((item, idx) => {
+                  const queryStr = item?.searchParameters?.q || `Query ${idx + 1}`;
+                  const isActive = activeBatchIndex === idx;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveBatchIndex(idx)}
+                      className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
+                        isActive
+                          ? "bg-theme-accent text-white shadow-sm"
+                          : "text-theme-text/80 hover:text-theme-accent hover:bg-theme-accent/5"
+                      }`}
+                    >
+                      {queryStr}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            <div>
+              {!q ? (
+                <motion.div 
+                  key="no-query"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-neutral-500"
                 >
-                  {pageNum}
-                </button>
-              );
-            })}
+                  <FaSearch className="text-6xl mb-4 text-theme-accent opacity-30" />
+                  <p className="text-lg font-medium">Please enter a search query above to begin.</p>
+                </motion.div>
+              ) : shouldScrape ? (
+                <motion.div
+                  key={`${q}-${type}-${page}-${activeBatchIndex}`}
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.03,
+                      },
+                    },
+                  }}
+                >
+                  {renderResultsDispatcher()}
+                </motion.div>
+              ) : isLoading ? (
+                <motion.div 
+                  key="loading"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="w-full py-6"
+                >
+                  <Loading />
+                </motion.div>
+              ) : isError ? (
+                error?.message === "QUOTA_EXCEEDED" ? (
+                  <QuotaExceeded />
+                ) : (
+                  <motion.div 
+                    key="error"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-400 p-6 rounded-2xl max-w-lg mx-auto mt-10 shadow-sm"
+                  >
+                    <h3 className="font-bold text-lg mb-2 flex items-center">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2.5 animate-pulse" />
+                      Search failed
+                    </h3>
+                    <p className="text-sm">{error?.message || "An unexpected error occurred."}</p>
+                  </motion.div>
+                )
+              ) : (
+                <motion.div
+                  key={`${q}-${type}-${page}-${activeBatchIndex}`}
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.03,
+                      },
+                    },
+                  }}
+                >
+                  {renderResultsDispatcher()}
+                </motion.div>
+              )}
+            </div>
 
-            <button
-              onClick={() => { setPage((p) => p + 1); fastScrollToTop(); }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150"
-            >
-              Next →
-            </button>
-          </div>
+            {q && !isLoading && !isError && data && (
+              <div className="flex items-center justify-center gap-2 mt-10 mb-4 select-none flex-wrap">
+                <button
+                  onClick={() => { setPage((p) => Math.max(1, p - 1)); fastScrollToTop(); }}
+                  disabled={page === 1}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-theme-card/40 disabled:hover:text-theme-text disabled:hover:border-theme-border"
+                >
+                  ← Prev
+                </button>
+
+                {[...Array(5)].map((_, i) => {
+                  const pageNum = Math.max(1, page - 2) + i;
+                  const isActive = pageNum === page;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => { setPage(pageNum); fastScrollToTop(); }}
+                      className={`w-9 h-9 rounded-full text-sm font-bold transition-all duration-150 ${
+                        isActive
+                          ? "bg-theme-accent text-white shadow-md scale-110"
+                          : "border border-theme-border bg-theme-card/40 text-theme-text hover:bg-theme-accent/10 hover:text-theme-accent hover:border-theme-accent/40"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                <button
+                  onClick={() => { setPage((p) => p + 1); fastScrollToTop(); }}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-theme-border bg-theme-card/40 text-theme-text text-sm font-bold hover:bg-theme-accent/10 hover:border-theme-accent/40 hover:text-theme-accent transition-all duration-150"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
 

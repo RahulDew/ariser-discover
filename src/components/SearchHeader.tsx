@@ -26,15 +26,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const isValidUrl = (val: string) => {
-    const trimmed = val.trim();
-    if (!trimmed) return true;
-    return (trimmed.startsWith("http://") || trimmed.startsWith("https://")) ||
-      (!trimmed.includes(" ") && trimmed.includes(".") && trimmed.length > 4);
-  };
-
-  const isValidationError = scrapeMode && inputVal.trim().length > 0 && !isValidUrl(inputVal);
-
   useEffect(() => {
     if (!inputVal.trim()) {
       setSuggestions([]);
@@ -96,10 +87,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
     <form 
       className={`${isMobile ? "w-full" : "w-full md:max-w-xl flex-grow"}`} 
       onSubmit={(e) => {
-        if (isValidationError) {
-          e.preventDefault();
-          return;
-        }
         setShowDropdown(false);
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
@@ -111,11 +98,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         <div className="absolute -inset-0.5 bg-gradient-to-r from-theme-accent to-theme-text rounded-full blur opacity-5 group-hover:opacity-15 group-focus-within:opacity-25 transition duration-300" />
         <input
           type="text"
-          className={`relative w-full py-2 pl-4 pr-[135px] rounded-full border bg-theme-input text-theme-text outline-none shadow-sm transition duration-300 font-medium ${
-            isValidationError 
-              ? "border-red-500/60 focus:border-red-500 focus:shadow-[0_0_10px_rgba(239,68,68,0.15)]" 
-              : "border-theme-border focus:border-theme-accent"
-          }`}
+          className="relative w-full py-2 pl-4 pr-[135px] rounded-full border border-theme-border bg-theme-input text-theme-text outline-none shadow-sm focus:border-theme-accent transition duration-300 font-medium"
           placeholder={scrapeMode ? "Enter URL to scrape..." : "Search the web softly..."}
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
@@ -139,14 +122,8 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           {renderSwitcherPill()}
         </div>
 
-        {isValidationError && (
-          <div className="absolute top-[115%] left-4 text-red-500 text-[10px] md:text-xs font-extrabold bg-theme-bg border border-red-500/20 px-2 py-0.5 rounded-md shadow-sm z-50 select-none">
-            ⚠️ Enter a valid URL (e.g. https://example.com)
-          </div>
-        )}
-
         <AnimatePresence>
-          {showDropdown && suggestions.length > 0 && !isValidationError && (
+          {showDropdown && suggestions.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: -8, scale: 0.99 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
