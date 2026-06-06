@@ -257,6 +257,12 @@ export const applyThemeColors = (themeId: string, mode: "light" | "dark") => {
   } else {
     root.classList.remove("dark");
   }
+
+  // Dynamic update of PWA status bar theme-color to match background color
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute("content", palette.bg);
+  }
 };
 
 export interface AppState {
