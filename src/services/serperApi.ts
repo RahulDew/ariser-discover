@@ -23,7 +23,7 @@ export const fetchSerperResults = async (
   tbs = "anytime",
   batch = false
 ) => {
-  const apiKey = import.meta.env.VITE_SERPER_KEY || "eda103aef7bf56dba66cb7f8243fc051d216bfe7";
+  const apiKey = import.meta.env.VITE_SERPER_KEY;
 
   if (!apiKey) {
     throw new Error("Serper API Key is not configured. Please add VITE_SERPER_KEY to your .env file.");
@@ -101,7 +101,7 @@ export const fetchSerperResults = async (
  * @returns {Promise<{ title: string; text: string }>}
  */
 export const fetchSerperWebpage = async (url: string) => {
-  const apiKey = import.meta.env.VITE_SERPER_KEY || "eda103aef7bf56dba66cb7f8243fc051d216bfe7";
+  const apiKey = import.meta.env.VITE_SERPER_KEY;
 
   if (!apiKey) {
     throw new Error("Serper API Key is not configured.");
