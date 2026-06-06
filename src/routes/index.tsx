@@ -229,6 +229,11 @@ function HomeComponent() {
               )}
             </AnimatePresence>
           </div>
+          {isValidationError && (
+            <div className="text-red-500 text-xs font-bold mt-2 pl-4 text-left select-none">
+              ⚠️ Please enter a valid URL (e.g., https://example.com) to use the scraper.
+            </div>
+          )}
         </motion.form>
 
         <motion.div

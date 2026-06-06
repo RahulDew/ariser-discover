@@ -116,9 +116,10 @@ function SearchComponent() {
         gl,
         tbs,
         batch,
-        scrape: scrapeMode,
+        scrape: false, // Disable scrape mode when switching tabs
       },
     });
+    setScrapeMode(false); // Update local state
     setPage(1);
   };
 
@@ -235,6 +236,13 @@ function SearchComponent() {
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 pt-6 pb-24 md:pb-6 md:px-8 z-10 min-w-0">
         
+        {scrape && !isUrl && (
+          <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-600 dark:text-yellow-400 rounded-2xl text-xs md:text-sm font-semibold flex items-center gap-2 select-none animate-fade-in">
+            <span>⚠️</span>
+            <span>Deep Reader Scraper requires a valid URL (e.g., https://example.com). Showing standard search results instead.</span>
+          </div>
+        )}
+
         {q && !isLoading && !isError && liveResultCount && (
           <div className="text-xs text-theme-text/50 font-medium mb-5 select-none animate-fade-in pl-1">
             About {liveResultCount} results • {liveSearchTime}

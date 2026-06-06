@@ -139,6 +139,12 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           {renderSwitcherPill()}
         </div>
 
+        {isValidationError && (
+          <div className="absolute top-[115%] left-4 text-red-500 text-[10px] md:text-xs font-extrabold bg-theme-bg border border-red-500/20 px-2 py-0.5 rounded-md shadow-sm z-50 select-none">
+            ⚠️ Enter a valid URL (e.g. https://example.com)
+          </div>
+        )}
+
         <AnimatePresence>
           {showDropdown && suggestions.length > 0 && !isValidationError && (
             <motion.div
