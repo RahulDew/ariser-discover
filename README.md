@@ -10,12 +10,13 @@ Discover the web, softly. A sleek, modern, and highly-animated search client des
 *Below are visual previews of Ariser Discover in action. (Add your custom screenshot URLs here)*
 
 ### Home Page
-![Ariser Discover Home](https://user-images.githubusercontent.com/86983295/191952820-2b018a85-206a-42aa-a8b9-457d97a729ff.png)
+<img width="1492" height="920" alt="Screenshot 2026-06-06 at 11 16 34 PM" src="https://github.com/user-attachments/assets/97efc1bb-39bd-4ee0-b3e8-d015e8c27e74" />
 
-### Dark Mode / Theme customizer
-![Ariser Discover Dark Mode](https://user-images.githubusercontent.com/86983295/191952896-8f1c4a21-44b8-4883-8436-933ddfc99349.png)
+<img width="1485" height="924" alt="Screenshot 2026-06-06 at 11 16 58 PM" src="https://github.com/user-attachments/assets/2ddc437a-a86a-4663-a5e4-5317949d370c" />
 
-*(Feel free to update these image links with your new screenshots!)*
+<img width="1490" height="924" alt="Screenshot 2026-06-06 at 11 18 55 PM" src="https://github.com/user-attachments/assets/039cce40-e9ac-4c16-b7e4-f6ab14e9e983" />
+
+<img width="1486" height="922" alt="Screenshot 2026-06-06 at 11 19 22 PM" src="https://github.com/user-attachments/assets/ddb60c31-3fab-4c26-80f0-0a441fb9a014" />
 
 ---
 
