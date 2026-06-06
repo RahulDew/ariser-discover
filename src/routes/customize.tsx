@@ -16,6 +16,10 @@ function CustomizeComponent() {
   const router = useRouter();
   const { themeId, mode, setTheme, toggleMode } = useAppStore();
 
+  React.useEffect(() => {
+    document.title = "Customize Theme - Ariser Discover";
+  }, []);
+
   const activeTheme = THEMES[themeId] || THEMES.apricot;
   const currentAccentHover = mode === "dark" ? activeTheme.dark.accentHover : activeTheme.light.accentHover;
 

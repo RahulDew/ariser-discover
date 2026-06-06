@@ -21,6 +21,10 @@ function HomeComponent() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [scrapeMode, setScrapeMode] = useState(false);
 
+  useEffect(() => {
+    document.title = "Ariser Discover - Search softly";
+  }, []);
+
   const isValidUrl = (val: string) => {
     const trimmed = val.trim();
     if (!trimmed) return true;

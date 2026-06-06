@@ -53,6 +53,10 @@ function SearchComponent() {
   }, [q, scrape]);
 
   useEffect(() => {
+    document.title = q ? `${q} - Ariser Discover` : "Ariser Discover";
+  }, [q]);
+
+  useEffect(() => {
     if (!inputVal.trim()) {
       setSuggestions([]);
       return;

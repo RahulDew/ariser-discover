@@ -27,3 +27,6 @@ yarn-error.log*
 # Local Agent Skill Files
 .agents/
 skills-lock.json
+
+# Firebase temporary files
+.firebase/

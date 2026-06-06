@@ -27,6 +27,10 @@ export const helpRoute = createRoute({
 function HelpComponent() {
   const { themeId, mode } = useAppStore();
 
+  React.useEffect(() => {
+    document.title = "Help & Features - Ariser Discover";
+  }, []);
+
   const activeTheme = THEMES[themeId] || THEMES.apricot;
   const currentAccentHover = mode === "dark" ? activeTheme.dark.accentHover : activeTheme.light.accentHover;
 

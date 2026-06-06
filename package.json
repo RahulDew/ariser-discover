@@ -5,6 +5,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.28.4",
     "@tanstack/react-router": "^1.22.4",
+    "firebase": "^12.14.0",
     "framer-motion": "^12.40.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
